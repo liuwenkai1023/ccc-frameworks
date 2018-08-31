@@ -1,15 +1,15 @@
 const { ccclass, property } = cc._decorator;
 import BroadcastReceiver from "./broadcast/BroadcastReceiver";
-import BroadcastDataManager from "./broadcast/BroadcastDataManager";
 import BroadcastReceiverHandler from "./broadcast/BroadcastReceiverHandler";
+import BroadcastManager from "./broadcast/BroadcastManager";
 @ccclass
 /**
  * 广播组件
  */
-export default class BroadcastManager extends cc.Component {
+export default class BroadcastComponent extends cc.Component {
 
     private _broadcastReceivers: Array<BroadcastReceiver> = [];
-    private _broadcastDataManager: BroadcastDataManager;
+    private _broadcastManager: BroadcastManager;
 
     /**
      * 实例化并注册广播接收者
@@ -29,7 +29,7 @@ export default class BroadcastManager extends cc.Component {
     public registerReceiver(receiver: BroadcastReceiver) {
         if (this.checkIsRepeat(receiver)) throw "同一广播组件上不能注册相同的广播行为";
         this._broadcastReceivers.push(receiver);
-        this._broadcastDataManager.addBroadcastReceiver(receiver);
+        this._broadcastManager.addBroadcastReceiver(receiver);
         return receiver;
     }
 
@@ -58,7 +58,7 @@ export default class BroadcastManager extends cc.Component {
         }
         if (receiver != null) {
             this._broadcastReceivers[this._broadcastReceivers.indexOf(receiver)] = null;
-            this._broadcastDataManager.removeBroadcastReceiver(receiver);
+            this._broadcastManager.removeBroadcastReceiver(receiver);
         }
     }
 
@@ -83,13 +83,13 @@ export default class BroadcastManager extends cc.Component {
      * @param data 广播传递的数据
      */
     public sendBroadcast(action: string, data: any) {
-        this._broadcastDataManager.sendBroadcast(action, data);
+        this._broadcastManager.sendBroadcast(action, data);
     }
 
 
     //加载时初始化
     public onLoad() {
-        this._broadcastDataManager = BroadcastDataManager.getInstance();
+        this._broadcastManager = BroadcastManager.getInstance();
     }
 
 

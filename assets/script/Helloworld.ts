@@ -1,6 +1,6 @@
-import BroadcastManager from "./base/BroadcastManager";
 import AudioManager from "./base/AudioMananger";
 import SocketManager from "./base/SocketManager";
+import BroadcastComponent from "./base/BroadcastComponent";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,41 +15,27 @@ export default class Helloworld2 extends cc.Component {
 
     t = 0;
 
-    private _broadcastManager: BroadcastManager;
+    private _broadcastManager: BroadcastComponent;
     private _audioManager: AudioManager;
-    _socket: SocketManager;
+    _socketManager: SocketManager;
+
 
     onLoad() {
-        this._broadcastManager = this.node.getComponent(BroadcastManager);
+        this._broadcastManager = this.node.getComponent(BroadcastComponent);
+        this._socketManager = SocketManager.getInstance(null);
         this._audioManager = AudioManager.getInstance()
         this.initReceiver();
+        this._audioManager.playMusic("music_logo.mp3");
     }
+
 
     start() {
-        // init logic
-        this._socket = SocketManager.getInstance(null);
-        this._audioManager.playMusic("music_logo.mp3");
-        this.node.on("test", function () {
-            this.label.string = this.t++;
-        }.bind(this))
-        this.node.runAction(cc.repeatForever(cc.sequence([cc.delayTime(0.02), cc.callFunc(function () {
-            // this._broadcastManager.sendBroadcast("SAY_HELLO_1", "Hello " + this.t++);
-            // this.node.emit("test")
-            // this._socket.send("" + this.t++)
-            // console.log(this.t)
-            if (this.t++ == 20) {
-                this._socket.send("4")
-            }
-
-            if (this.t == 100) {
-                this._socket.close();
-            }
-
-            if (this.t == 200) {
-                this._socket.open();
-            }
+        this.node.runAction(cc.repeatForever(cc.sequence([cc.delayTime(0.01), cc.callFunc(function () {
+            this._broadcastManager.sendBroadcast("SAY_HELLO_1", this.t++)
+            // this._socketManager.send(this.t++);
         }.bind(this))])))
     }
+
 
     initReceiver() {
         let receiverDatas = [
@@ -61,9 +47,12 @@ export default class Helloworld2 extends cc.Component {
         }
     }
 
+
     SAY_HELLO_1(data) {
-        this.label.string = data;
+        // this.label.string = data;
+        this._socketManager.send(data);
     }
+
 
     SAY_HELLO_2(data) {
         this.label.string = data;

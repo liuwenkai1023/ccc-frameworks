@@ -1,11 +1,11 @@
-import BroadcastDataManager from "./broadcast/BroadcastDataManager";
+import BroadcastManager from "./broadcast/BroadcastManager";
 
 export default class SocketManager {
 
     private _url: string;
     private _protocols: any;
     private _socket: WebSocket;
-    private _broadcstManager: BroadcastDataManager;
+    private _broadcstManager: BroadcastManager;
 
     private _sendDatas: Array<String> = [];
     private _registerMsg: string = '{"action":"ACTION_REGISTER","data":"注册信息"}';
@@ -35,7 +35,7 @@ export default class SocketManager {
      */
     private constructor(url) {
         this.setUrl(url);
-        this._broadcstManager = BroadcastDataManager.getInstance();
+        this._broadcstManager = BroadcastManager.getInstance();
         this.init();
     }
 
@@ -97,11 +97,11 @@ export default class SocketManager {
     private reconnect() {
         if (this._curReconnectTimes++ == SocketManager.MAX_RECONNECT_TIMES) {
             this._broadcstManager.sendBroadcast("SOCKET_RECONNECT_FAILED")
-            console.log("[INFO][SOCKET_RECONNECT_FAILED]")
+            // console.log("[INFO][SOCKET_RECONNECT_FAILED]")
             return;
         }
         this._broadcstManager.sendBroadcast("SOCKET_RECONNECTTING", this._curReconnectTimes)
-        console.log("[INFO][SOCKET_RECONNECTTING]", "curReConnTimes = " + this._curReconnectTimes + "/" + SocketManager.MAX_RECONNECT_TIMES)
+        // console.log("[INFO][SOCKET_RECONNECTTING]", "curReConnTimes = " + this._curReconnectTimes + "/" + SocketManager.MAX_RECONNECT_TIMES)
         this.init()
     }
 
@@ -120,7 +120,7 @@ export default class SocketManager {
      * @param event 事件
      */
     private onOpen(event: Event) {
-        console.log("[INFO][SOCKET_OPEN]", event)
+        // console.log("[INFO][SOCKET_OPEN]", event)
         this._curReconnectTimes = 0;
         this.sendRegisterMsg()
     }
@@ -131,7 +131,7 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onClose(event: CloseEvent) {
-        console.log("[INFO][SOCKET_CLOSE]", event)
+        // console.log("[INFO][SOCKET_CLOSE]", event)
         if (this._closeByUser) return;
         this.reconnect()
     }
@@ -142,7 +142,8 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onMessage(event: MessageEvent) {
-        console.log("[INFO][SOCKET_MESSAGE]", event.data)
+        // console.log("[INFO][SOCKET_MESSAGE]", event.data)
+        this._broadcstManager.sendBroadcast("SAY_HELLO_2", event.data)
     }
 
 
@@ -151,7 +152,7 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onError(event: Event) {
-        console.warn("[ERROR][SOCKET_ERROR]", event)
+        // console.warn("[ERROR][SOCKET_ERROR]", event)
     }
 
 
