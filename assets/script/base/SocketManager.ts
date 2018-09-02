@@ -1,4 +1,5 @@
 import BroadcastManager from "./broadcast/BroadcastManager";
+import NetConfig from "./NetConfig";
 
 export default class SocketManager {
 
@@ -13,7 +14,7 @@ export default class SocketManager {
     private _curReconnectTimes: number = 0;
 
     private static instance: SocketManager;
-    private static DEFAULT_URL: string = "ws://127.0.0.1:8001";
+    private static DEFAULT_URL: string = NetConfig.SOCKET_HOST;
     private static MAX_RECONNECT_TIMES: number = 7;
 
 

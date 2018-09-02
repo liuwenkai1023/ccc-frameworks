@@ -1,6 +1,8 @@
 import AudioManager from "./base/AudioMananger";
 import SocketManager from "./base/SocketManager";
 import BroadcastComponent from "./base/BroadcastComponent";
+import HttpManager from "./base/HttpManager";
+import HttpResponse from "./base/network/HttpResponse";
 
 const { ccclass, property } = cc._decorator;
 
@@ -34,6 +36,10 @@ export default class Helloworld2 extends cc.Component {
             this._broadcastManager.sendBroadcast("SAY_HELLO_1", this.t++)
             // this._socketManager.send(this.t++);
         }.bind(this))])))
+        HttpManager.HTTP_GET("", null, function (response: HttpResponse) {
+            this.label.string = response.event;
+        }.bind(this));
+        HttpManager.HTTP_POST("", null, null);
     }
 
 
