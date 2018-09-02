@@ -3,9 +3,9 @@ import BroadcastReceiver from "./BroadcastReceiver";
 /**
  * 单例：广播管理器
  */
-export default class BroadcastDataManager {
+export default class BroadcastManager {
 
-    private static instance: BroadcastDataManager;
+    private static instance: BroadcastManager;
 
     private _broadcastReceivers: Array<BroadcastReceiver> = [];
 
@@ -15,9 +15,9 @@ export default class BroadcastDataManager {
     /**
      * 获取广播管理器
      */
-    static getInstance(): BroadcastDataManager {
-        if (!BroadcastDataManager.instance) {
-            BroadcastDataManager.instance = new BroadcastDataManager()
+    static getInstance(): BroadcastManager {
+        if (!BroadcastManager.instance) {
+            BroadcastManager.instance = new BroadcastManager()
         }
         return this.instance
     }
@@ -28,7 +28,7 @@ export default class BroadcastDataManager {
      * @param action 需要响应广播的行为
      * @param data 广播传递的数据
      */
-    public sendBroadcast(action: String, data: any) {
+    public sendBroadcast(action: String, data?: any | void) {
         // 平均每个console.log()会额外消耗1ms左右
         // console.info("[INFO]Sending the broadcast \"" + action + "\"");
         for (const receiver of this._broadcastReceivers) {
