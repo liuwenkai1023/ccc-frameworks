@@ -80,10 +80,10 @@ export default class SocketManager {
      * @param data 消息内容
      */
     public send(data: string) {
-        if (this._socket == null) return; //socket存在,继续
-        if (data != null) this._sendDatas.push(data);//缓存消息存到队列里
-        if (this._socket.readyState != WebSocket.OPEN) return;//socket连接的状态为"OPEN",继续
-        while (this._sendDatas.length > 0) {//把缓存队列里的消息全部发送
+        if (this._socket == null) return; //1、socket存在,继续
+        if (data != null) this._sendDatas.push(data);//2、缓存消息存到队列里
+        if (this._socket.readyState != WebSocket.OPEN) return;//3、socket连接的状态为"OPEN",继续
+        while (this._sendDatas.length > 0) {//4、把缓存队列里的消息全部发送
             let cData = <string>this._sendDatas.shift();
             this._socket.send(cData);
             // console.log("[INFO][SOCKET_SEND]", cData);
