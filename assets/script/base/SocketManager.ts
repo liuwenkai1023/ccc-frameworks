@@ -1,5 +1,5 @@
 import BroadcastManager from "./broadcast/BroadcastManager";
-import NetConfig from "./NetConfig";
+import NetConfig from "./config/NetConfig";
 
 export default class SocketManager {
 
@@ -40,6 +40,7 @@ export default class SocketManager {
         this.init();
     }
 
+    
     /**
      * 初始化
      */
