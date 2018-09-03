@@ -6,7 +6,7 @@ export default class SocketManager {
     private _url: string;
     private _protocols: any;
     private _socket: WebSocket;
-    private _broadcstManager: BroadcastManager;
+    private _broadcstManager: BroadcastManager = BroadcastManager.getInstance();;
 
     private _sendDatas: Array<String> = [];
     private _registerMsg: string = '{"action":"ACTION_REGISTER","data":"注册信息"}';
@@ -36,11 +36,10 @@ export default class SocketManager {
      */
     private constructor(url) {
         this.setUrl(url);
-        this._broadcstManager = BroadcastManager.getInstance();
         this.init();
     }
 
-    
+
     /**
      * 初始化
      */
