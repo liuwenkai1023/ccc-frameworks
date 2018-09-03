@@ -34,7 +34,7 @@ export default class Helloworld2 extends cc.Component {
             this.label.string = response.event;
         }.bind(this));
         HttpManager.HTTP_POST("", null, null);
-        let encode = Utils._base64.encode("阿斯加德发");
+        let encode = Utils._base64.encode("测试Base64");
         let decode = Utils._base64.decode(encode);
         console.log(encode, decode)
     }
