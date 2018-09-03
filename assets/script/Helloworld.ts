@@ -1,8 +1,7 @@
-import AudioManager from "./base/AudioMananger";
-import SocketManager from "./base/SocketManager";
-import BroadcastComponent from "./base/BroadcastComponent";
-import HttpManager from "./base/HttpManager";
+import BroadcastComponent from "./base/component/BroadcastComponent";
+import HttpManager from "./base/network/HttpManager";
 import HttpResponse from "./base/network/HttpResponse";
+import Utils from "./base/Utils";
 
 const { ccclass, property } = cc._decorator;
 
@@ -18,16 +17,11 @@ export default class Helloworld2 extends cc.Component {
     t = 0;
 
     private _broadcastManager: BroadcastComponent;
-    private _audioManager: AudioManager;
-    _socketManager: SocketManager;
-
 
     onLoad() {
         this._broadcastManager = this.node.getComponent(BroadcastComponent);
-        this._socketManager = SocketManager.getInstance(null);
-        this._audioManager = AudioManager.getInstance()
         this.initReceiver();
-        this._audioManager.playMusic("music_logo.mp3");
+        Utils._audioManager.playMusic("music_logo.mp3");
     }
 
 
@@ -40,6 +34,9 @@ export default class Helloworld2 extends cc.Component {
             this.label.string = response.event;
         }.bind(this));
         HttpManager.HTTP_POST("", null, null);
+        let encode = Utils._base64.encode("阿斯加德发");
+        let decode = Utils._base64.decode(encode);
+        console.log(encode, decode)
     }
 
 
@@ -56,7 +53,7 @@ export default class Helloworld2 extends cc.Component {
 
     SAY_HELLO_1(data) {
         // this.label.string = data;
-        this._socketManager.send(data);
+        Utils._socketManager.send(data);
     }
 
 
