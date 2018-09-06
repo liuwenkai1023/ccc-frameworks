@@ -22,7 +22,7 @@ export default class SocketManager {
      * 获取SocketManager单例
      * @param url socket连接地址
      */
-    public static getInstance(url: string | void) {
+    public static getInstance(url?: string | void) {
         if (SocketManager.instance == null) {
             SocketManager.instance = new SocketManager(url == null ? this.DEFAULT_URL : url);
         }

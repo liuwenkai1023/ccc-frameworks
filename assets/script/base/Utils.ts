@@ -11,7 +11,7 @@ export default class Utils {
     public static readonly _base64: Base64 = Base64.getInstance();
     public static readonly _httpManager: HttpManager = HttpManager;
     public static readonly _audioManager: AudioManager = AudioManager.getInstance();
-    public static readonly _socketManager: SocketManager = SocketManager.getInstance(null);
+    public static readonly _socketManager: SocketManager = SocketManager.getInstance();
     public static readonly _broadcastManager: BroadcastManager = BroadcastManager.getInstance();
 }
 
