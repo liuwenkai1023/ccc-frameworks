@@ -1,5 +1,5 @@
-import BroadcastManager from "./broadcast/BroadcastManager";
-import NetConfig from "./config/NetConfig";
+import BroadcastManager from "../broadcast/BroadcastManager";
+import NetConfig from "../config/NetConfig";
 
 export default class SocketManager {
 

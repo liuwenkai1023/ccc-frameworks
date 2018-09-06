@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
-import BroadcastReceiver from "./broadcast/BroadcastReceiver";
-import BroadcastReceiverHandler from "./broadcast/BroadcastReceiverHandler";
-import BroadcastManager from "./broadcast/BroadcastManager";
+import BroadcastReceiver from "../broadcast/BroadcastReceiver";
+import BroadcastReceiverHandler from "../broadcast/BroadcastReceiverHandler";
+import BroadcastManager from "../broadcast/BroadcastManager";
 @ccclass
 /**
  * 广播组件

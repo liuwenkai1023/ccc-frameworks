@@ -1,7 +1,8 @@
-import NetConfig from "./config/NetConfig";
-import HttpResponse from "./network/HttpResponse";
-import HttpParamsMap from "./network/HttpParamsMap";
-import HttpResponseHanler from "./network/HttpResponseHanler";
+import NetConfig from "../config/NetConfig";
+import HttpResponse from "./HttpResponse";
+import HttpParamsMap from "./HttpParamsMap";
+import HttpResponseHanler from "./HttpResponseHanler";
+
 
 export default class HttpManager {
 
