@@ -3,6 +3,7 @@ import Base64 from "./base64/Base64";
 import HttpManager from "./network/HttpManager";
 import AudioManager from "./audio/AudioMananger";
 import SocketManager from "./network/SocketManager";
+import LocalStorageManager from "./storage/StorageManager";
 import BroadcastManager from "./broadcast/BroadcastManager";
 
 /**
@@ -34,6 +35,11 @@ export default class Base {
      *  SocketManager：socket连接管理类
      */
     public static readonly SocketManager: SocketManager = SocketManager.getInstance();
+
+    /**
+     *  LocalStorageManager：cc.sys.localStorage本存储管理类
+     */
+    public static readonly LocalStorageManager: LocalStorageManager = LocalStorageManager.getInstance();
 
     /**
      *  BroadcastManager：广播管理类。节点上不建议使用，还请使用BroadcastComponent
