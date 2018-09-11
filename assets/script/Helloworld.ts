@@ -1,6 +1,6 @@
 import Base from "./base/Base";
-import BroadcastComponent from "./base/component/BroadcastComponent";
 import { HttpResponse } from "./base/network/HttpManager";
+import BroadcastComponent from "./base/components/BroadcastComponent";
 
 const { ccclass, property } = cc._decorator;
 
@@ -39,7 +39,7 @@ export default class Helloworld2 extends cc.Component {
 
         let encode = Base.Base64.encode("测试Base64▲▼●◆■āáǎà");
         let decode = Base.Base64.decode(encode);
-        console.log(encode, decode)
+        console.log(encode, decode);
     }
 
 
