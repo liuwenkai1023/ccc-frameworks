@@ -2,6 +2,7 @@ import BroadcastReceiver from "./BroadcastReceiver";
 
 /**
  * 单例：广播管理器
+ * 不建议直接使用此类,节点还请使用广播组件BroadcastComponent(避免忘记注销广播而引起异常)
  */
 export default class BroadcastManager {
 

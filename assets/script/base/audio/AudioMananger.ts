@@ -55,7 +55,7 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playEffect(url) {
-        cc.AudioClip._loadByUrl(this.getAudioUrl(url), function (err, clip) {
+        (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
                 cc.audioEngine.playEffect(clip, false);
             }
@@ -68,7 +68,7 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playMusic(url) {
-        cc.AudioClip._loadByUrl(this.getAudioUrl(url), function (err, clip) {
+        (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
                 cc.audioEngine.playMusic(clip, true);
             }
@@ -95,7 +95,7 @@ export default class AudioManager {
 
 
     /**
-     *  定义_musicVolume的寄存器
+     *  定义_musicVolume的存取器
      */
     get musicVolume() {
         return this._musicVolume;
@@ -109,7 +109,7 @@ export default class AudioManager {
 
 
     /**
-     * 定义_effectVolume的寄存器
+     * 定义_effectVolume的存取器
      */
     get effectVolume() {
         return this._effectVolume;

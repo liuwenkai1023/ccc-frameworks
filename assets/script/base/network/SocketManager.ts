@@ -24,7 +24,7 @@ export default class SocketManager {
      */
     public static getInstance(url?: string | void) {
         if (SocketManager.instance == null) {
-            SocketManager.instance = new SocketManager(url == null ? this.DEFAULT_URL : url);
+            SocketManager.instance = new SocketManager(url);
         }
         return SocketManager.instance;
     }
@@ -35,6 +35,7 @@ export default class SocketManager {
      * @param url socket地址
      */
     private constructor(url) {
+        if (!url) return;
         this.setUrl(url);
         this.init();
     }
@@ -57,8 +58,8 @@ export default class SocketManager {
      * 打开socket连接
      * @param url socket地址
      */
-    public open(url) {
-        this.setUrl(url)
+    public open(url?: string | void) {
+        this.setUrl(url == null ? SocketManager.DEFAULT_URL : url)
         this.close()
         this.init()
     }
@@ -72,6 +73,7 @@ export default class SocketManager {
             this._socket.close()
             this._closeByUser = true;
         }
+        this._sendDatas.pop();
         this._socket = null;
     }
 
@@ -81,13 +83,23 @@ export default class SocketManager {
      * @param data 消息内容
      */
     public send(data: string) {
-        if (this._socket == null) return; //1、socket存在,继续
-        if (data != null) this._sendDatas.push(data);//2、缓存消息存到队列里
-        if (this._socket.readyState != WebSocket.OPEN) return;//3、socket连接的状态为"OPEN",继续
-        while (this._sendDatas.length > 0) {//4、把缓存队列里的消息全部发送
+        //1、socket存在,继续
+        if (this._socket == null) {
+            // console.warn("警告:socket不存在，消息未发送", data);
+            return;
+        }
+
+        //2、缓存消息存到队列里
+        if (data != null) this._sendDatas.push(data);
+
+        //3、socket连接的状态为"OPEN",继续
+        if (this._socket.readyState != WebSocket.OPEN) return;
+
+        //4、把缓存队列里的消息全部发送
+        while (this._sendDatas.length > 0) {
             let cData = <string>this._sendDatas.shift();
             this._socket.send(cData);
-            // console.log("[INFO][SOCKET_SEND]", cData);
+            // console.log("提示:socket发送消息", cData);
         }
     }
 
@@ -96,13 +108,13 @@ export default class SocketManager {
      * 断线重连
      */
     private reconnect() {
-        if (this._curReconnectTimes++ == SocketManager.MAX_RECONNECT_TIMES) {
+        if (this._curReconnectTimes == SocketManager.MAX_RECONNECT_TIMES) {
             this._broadcstManager.sendBroadcast("SOCKET_RECONNECT_FAILED")
-            // console.log("[INFO][SOCKET_RECONNECT_FAILED]")
+            // console.warn("警告:socket断线重连失败,已重试%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
             return;
         }
-        this._broadcstManager.sendBroadcast("SOCKET_RECONNECTTING", this._curReconnectTimes)
-        // console.log("[INFO][SOCKET_RECONNECTTING]", "curReConnTimes = " + this._curReconnectTimes + "/" + SocketManager.MAX_RECONNECT_TIMES)
+        this._broadcstManager.sendBroadcast("SOCKET_RECONNECTTING", this._curReconnectTimes++)
+        // console.log("提示:socket断线，正在尝试重新连接%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
         this.init()
     }
 
@@ -121,7 +133,7 @@ export default class SocketManager {
      * @param event 事件
      */
     private onOpen(event: Event) {
-        // console.log("[INFO][SOCKET_OPEN]", event)
+        // console.log("提示:socket连接已打开", event)
         this._curReconnectTimes = 0;
         this.sendRegisterMsg()
     }
@@ -132,9 +144,11 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onClose(event: CloseEvent) {
-        // console.log("[INFO][SOCKET_CLOSE]", event)
-        if (this._closeByUser) return;
-        this.reconnect()
+        // console.log("提示:socket连接已关闭", event)
+        this._socket = null;
+        if (!this._closeByUser) {
+            this.reconnect()
+        };
     }
 
 
@@ -143,7 +157,7 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onMessage(event: MessageEvent) {
-        // console.log("[INFO][SOCKET_MESSAGE]", event.data)
+        // console.log("提示:socket收到消息", event.data)
         this._broadcstManager.sendBroadcast("SAY_HELLO_2", event.data)
     }
 
@@ -153,7 +167,7 @@ export default class SocketManager {
      * @param CloseEvent 事件
      */
     private onError(event: Event) {
-        // console.warn("[ERROR][SOCKET_ERROR]", event)
+        // console.warn("警告:socket发生错误", event)
     }
 
 
@@ -162,8 +176,8 @@ export default class SocketManager {
      * @param url socket地址
      */
     private setUrl(url) {
+        this._url = SocketManager.DEFAULT_URL;
         if (url != null) this._url = url;
-        if (this._url == null) this._url = SocketManager.DEFAULT_URL;
     }
 
 }

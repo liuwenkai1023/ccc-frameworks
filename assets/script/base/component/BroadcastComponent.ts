@@ -1,11 +1,12 @@
 const { ccclass, property } = cc._decorator;
-import BroadcastReceiver from "../broadcast/BroadcastReceiver";
-import BroadcastReceiverHandler from "../broadcast/BroadcastReceiverHandler";
+import BroadcastReceiver, { BroadcastReceiverHandler } from "../broadcast/BroadcastReceiver";
 import BroadcastManager from "../broadcast/BroadcastManager";
-@ccclass
+
 /**
  * 广播组件
+ * 节点上建议使用此组件，广播会在生命周期结束时自动销毁
  */
+@ccclass
 export default class BroadcastComponent extends cc.Component {
 
     private _broadcastReceivers: Array<BroadcastReceiver> = [];
@@ -16,7 +17,7 @@ export default class BroadcastComponent extends cc.Component {
      * @param action 广播行为名称
      * @param handler 行为对应的回调
      */
-    public newAndRegisterReceiver(action, handler: BroadcastReceiverHandler) {
+    public newAndRegisterReceiver(action: string, handler: BroadcastReceiverHandler) {
         let receiver = new BroadcastReceiver(action, handler);
         return this.registerReceiver(receiver);
     }

@@ -1,4 +1,10 @@
-import BroadcastReceiverHandler from "./BroadcastReceiverHandler";
+/**
+ * 广播接收者回调接口
+ */
+export interface BroadcastReceiverHandler {
+    (data: any);
+};
+
 
 /**
  * 广播接收者

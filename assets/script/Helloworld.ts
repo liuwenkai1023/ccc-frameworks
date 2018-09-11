@@ -1,7 +1,6 @@
+import Base from "./base/Base";
 import BroadcastComponent from "./base/component/BroadcastComponent";
-import HttpManager from "./base/network/HttpManager";
-import HttpResponse from "./base/network/HttpResponse";
-import Utils from "./base/Utils";
+import { HttpResponse } from "./base/network/HttpManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -21,21 +20,25 @@ export default class Helloworld2 extends cc.Component {
     onLoad() {
         this._broadcastManager = this.node.getComponent(BroadcastComponent);
         this.initReceiver();
-        Utils._audioManager.playMusic("music_logo.mp3");
+        Base.Audio.playMusic("ding.wav");
+        Base.SocketManager.open();
     }
 
 
     start() {
         this.node.runAction(cc.repeatForever(cc.sequence([cc.delayTime(0.01), cc.callFunc(function () {
-            this._broadcastManager.sendBroadcast("SAY_HELLO_1", this.t++)
-            // this._socketManager.send(this.t++);
+            Base.BroadcastManager.sendBroadcast("SAY_HELLO_1", this.t++)
+            Base.SocketManager.send("" + this.t++);
         }.bind(this))])))
-        HttpManager.HTTP_GET("", null, function (response: HttpResponse) {
+
+        Base.Http.HTTP_GET("", null, function (response: HttpResponse) {
             this.label.string = response.event;
         }.bind(this));
-        HttpManager.HTTP_POST("", null, null);
-        let encode = Utils._base64.encode("测试Base64");
-        let decode = Utils._base64.decode(encode);
+
+        Base.Http.HTTP_POST("", null, null);
+
+        let encode = Base.Base64.encode("测试Base64▲▼●◆■āáǎà");
+        let decode = Base.Base64.decode(encode);
         console.log(encode, decode)
     }
 
@@ -52,8 +55,8 @@ export default class Helloworld2 extends cc.Component {
 
 
     SAY_HELLO_1(data) {
-        // this.label.string = data;
-        Utils._socketManager.send(data);
+        this.label.string = data;
+        Base.SocketManager.send(data);
     }
 
 

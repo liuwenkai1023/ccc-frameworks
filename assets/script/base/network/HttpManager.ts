@@ -1,16 +1,34 @@
 import NetConfig from "../config/NetConfig";
-import HttpResponse from "./HttpResponse";
-import HttpParamsMap from "./HttpParamsMap";
-import HttpResponseHanler from "./HttpResponseHanler";
 
+export interface HttpParamsMap { [key: string]: any };
+export interface HttpResponseHanler { (response: Response) }
+export interface HttpResponse { seq: number, request: string, event: string, data: string }
 
 export default class HttpManager {
 
     // SEQ请求标记,递增
-    private static SEQ: number = 1;
+    private SEQ: number = 1;
 
     // HTTP请求地址
-    private static HTTP_HOST: string = NetConfig.HTTP_HOST;
+    private HTTP_HOST: string = NetConfig.HTTP_HOST;
+
+    private static instance: HttpManager;
+
+
+    private constructor() {
+    }
+
+
+    /**
+      * 获取HttpManager单例
+      * @param url socket连接地址
+      */
+    public static getInstance() {
+        if (HttpManager.instance == null) {
+            HttpManager.instance = new HttpManager();
+        }
+        return HttpManager.instance;
+    }
 
 
     /**
@@ -19,7 +37,7 @@ export default class HttpManager {
      * @param params 请求参数
      * @param handler 请求回调
      */
-    public static HTTP_GET(url: string, params: HttpParamsMap, handler: HttpResponseHanler) {
+    public HTTP_GET(url: string, params: HttpParamsMap, handler: HttpResponseHanler) {
         let seq = this.SEQ++;
         let xhr = cc.loader.getXMLHttpRequest();
         url = this.HTTP_HOST + url + this.encode("GET", params)
@@ -37,7 +55,7 @@ export default class HttpManager {
      * @param params 请求参数
      * @param handler 请求回调
      */
-    public static HTTP_POST(url: string, params: HttpParamsMap, handler: HttpResponseHanler) {
+    public HTTP_POST(url: string, params: HttpParamsMap, handler: HttpResponseHanler) {
         let seq = this.SEQ++;
         var xhr = cc.loader.getXMLHttpRequest();
         url = this.HTTP_HOST + url
@@ -53,7 +71,7 @@ export default class HttpManager {
      * 将参数变为字符串
      * @param params 请求参数
      */
-    private static encode(requestType, params: HttpParamsMap): any {
+    private encode(requestType, params: HttpParamsMap): any {
         if (params == null) return "";
         let paramStr = "";
         for (const key in params) {
@@ -77,7 +95,7 @@ export default class HttpManager {
      * @param method 请求类型 GET POST
      * @param data 请求数据
      */
-    private static registerScriptHandler(seq, xhr, handler, url, method, data) {
+    private registerScriptHandler(seq, xhr, handler, url, method, data) {
         // 打印请求
         // console.info("【请求】【SEQ_%d】【%s】【%s】PARAMS=", seq, method, url, data)
 
