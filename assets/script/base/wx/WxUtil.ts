@@ -1,65 +1,28 @@
 /**
- * 定义激励视频观看结果回调
- */
-export interface RewardedVideoAdCloseHandler {
-    success: Function, fail: Function
-}
-
-
-/**
- * 定义微信转发结果回调
- */
-export interface WxResultHandler {
-    success: { (result: any, message: string): void; },
-    fail: { (result: any, message: string): void; }
-}
-
-
-/**
- * 定义微信Message回调,暂定为内部使用
- */
-export interface WxHandler {
-    (result: any): void;
-}
-
-
-/**
- * 定义微信转发Message参数接口
- */
-export interface WxMessage {
-    title?: string | void,
-    path?: string | void,
-    success?: WxHandler | void,
-    fail?: WxHandler | void,
-    imageUrl?: any | void,
-}
-
-
-
-/**
  * 微信一般工具类：WxUtil
  *      开放方法
  *      1、微信转发处理
- *          .转发到群       share2WxGroup(wxResultHandler: WxResultHandler) 
- *          .转发到个人     share2WxFriend(wxResultHandler: WxResultHandler)
+ *          .设置默认转发        defaultShare2Wx(wxMessage?: WxMessage | void)
+ *          .自定义转发      share2Wx(wxMessage?: WxMessage | void)
  *      2、微信广告处理
  *          .Banner广告     initBannerAdd(adUnitId: string)
  *          .激励视频广告    initRewardedVideoAdd(adUnitId: string, closeHandler: RewardedVideoAdCloseHandler)
  *      3、文件路径处理
  *          .得到构建后的文件路径URL getUrl(url:string)
+ *      4、微信开放数据域整理
+ *          .拉取当前用户所有同玩好友的托管数据。该接口只可在开放数据域下使用          getFriendCloudStorage(object: GetFriendStorageObject)  
+ *          .群转发卡片打开游戏，可以通过调用该接口获取群同玩成员的游戏数据。          getGroupCloudStorage(object: GetGroupStorageObject)
+ *           该接口只可在开放数据域下使用。                                         
+ *          .获取当前用户托管数据当中对应 key 的数据。该接口只可在开放数据域下使用     getUserCloudStorage(object: GetUserStorageObject)
+ *          .删除用户托管数据当中对应 key 的数据。没有限制使用位置。                  removeUserCloudStorage(object: RemoveUserStorageObject)
+ *          .对用户托管数据进行写数据操作，允许同时写多组 KV 数据，没有限制使用位置。  setUserCloudStorage(object: SetUserStorageObject)
  */
 export default class WxUtil {
 
-    // 分享成功,但没按要求分享
-    public static readonly SHARE_OPERATE_EXCEPITION = 0;
-    // 分享成功,按要求分享
-    public static readonly SHARE_OPERATE_SUCCESS = 1;
-    // 分享失败
-    public static readonly SHARE_OPERATE_ERROR = -1;
-
     private static instance: WxUtil;
-
     private _wx = (<any>window).wx;
+
+
     get wx() {
         return this._wx;
     }
@@ -72,7 +35,7 @@ export default class WxUtil {
 
     public static getInstance(): WxUtil {
         if (!CC_WECHATGAME) {
-            // console.warn("警告:当前不是微信环境，WxUtil将不可用!")
+            console.warn("警告:当前不是微信环境，WxUtil将不可用!")
             return;
         }
         if (!this.instance) {
@@ -87,9 +50,9 @@ export default class WxUtil {
      */
     private init() {
         // TODO 初始化获取相关权限
-        // 初始化默认分享
+        // 初始化默认转发
         (<any>window).wx.updateShareMenu({ withShareTicket: true });
-        this.defaultShare2Wx();
+        // this.defaultShare2Wx();
     }
 
 
@@ -107,57 +70,7 @@ export default class WxUtil {
         } catch (error) {
             url = (<any>window).wxDownloader.REMOTE_SERVER_ROOT + "/" + url;
         }
-        // console.log(url);
         return url;
-    }
-
-
-    /**
-     * 分享给好友
-     */
-    public share2WxFriend(wxResultHandler: WxResultHandler) {
-        // console.log("share2WxFriend");
-        let share2WxFriendMsg: WxMessage = {
-            title: "转发给好友",
-            success: function (res) {
-                if (!res.shareTickets) {
-                    // console.log("转发成功");
-                    wxResultHandler.success(res, "转发成功");
-                } else {
-                    // console.log("没有按要求转发");
-                    wxResultHandler.fail(res, "没有按要求转发");
-                }
-            },
-            fail: function (res) {
-                // console.log("转发失败");
-                wxResultHandler.fail(res, "转发失败");
-            },
-        };
-        this.share2Wx(share2WxFriendMsg);
-    }
-
-
-    /**
-     * 分享到微信群
-     */
-    public share2WxGroup(wxResultHandler: WxResultHandler) {
-        let share2WxGroupMsg: WxMessage = {
-            title: "转发微信群",
-            success: function (res) {
-                if (!res.shareTickets) {
-                    // console.log("没有按要求转发");
-                    wxResultHandler.fail(res, "没有按要求转发");
-                } else {
-                    // console.log("转发成功");
-                    wxResultHandler.success(res, "转发成功");
-                }
-            },
-            fail: function (res) {
-                // console.log("转发失败");
-                wxResultHandler.fail(res, "转发失败");
-            },
-        };
-        this.share2Wx(share2WxGroupMsg);
     }
 
 
@@ -165,29 +78,19 @@ export default class WxUtil {
      * 进行转发
      * @param wxMessage 转发的具体内容
      */
-    private share2Wx(wxMessage: WxMessage) {
+    public share2Wx(wxMessage?: WxMessage | void) {
         // 可以直接调用,不用关心用户是否授权
-        // console.log("share2Wx", wxMessage);
-        (<any>window).wx.shareAppMessage(wxMessage);
+        (<any>window).wx.shareAppMessage(wxMessage ? wxMessage : {});
     }
 
 
     /**
      * 右上角默认转发
      */
-    private defaultShare2Wx() {
+    public defaultShare2Wx(wxMessage?: WxMessage | void) {
+        (<any>window).wx.showShareMenu();
         (<any>window).wx.onShareAppMessage(function () {
-            return {
-                title: '右上角默认转发',
-                success: function (res) {
-                    // 转发成功
-                    // console.log("右上角转发成功", res.shareTickets);
-                },
-                fail: function (res) {
-                    // 转发失败
-                    // console.log("右上角转发失败", res)
-                }
-            }
+            return wxMessage ? wxMessage : {}
         });
     }
 
@@ -198,20 +101,19 @@ export default class WxUtil {
      * @param closeHandler 关闭视频回调
      */
     public initRewardedVideoAd(adUnitId: string, closeHandler: RewardedVideoAdCloseHandler) {
-        // 创建激励视频广告（这里不用管，微信会自己返回一个全局唯一单例）
+        // 创建激励视频广告
         let rewardedVideoAd = (<any>window).wx.createRewardedVideoAd({ adUnitId: adUnitId });
         // 初始化广告回调
-        this.initAdHandler(rewardedVideoAd, "")
-        // 没传入激励视频关闭回调就不覆盖原始回调
-        if (!closeHandler) return;
-        // 激励视频广告有onClose事件
-        rewardedVideoAd.onClose(function (res) { // 用户点击了【关闭广告】按钮
-            // 小于 2.1.0 的基础库版本，res 是一个 undefined
-            if (res && res.isEnded || res === undefined) { // 正常播放结束，可以下发游戏奖励
-                closeHandler.success();
+        this.initAdHandler(rewardedVideoAd, "RewardedVideo")
+        // 关闭视频
+        rewardedVideoAd.onClose(function (res) {
+            // 正常播放结束
+            if (res && res.isEnded || res === undefined) {
+                if (closeHandler.success) closeHandler.success();
             }
-            else { // 播放中途退出，不下发游戏奖励
-                closeHandler.fail();
+            // 播放中途退出
+            else {
+                if (closeHandler.fail) closeHandler.fail();
             }
         }.bind(this));
         return rewardedVideoAd;
@@ -222,15 +124,13 @@ export default class WxUtil {
      * 初始化Banner广告
      * @param adUnitId 广告ID
      */
-    public initBannerAd(adUnitId: string) {
-        // 创建Banner广告（这里不用管，微信会自己返回一个全局唯一单例）
+    public initBannerAd(adUnitId: string, style?: object | void) {
+        // 默认样式
+        style = style ? style : { left: 10, top: 76, width: 320 };
+        // 创建Banner广告
         let bannerAd = (<any>window).wx.createBannerAd({
             adUnitId: adUnitId,
-            style: {
-                left: 10,
-                top: 76,
-                width: 320
-            }
+            style: style,
         })
         // 初始化广告回调
         this.initAdHandler(bannerAd, "Banner");
@@ -242,25 +142,12 @@ export default class WxUtil {
      * 初始化广告回调
      * @param adComponent 广告组件
      * @param closeHandler 关闭广告回调
-     * @param tag 控制台打印标记
+     * @param tag 打印标记
      */
-    private initAdHandler(adComponent: any, tag: string) {
-        // 回调：广告加载失败
-        adComponent.onError(
-            function (err) {
-                // console.log(err);
-            }
-        );
-        // 回调：广告加载成功
-        adComponent.onLoad(
-            function () {
-                // console.log(tag, '广告加载成功');
-            }
-        );
-        // 回调：广告展示时 拉取失败，重新拉取并展示
+    private initAdHandler(adComponent: any, tag?: string | void) {
+        // 拉取失败默认处理：广告展示时 拉取失败，重新拉取并展示
         adComponent.show().catch(
             function (err) {
-                // console.log(tag, err)
                 adComponent.load().then(
                     function () {
                         adComponent.show()
@@ -268,12 +155,165 @@ export default class WxUtil {
                 )
             }
         );
-        // 回调：广告拉取并展示成功
-        adComponent.show().then(
-            function () {
-                // console.log(tag, '广告已经成功显示')
-            }
-        );
     }
 
+
+    /**
+     * 拉取当前用户所有同玩好友的托管数据。
+     * 该接口只可在开放数据域下使用
+     * @param object 参数类型 GetFriendStorageObject
+     */
+    public getFriendCloudStorage(object: GetFriendStorageObject) {
+        this.wx.getFriendCloudStorage(object);
+    }
+
+
+    /**
+     * 在小游戏是通过群转发卡片打开的情况下，可以通过调用该接口获取群同玩成员的游戏数据。
+     * 该接口只可在开放数据域下使用。
+     * @param object 参数类型 GetGroupStorageObject
+     */
+    public getGroupCloudStorage(object: GetGroupStorageObject) {
+        this.wx.getGroupCloudStorage(object);
+    }
+
+
+    /**
+     * 获取当前用户托管数据当中对应 key 的数据。
+     * 该接口只可在开放数据域下使用。
+     * @param object 参数类型 GetUserStorageObject
+     */
+    public getUserCloudStorage(object: GetUserStorageObject) {
+        this.wx.getUserCloudStorage(object);
+    }
+
+
+    /**
+     * 删除用户托管数据当中对应 key 的数据。
+     * @param object 参数类型 RemoveUserStorageObject
+     */
+    public removeUserCloudStorage(object: RemoveUserStorageObject) {
+        this.wx.removeUserCloudStorage(object);
+    }
+
+
+    /**
+     * 对用户托管数据进行写数据操作，允许同时写多组 KV 数据。
+     * @param object 参数类型 SetUserStorageObject
+     */
+    public setUserCloudStorage(object: SetUserStorageObject) {
+        this.wx.setUserCloudStorage(object);
+    }
+
+}
+
+
+
+/**
+ * 定义激励视频观看结果回调
+ */
+export interface RewardedVideoAdCloseHandler {
+    success?: Function | void,  // 是 完整观看激励视频
+    fail?: Function | void,     // 是 观看失败或者未完整观看激励视频
+}
+
+
+/**
+ * 定义微信转发回调
+ */
+export interface WxShareHandler {
+    (result?: any | void): void;  // 是 转发回调处理
+}
+
+
+/**
+ * 定义微信转发Message参数接口
+ */
+export interface WxMessage {
+    title?: string | void,              // 否 转发时显示标题，默认为小程序名称
+    success?: WxShareHandler | void,    // 否 转发成功时回调（基础库2.3及其以上不支持）
+    fail?: WxShareHandler | void,       // 否 转发失败时回调（基础库2.3及其以上不支持）
+    complete?: WxShareHandler | void,   // 否 转发失败时回调（基础库2.3及其以上不支持）
+    imageUrl?: any | void,              // 否 转发时显示的图片地址
+    // 如果希望转发时显示当前canvas,可以这样来使用，官方推荐比例5:4
+    // imageUrl: WxUtil.wx.getSharedCanvas().toTempFilePathSync({
+    //     destWidth: 500,
+    //     destHeight: 400
+    //   })
+}
+
+
+/**
+ * 微信开放数据使用的键值对象
+ */
+export interface KVData {
+    key: string,    // 数据的 key
+    value: string,  // 数据的 value
+}
+
+
+/**
+ * 用户及托管游戏数据信息
+ */
+export interface UserGameData {
+    avatarUrl: string,          // 用户的微信头像 url
+    nickname: string,           // 用户的微信昵称
+    openid: string,             // 用户的 openid
+    KVDataList: Array<KVData>,  // 用户的托管 KV 数据列表
+}
+
+
+/**
+ * 托管用户游戏数据时需要传入的对象
+ */
+export interface SetUserStorageObject {
+    keyList: Array<string>,	    // 是	是	要修改的 KV 数据列表	
+    success?: Function | void,	// 否	接口调用成功的回调函数	
+    fail?: Function | void,	    // 否	接口调用失败的回调函数	
+    complete?: Function | void,	// 否	接口调用结束的回调函数（调用成功、失败都会执行）
+}
+
+
+/**
+ * 移除用户托管的游戏数据时需要传入的对象
+ */
+export interface RemoveUserStorageObject {
+    keyList: Array<string>,	    // 是	要删除掉 key 列表
+    success?: Function | void,	// 否	接口调用成功的回调函数	
+    fail?: Function | void,	    // 否	接口调用失败的回调函数	
+    complete?: Function | void,	// 否	接口调用结束的回调函数（调用成功、失败都会执行）
+}
+
+
+/**
+ * 拉取用户托管的游戏数据时需要传入的对象
+ */
+export interface GetUserStorageObject {
+    keyList: Array<string>,	    // 是	要拉取的 key 列表	
+    success?: { (data: Array<KVData>) } | void,	//否	接口调用成功的回调函数	
+    fail?: Function | void,	    // 否	接口调用失败的回调函数	
+    complete?: Function | void,	// 否	接口调用结束的回调函数（调用成功、失败都会执行）
+}
+
+
+/**
+ * 拉取托管的微信好友游戏数据时需要传入的对象
+ */
+export interface GetFriendStorageObject {
+    keyList: Array<string>,	    // 是	要拉取的 key 列表	
+    success?: { (data: Array<UserGameData>) } | void,	// 否	接口调用成功的回调函数	
+    fail?: Function | void,	    // 否	接口调用失败的回调函数	
+    complete?: Function | void,	// 否	接口调用结束的回调函数（调用成功、失败都会执行）
+}
+
+
+/**
+ * 拉取托管的微信群好友游戏数据时需要传入的对象
+ */
+export interface GetGroupStorageObject {
+    shareTicket: string,	    //是	群转发对应的 shareTicket	
+    keyList: Array<string>,		//是	要拉取的 key 列表	
+    success?: { (data: Array<UserGameData>) } | void,	//否	接口调用成功的回调函数	
+    fail?: Function | void,	    //否	接口调用失败的回调函数	
+    complete?: Function | void,	//否	接口调用结束的回调函数（调用成功、失败都会执行）
 }
