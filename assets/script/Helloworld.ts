@@ -5,6 +5,7 @@ import GaussBlurs from "./base/shader/shaders/GaussBlurs";
 import OverlayShader from "./base/shader/shaders/OverlayShader";
 import RainShader from "./base/shader/shaders/RainShader";
 import WaveShader from "./base/shader/shaders/WaveShader";
+import FileUtils from "./base/storage/FileUtils";
 
 const { ccclass, property } = cc._decorator;
 
@@ -18,18 +19,29 @@ export default class Helloworld extends cc.Component {
     text: string = 'hello';
 
     @property(cc.Sprite)
-    sprite: any = null;
+    sprite: cc.Sprite = null;
 
     t = 0;
-
+    // set test(v, f) {
+    //     this.t = v;
+    //     console.log(v, f);
+    // }
     private _broadcastManager: BroadcastComponent;
-    startTime: number;
+    // startTime: number;
 
     onLoad() {
         this._broadcastManager = this.node.getComponent(BroadcastComponent);
         this.initReceiver();
         Base.Audio.playMusic("ding.wav");
         Base.SocketManager.open();
+        // FileUtils.instance().getDataFromFile(FileUtils.writeablePath + 'resources/json/data.json').then(data => {
+        //     console.log("data =" + data);
+        // }).catch(err => {
+        //     console.error(err);
+        // });
+        // FileUtils.instance().saveFile("122222222222222222222222222222222222222", FileUtils.writeablePath + 'resources/json/data')
+        // FileUtils.instance().renameFile(FileUtils.writeablePath + 'resources/json/data.json', FileUtils.writeablePath + 'resources/json/data')
+        // console.error("创建" + FileUtils.instance().removeDirectory(FileUtils.writeablePath + 'resources/12313/123123122/', true))
     }
 
 
@@ -72,32 +84,4 @@ export default class Helloworld extends cc.Component {
         this.label.string = data;
     }
 
-    GaussBlurs() {
-        this.startTime = new Date().getTime();
-        Base.ShaderManager.setShader(this.sprite, "FluxaySuper").setParamValue('bluramount', 0.1);
-    }
-    overlay() {
-        this.startTime = new Date().getTime();
-        Base.ShaderManager.setShader(this.sprite, "OverlayShader");
-    }
-    rainheart() {
-        this.startTime = new Date().getTime();
-        let mat = Base.ShaderManager.setShader(this.sprite, "RainShader");
-    }
-    wave() {
-        this.startTime = new Date().getTime();
-        Base.ShaderManager.setShader(this.sprite, "WaveShader").setParamValue('iOffset', new cc.Vec2(0, 0.1));
-    }
-
-    update(dt) {
-        let mat = this.sprite.getCurrMaterial();
-        if (!mat) {
-            return;
-        }
-        if (["RainShader", "WaveShader", "FluxaySuper"].indexOf(mat.name) > -1) {
-            let now = new Date().getTime();
-            let time = (now - this.startTime) / 1000;
-            mat.setParamValue('time', time);
-        }
-    }
 }

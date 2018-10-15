@@ -53,17 +53,17 @@ export enum ShaderType {
 }
 
 export default class ShaderManager {
-    private static instance: ShaderManager;
+    private static _instance: ShaderManager;
 
     private constructor() {
         SpriteHook.init();
     }
 
-    public static getInstance(target?: any | void) {
-        if (!this.instance) {
-            this.instance = new ShaderManager();
+    public static instance() {
+        if (!this._instance) {
+            this._instance = new ShaderManager();
         }
-        return this.instance;
+        return this._instance;
     }
 
     public setShader(_sprite: cc.Sprite, _shader: ShaderType, _handler?: { (mat: CustomMaterial) } | void) {
@@ -76,7 +76,7 @@ export default class ShaderManager {
         }
 
         let shaderName = ShaderType[_shader];
-        let shader = ShaderLib.getInstance().getShader(shaderName);
+        let shader = ShaderLib.instance().getShader(shaderName);
         
         let sprite: any = <any>_sprite;
 

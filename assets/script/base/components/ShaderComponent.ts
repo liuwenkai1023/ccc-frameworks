@@ -43,7 +43,7 @@ export default class ShaderComponent extends cc.Component {
 
     private applyShaderSettings() {
         // console.log("shaderType:" + ShaderType[this._shader]);
-        let mat = ShaderManager.getInstance().setShader(this.sprite, this._shader);
+        let mat = ShaderManager.instance().setShader(this.sprite, this._shader);
         if (!mat) return;
         switch (this._shader) {
             case ShaderType.Blur:

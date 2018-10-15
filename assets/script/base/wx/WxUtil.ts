@@ -19,7 +19,7 @@
  */
 export default class WxUtil {
 
-    private static instance: WxUtil;
+    private static _instance: WxUtil;
     private _wx = (<any>window).wx;
 
 
@@ -33,15 +33,15 @@ export default class WxUtil {
     }
 
 
-    public static getInstance(): WxUtil {
+    public static instance(): WxUtil {
         if (!CC_WECHATGAME) {
             console.warn("警告:当前不是微信环境，WxUtil将不可用!")
             return;
         }
-        if (!this.instance) {
-            this.instance = new WxUtil();
+        if (!this._instance) {
+            this._instance = new WxUtil();
         }
-        return this.instance;
+        return this._instance;
     }
 
 

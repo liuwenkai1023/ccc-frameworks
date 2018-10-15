@@ -1,6 +1,6 @@
+import GIF2 from "./GIF2";
 import Base from "../Base";
 import TimerComponent from "../components/TimerComponent";
-import GIF from "./GIF";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,27 +22,21 @@ export default class GIFSprite extends cc.Component {
 
     @property({ visible: false })
     private _path: cc.RawAsset = null;
-    _oldTime: number;
 
     @property({ type: cc.RawAsset })
+    get path() { return this._path; }
     set path(path) {
-        if (!path || (path && path.toString().length == 0)) {
-            return;
-        }
         this._path = path;
         this.clear();
-        console.time("AAABBB");
         this.applayChange();
-        console.timeEnd("AAABBB");
     }
-    get path() { return this._path; }
 
     public sprite: cc.Sprite = null;
 
     public _inited: boolean;
 
     private _defaultSpriteFrame: cc.SpriteFrame;
-    private _gif: GIF;
+    private _gif: GIF2;
     private _action: cc.ActionInterval;
     private _delays: Array<number>;
     private _index: number = 0;
@@ -51,12 +45,14 @@ export default class GIFSprite extends cc.Component {
 
 
     protected onLoad() {
+        // this.addComponent(TimerComponent);
         this.sprite = this.node.getComponent(cc.Sprite);
         this._defaultSpriteFrame = this.sprite.spriteFrame;
+        // this._timer = this.getComponent(TimerComponent);
+        this.applayChange();
     }
 
     protected start() {
-        this.applayChange();
     }
 
     protected onDestroy() {
@@ -64,8 +60,18 @@ export default class GIFSprite extends cc.Component {
     }
 
     protected update(dt) {
-        // console.log("update(dt):" + (new Date().getTime() - this._oldTime) + "ms");
-        this._oldTime = new Date().getTime();
+        if (this._inited && CC_EDITOR) {
+            let index = this._index++ % this._spriteFrames.length;
+            let spriteFrame = this._spriteFrames[index];
+            this.sprite.spriteFrame = spriteFrame, true;
+            console.log(this.sprite.spriteFrame, spriteFrame, this.sprite.spriteFrame == spriteFrame);
+        }
+        if (this._inited == null || this._inited) return;
+        if (this._gif && !this._spriteFrames) {
+            this._gif.getSpriteFrame(this._index++);
+        } else {
+            this.inited();
+        }
     }
 
     public setDefaultSpriteFrame(spriteFrame) {
@@ -74,6 +80,7 @@ export default class GIFSprite extends cc.Component {
     }
 
     private inited() {
+        console.log("this.inited")
         this._gif = null;
         this._index = 0;
         this._inited = true;
@@ -91,23 +98,22 @@ export default class GIFSprite extends cc.Component {
         this.node.runAction(this._action.clone());
     }
 
-    private async applayChange() {
+    private applayChange() {
         console.log("applayChange");
+        if (!this.path || this.path.toString().length == 0) {
+            this._path = null;
+            return;
+        }
         cc.loader.load(this.path.toString(), function (err, result) {
-            let gifMessage: GIFMessage = {
-                target: this,
-                buffer: result.buffer,
-                initOneSpriteFrameFunc: function (spriteFrame) {
-                    this.setDefaultSpriteFrame(spriteFrame);
-                }.bind(this),
-                initFinishedFunc: function (data) {
-                    this._delays = data.delays;
-                    this._spriteFrames = data.spriteFrames;
-                    console.log("initFinishedFunc", this._delays, this._spriteFrames);
-                    this.inited();
+            this._gif = new GIF2(
+                this,
+                result.buffer,
+                function (delays, spriteFrames) {
+                    this._delays = delays;
+                    this._spriteFrames = spriteFrames;
+                    console.log(this._delays, this._spriteFrames);
                 }.bind(this)
-            }
-            this._gif = new GIF(gifMessage);
+            );
         }.bind(this));
     }
 
@@ -120,18 +126,4 @@ export default class GIFSprite extends cc.Component {
         this._spriteFrames = null;
     }
 
-}
-
-export interface GIFMessage {
-    target: GIFSprite,
-    buffer: ArrayBuffer,
-    initOneSpriteFrameFunc: { (spriteFrame: cc.SpriteFrame) },
-    initFinishedFunc: {
-        (
-            data: {
-                delays: Array<number>,
-                spriteFrames: Array<cc.SpriteFrame>
-            }
-        )
-    }
 }

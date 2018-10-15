@@ -3,15 +3,15 @@
  */
 export default class LocalStorageManager {
 
-    private static instance: LocalStorageManager;
+    private static _instance: LocalStorageManager;
 
     private constructor() { };
 
-    public static getInstance() {
-        if (!this.instance) {
-            this.instance = new LocalStorageManager();
+    public static instance() {
+        if (!this._instance) {
+            this._instance = new LocalStorageManager();
         }
-        return this.instance;
+        return this._instance;
     }
 
 

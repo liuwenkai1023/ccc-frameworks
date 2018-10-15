@@ -90,7 +90,7 @@ export default class BroadcastComponent extends cc.Component {
 
     //加载时初始化
     public onLoad() {
-        this._broadcastManager = BroadcastManager.getInstance();
+        this._broadcastManager = BroadcastManager.instance();
     }
 
 

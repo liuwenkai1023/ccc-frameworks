@@ -1,4 +1,5 @@
 import LZW from "./LZW";
+import GIFSprite, { GIFMessage } from "./GIFSprite";
 
 export default class GIF {
 
@@ -20,41 +21,35 @@ export default class GIF {
         comment: ''
     };
 
+    _handler: { (data: any) };
+    _message: GIFMessage;
+
     set buffer(buffer: ArrayBuffer) {
-        let startTime = new Date().getTime();
         this.clear();
         this._buffer = buffer;
         this._view = new Uint8Array(buffer);
         this.init();
-        let endTime = new Date().getTime();
-        console.log(endTime - startTime);
+
     }
 
     get buffer() {
         return this._buffer;
     }
 
-    constructor(buffer, sp) {
-        this.sp = sp;
-        if (!buffer) return;
-        if (typeof buffer === "string") {
-            this.buffer = this._utf2buffer(buffer);
-            return;
-        }
-        // else if (buffer instanceof ArrayBuffer) {
-        this.buffer = buffer;
-        // }
+    constructor(message: GIFMessage) {
+        if (!message || !message.buffer) return;
+        this._message = message;
+        this.buffer = message.buffer;
     }
 
-
-    _utf2buffer = function (utfstr) {
-        var buf = new ArrayBuffer(utfstr.length * 2);
-        var bufView = new Uint8Array(buf);
-        for (var i = 0, strlen = utfstr.length; i < strlen; i++) {
-            bufView[i] = utfstr.charCodeAt(i);
-        }
-        return buf;
-    }
+    // _utf2buffer = function (utfstr) {
+    //     var buf = new ArrayBuffer(utfstr.length * 2);
+    //     var bufView = new Uint8Array(buf);
+    //     for (var i = 0, strlen = utfstr.length; i < strlen; i++) {
+    //         bufView[i] = utfstr.charCodeAt(i);
+    //     }
+    //     return buf;
+    // }
 
     private clear() {
         this._tab = null;
@@ -71,7 +66,7 @@ export default class GIF {
         };
     }
 
-    private init() {
+    private async init() {
         this.getHeader();
         this.getScrDesc();
         this.getTexture();
@@ -80,18 +75,14 @@ export default class GIF {
     private getTexture(): any {
         console.log(this._info);
         let dataUrls: Array<any> = [];
-
-        let frame = this._info.frames[0];
-        // this._info.frames.forEach(function (frame, index) {
+        let delays: Array<any> = [];
+        this._info.frames.forEach(function (frame, index) {
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
-
             frame.img.m ? this._tab = frame.img.color_Tab : this._tab = this._info.color_Tab;
             canvas.width = this._info.w;
             canvas.height = this._info.h;
-
             this._imageData = context.getImageData(frame.img.x, frame.img.y, frame.img.w, frame.img.h);
-
             LZW.decode(frame.img.srcBuf, frame.img.codeSize).forEach(function (j, k) {
                 this._imageData.data[k * 4] = this._tab[j * 3];
                 this._imageData.data[k * 4 + 1] = this._tab[j * 3 + 1];
@@ -99,10 +90,8 @@ export default class GIF {
                 this._imageData.data[k * 4 + 3] = 255;
                 frame.ctrl.t ? (j == frame.ctrl.tranIndex ? this._imageData.data[k * 4 + 3] = 0 : 0) : 0;
             }.bind(this));
-
             context.putImageData(this._imageData, frame.img.x, frame.img.y, 0, 0, frame.img.w, frame.img.h);
             this._imageData = context.getImageData(0, 0, this._info.w, this._info.h);
-
             if (this._lastCans) {
                 var lastData = this._lastCans.getContext('2d').getImageData(0, 0, this._info.w, this._info.h);
                 for (let i = 0; i < this._imageData.data.length; i += 4) {
@@ -119,23 +108,22 @@ export default class GIF {
             if (frame.ctrl.disp === 1 || frame.ctrl.disp === 0) {
                 this._lastCans = canvas;
             }
-
             let dataUrl = canvas.toDataURL("image/png");
             let data2SpriteFrame = function (dataUrl) {
                 let texture = new cc.Texture2D();
                 let spriteFrame = new cc.SpriteFrame();
-                // 使用Image方式
                 let image = new Image();
                 image.src = dataUrl;
                 texture.initWithElement(image);
                 spriteFrame.setTexture(texture);
                 return spriteFrame;
             }.bind(this);
+            delays.push(frame.ctrl.delay)
             dataUrls.push(data2SpriteFrame(dataUrl))
-            // console.log(this.sp);
-            // this.sp.spriteFrame = dataUrls[1];
-            // console.log(dataUrls)
-        // }.bind(this));
+            if (index == 0) this._message.initOneSpriteFrameFunc(dataUrls[0]);
+        }.bind(this));
+
+        this._message.initFinishedFunc({ delays: delays, spriteFrames: dataUrls });
     }
 
 

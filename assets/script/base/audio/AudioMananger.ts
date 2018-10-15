@@ -4,7 +4,7 @@ export default class AudioManager {
 
     private _effectVolume: number = 1.0;
 
-    private static instance: AudioManager;
+    private static _instance: AudioManager;
 
     private constructor() {
         this.init();
@@ -13,11 +13,11 @@ export default class AudioManager {
     /**
      * 获取音频管理器
      */
-    static getInstance(): AudioManager {
-        if (!AudioManager.instance) {
-            AudioManager.instance = new AudioManager()
+    static instance(): AudioManager {
+        if (!AudioManager._instance) {
+            AudioManager._instance = new AudioManager()
         }
-        return this.instance
+        return this._instance
     }
 
 

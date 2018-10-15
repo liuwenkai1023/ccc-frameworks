@@ -3,17 +3,17 @@
  */
 export default class Base64 {
     private map: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-    public static instance: Base64;
+    private static _instance: Base64;
 
 
     private constructor() { }
 
 
-    public static getInstance() {
-        if (!Base64.instance) {
-            Base64.instance = new Base64();
+    public static instance() {
+        if (!Base64._instance) {
+            Base64._instance = new Base64();
         }
-        return this.instance
+        return this._instance
     }
 
 

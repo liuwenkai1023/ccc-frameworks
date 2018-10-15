@@ -12,7 +12,7 @@ export default class HttpManager {
     // HTTP请求地址
     private HTTP_HOST: string = NetConfig.HTTP_HOST;
 
-    private static instance: HttpManager;
+    private static _instance: HttpManager;
 
 
     private constructor() {
@@ -23,11 +23,11 @@ export default class HttpManager {
       * 获取HttpManager单例
       * @param url socket连接地址
       */
-    public static getInstance() {
-        if (HttpManager.instance == null) {
-            HttpManager.instance = new HttpManager();
+    public static instance() {
+        if (HttpManager._instance == null) {
+            HttpManager._instance = new HttpManager();
         }
-        return HttpManager.instance;
+        return HttpManager._instance;
     }
 
 

@@ -1,4 +1,3 @@
-import LZW from "./LZW";
 export default class GIF2 {
     private _worker: Worker;
     private _buffer: any;

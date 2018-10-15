@@ -6,7 +6,7 @@ import BroadcastReceiver from "./BroadcastReceiver";
  */
 export default class BroadcastManager {
 
-    private static instance: BroadcastManager;
+    private static _instance: BroadcastManager;
 
     private _broadcastReceivers: Array<BroadcastReceiver> = [];
 
@@ -16,11 +16,11 @@ export default class BroadcastManager {
     /**
      * 获取广播管理器
      */
-    static getInstance(): BroadcastManager {
-        if (!BroadcastManager.instance) {
-            BroadcastManager.instance = new BroadcastManager()
+    static instance(): BroadcastManager {
+        if (!BroadcastManager._instance) {
+            BroadcastManager._instance = new BroadcastManager()
         }
-        return this.instance
+        return this._instance
     }
 
 

@@ -6,14 +6,14 @@ export default class SocketManager {
     private _url: string;
     private _protocols: any;
     private _socket: WebSocket;
-    private _broadcstManager: BroadcastManager = BroadcastManager.getInstance();;
+    private _broadcstManager: BroadcastManager = BroadcastManager.instance();;
 
     private _sendDatas: Array<String> = [];
     private _registerMsg: string = '{"action":"ACTION_REGISTER","data":"注册信息"}';
     private _closeByUser: boolean = false;
     private _curReconnectTimes: number = 0;
 
-    private static instance: SocketManager;
+    private static _instance: SocketManager;
     private static DEFAULT_URL: string = NetConfig.SOCKET_HOST;
     private static MAX_RECONNECT_TIMES: number = 7;
 
@@ -22,11 +22,11 @@ export default class SocketManager {
      * 获取SocketManager单例
      * @param url socket连接地址
      */
-    public static getInstance(url?: string | void) {
-        if (SocketManager.instance == null) {
-            SocketManager.instance = new SocketManager(url);
+    public static instance(url?: string | void) {
+        if (SocketManager._instance == null) {
+            SocketManager._instance = new SocketManager(url);
         }
-        return SocketManager.instance;
+        return SocketManager._instance;
     }
 
 

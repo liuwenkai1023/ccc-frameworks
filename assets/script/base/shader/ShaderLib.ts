@@ -31,7 +31,7 @@ export interface ShaderMap { [key: string]: Shader }
 
 export default class ShaderLib {
 
-    private static instance: ShaderLib;
+    private static _instance: ShaderLib;
     private _shaders: ShaderMap = {};
 
 
@@ -40,11 +40,11 @@ export default class ShaderLib {
     }
 
 
-    public static getInstance() {
-        if (!this.instance) {
-            this.instance = new ShaderLib();
+    public static instance() {
+        if (!this._instance) {
+            this._instance = new ShaderLib();
         }
-        return this.instance;
+        return this._instance;
     }
 
 
