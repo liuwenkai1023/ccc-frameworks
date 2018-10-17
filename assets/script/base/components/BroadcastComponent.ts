@@ -1,4 +1,4 @@
-const { ccclass, property } = cc._decorator;
+const { ccclass, disallowMultiple, property } = cc._decorator;
 import BroadcastReceiver, { BroadcastReceiverHandler } from "../broadcast/BroadcastReceiver";
 import BroadcastManager from "../broadcast/BroadcastManager";
 
@@ -7,6 +7,7 @@ import BroadcastManager from "../broadcast/BroadcastManager";
  * 节点上建议使用此组件，广播会在生命周期结束时自动销毁
  */
 @ccclass
+@disallowMultiple
 export default class BroadcastComponent extends cc.Component {
 
     private _broadcastReceivers: Array<BroadcastReceiver> = [];

@@ -34,7 +34,7 @@ export default class Base {
     public static readonly Base64: Base64 = Base64.instance();
 
     /**
-     * HttpManager：Http工具类
+     *  HttpManager：Http工具类
      */
     public static readonly Http: HttpManager = HttpManager.instance();
 
@@ -59,7 +59,7 @@ export default class Base {
     public static readonly BroadcastManager: BroadcastManager = BroadcastManager.instance();
 
     /**
-     * ShaderManager：Shader效果管理类
+     *  ShaderManager：Shader效果管理类
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
 
