@@ -66,6 +66,14 @@ export default class SocketManager {
 
 
     /**
+     * socket连接是否打开
+     */
+    public isSocketConnected() {
+        return this._socket.readyState == WebSocket.OPEN;
+    }
+
+
+    /**
      * 关闭当前socket连接
      */
     public close() {

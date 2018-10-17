@@ -7,6 +7,7 @@ import LocalStorageManager from "./storage/StorageManager";
 import BroadcastManager from "./broadcast/BroadcastManager";
 import ShaderManager from "./shader/ShaderManager";
 import FileUtils from "./storage/FileUtils";
+import TimerComponent from "./components/TimerComponent";
 
 /**
  * 工具类、管理类的整合
@@ -36,12 +37,12 @@ export default class Base {
     /**
      *  HttpManager：Http工具类
      */
-    public static readonly Http: HttpManager = HttpManager.instance();
+    public static readonly HttpManager: HttpManager = HttpManager.instance();
 
     /**
      *  AudioManager：音频播放管理类
      */
-    public static readonly Audio: AudioManager = AudioManager.instance();
+    public static readonly AudioManager: AudioManager = AudioManager.instance();
 
     /**
      *  SocketManager：socket连接管理类
@@ -62,6 +63,18 @@ export default class Base {
      *  ShaderManager：Shader效果管理类
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
+
+    /**
+     *  为节点注册timer组件
+     * @param target 节点
+     */
+    public static registerTimerComponent(target: cc.Node): TimerComponent {
+        let component = target.getComponent(TimerComponent);
+        if (!component) {
+            component = target.addComponent(TimerComponent);
+        }
+        return component;
+    }
 
 }
 

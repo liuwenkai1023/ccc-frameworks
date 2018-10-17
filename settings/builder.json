@@ -2,9 +2,7 @@
   "appKey": "BDA1ADE0-93DC-258B-66DB-58F81692D893",
   "appSecret": "5140cfc22f2acaefcb6040fb941fd688",
   "encryptJs": true,
-  "excludeScenes": [
-    "20164a03-5657-4dce-bfe4-f62e484234af"
-  ],
+  "excludeScenes": [],
   "fb-instant-games": {},
   "includeAnySDK": false,
   "includeSDKBox": false,
