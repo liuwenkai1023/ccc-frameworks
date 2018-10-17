@@ -89,15 +89,6 @@
       },
       {
         "__id__": 15
-      },
-      {
-        "__id__": 16
-      },
-      {
-        "__id__": 17
-      },
-      {
-        "__id__": 18
       }
     ],
     "_prefab": null,
@@ -330,9 +321,7 @@
     "_enabled": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "3c22000b-10f1-4d06-a44b-f081d1ecd185"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -420,7 +409,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "63d0dd1a-4b7f-4c78-a938-c44421207a69"
+      "__uuid__": "f71c4cb4-ce52-48b0-8644-9917332cb8da"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -595,7 +584,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "dcf7d9fa-c490-4816-9d33-117e4e25aae6"
+      "__uuid__": "fcbda379-37d0-4e90-81b7-746daad37dd5"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -630,17 +619,7 @@
     "_id": "ccTbWxwh9McKK0yPSE9hfW"
   },
   {
-    "__type__": "a4efe+t18ZHO7AeX7MEPDVy",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_id": "42PUma8kRDvJM+lwy4OaqT"
-  },
-  {
-    "__type__": "cf21fWG8wxCz5kwFT9lDD3j",
+    "__type__": "99d4dh/4+NG/rwImXbWAVEi",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -651,47 +630,9 @@
       "__id__": 11
     },
     "text": "hello",
-    "sprite": null,
-    "_id": "12edBpEWZMLIbDBcpMioiw"
-  },
-  {
-    "__type__": "cc.Graphics",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
+    "sprite": {
+      "__id__": 13
     },
-    "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_lineWidth": 1,
-    "_strokeColor": {
-      "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
-      "a": 255
-    },
-    "_lineJoin": 2,
-    "_lineCap": 0,
-    "_fillColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_miterLimit": 10,
-    "_id": "8834bDzFdJHpvoqT9qjWqG"
-  },
-  {
-    "__type__": "80a50tkVMhNS7rBZCKQ4jNV",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_id": "d6aRy2iWpNObr6R8j5/BxT"
+    "_id": "27fckwBxVMjoQerB51nqdk"
   }
 ]
