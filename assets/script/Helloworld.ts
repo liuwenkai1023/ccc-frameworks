@@ -22,6 +22,7 @@ export default class Helloworld extends cc.Component {
     sprite: cc.Sprite = null;
 
     t = 0;
+    time = 0;
     // set test(v, f) {
     //     this.t = v;
     //     console.log(v, f);
@@ -34,6 +35,7 @@ export default class Helloworld extends cc.Component {
         this.initReceiver();
         Base.Audio.playMusic("ding.wav");
         Base.SocketManager.open();
+        this.time = new Date().getTime();
         // FileUtils.instance().getDataFromFile(FileUtils.writeablePath + 'resources/json/data.json').then(data => {
         //     console.log("data =" + data);
         // }).catch(err => {
@@ -77,11 +79,15 @@ export default class Helloworld extends cc.Component {
     SAY_HELLO_1(data) {
         this.label.string = data;
         Base.SocketManager.send(data);
+        // console.log(data, new Date().getTime() - this.time);
+        this.time = new Date().getTime();
     }
 
 
     SAY_HELLO_2(data) {
         this.label.string = data;
+        // console.log(data, new Date().getTime() - this.time);
+        this.time = new Date().getTime();
     }
 
 }

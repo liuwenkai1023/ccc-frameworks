@@ -92,6 +92,12 @@
       },
       {
         "__id__": 17
+      },
+      {
+        "__id__": 18
+      },
+      {
+        "__id__": 19
       }
     ],
     "_prefab": null,
@@ -546,8 +552,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 480,
-      "height": 320
+      "width": 400,
+      "height": 400
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -557,7 +563,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 50,
+      "y": 76,
       "z": 0
     },
     "_scale": {
@@ -579,7 +585,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "groupIndex": 0,
-    "_id": "645Jx1lUVIPKwu70Tgz09X"
+    "_id": "83uEx8bAZDvrS2v6tq2Wvn"
   },
   {
     "__type__": "cc.Sprite",
@@ -605,7 +611,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "14KoEZJLBEN5KSx4H4b3zE"
+    "_id": "33QRkIE29F+rx4XpQiV2es"
   },
   {
     "__type__": "f09c0BPt/ZM8ZLlBYV86Klv",
@@ -615,10 +621,11 @@
       "__id__": 12
     },
     "_enabled": true,
+    "_defaultSpriteFrame": null,
     "_path": {
       "__uuid__": "654e4821-f78f-4ee0-89a5-69a4cabaae20"
     },
-    "_id": "e3ywlBHZFE4pkMATG38nkY"
+    "_id": "e78wRlIGdKRqkGV0DXWPOc"
   },
   {
     "__type__": "cc.Canvas",
@@ -659,9 +666,47 @@
       "__id__": 11
     },
     "text": "hello",
-    "sprite": {
-      "__id__": 13
-    },
+    "sprite": null,
     "_id": "12edBpEWZMLIbDBcpMioiw"
+  },
+  {
+    "__type__": "cc.Graphics",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_lineWidth": 1,
+    "_strokeColor": {
+      "__type__": "cc.Color",
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 255
+    },
+    "_lineJoin": 2,
+    "_lineCap": 0,
+    "_fillColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_miterLimit": 10,
+    "_id": "8834bDzFdJHpvoqT9qjWqG"
+  },
+  {
+    "__type__": "80a50tkVMhNS7rBZCKQ4jNV",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_id": "d6aRy2iWpNObr6R8j5/BxT"
   }
 ]
