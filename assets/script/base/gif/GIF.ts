@@ -71,7 +71,6 @@ export default class GIF {
         // for (const framePromise of framePromises) {
         //     await framePromise;
         // }
-
         // let index = 0;
         // for (const frame of this._info.frames) {
         //     this.decodeFrame2Texture(frame, index++);
