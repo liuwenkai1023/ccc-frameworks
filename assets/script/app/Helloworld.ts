@@ -1,7 +1,5 @@
 import BaseComponent from "../base/BaseComponent";
 import Base from "../base/Base";
-import { HttpResponse } from "../base/network/HttpManager";
-
 
 const { ccclass, property } = cc._decorator;
 

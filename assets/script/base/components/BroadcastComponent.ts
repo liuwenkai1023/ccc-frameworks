@@ -6,7 +6,7 @@ import BroadcastManager from "../broadcast/BroadcastManager";
  * 广播组件
  * 节点上建议使用此组件，广播会在生命周期结束时自动销毁
  */
-@ccclass
+// @ccclass
 @disallowMultiple
 export default class BroadcastComponent extends cc.Component {
 
