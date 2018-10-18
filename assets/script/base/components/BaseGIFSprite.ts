@@ -6,7 +6,7 @@ const { ccclass, property, requireComponent, disallowMultiple, executeInEditMode
 @executeInEditMode
 @disallowMultiple
 @requireComponent(cc.Sprite)
-export default class GIFSprite extends cc.Component {
+export default class BaseGIFSprite extends cc.Component {
 
     @property({ visible: false })
     private _defaultSpriteFrame: cc.SpriteFrame;
@@ -156,7 +156,7 @@ export default class GIFSprite extends cc.Component {
  * GIFMessage消息传递接口
  */
 export interface GIFMessage {
-    target: GIFSprite,
+    target: BaseGIFSprite,
     buffer: ArrayBuffer,
     initOneSpriteFrameFunc: {
         (

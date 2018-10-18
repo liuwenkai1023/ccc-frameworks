@@ -7,7 +7,7 @@ const renderer = renderEngine.renderer;
 const gfx = renderEngine.gfx;
 const Material = renderEngine.Material;
 
-export default class CustomMaterial extends Material {
+export default class ShaderCustomMaterial extends Material {
 
 	public _params: any;
 	public _defines: any;
@@ -68,7 +68,7 @@ export default class CustomMaterial extends Material {
 	}
 
 	clone() {
-		let copy: CustomMaterial = new CustomMaterial();
+		let copy: ShaderCustomMaterial = new ShaderCustomMaterial();
 		copy.texture = this.texture;
 		copy.color = this.color;
 		copy.updateHash();

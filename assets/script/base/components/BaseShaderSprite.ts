@@ -8,7 +8,7 @@ const NeedUpdate = [ShaderType.Fluxay, ShaderType.WaveShader, ShaderType.Water, 
 @disallowMultiple
 @executeInEditMode
 @requireComponent(cc.Sprite)
-export default class ShaderComponent extends cc.Component {
+export default class BaseShaderSprite extends cc.Component {
 
     @property({ visible: false })
     private _shader: ShaderType = ShaderType.Default;
