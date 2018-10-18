@@ -619,20 +619,13 @@
     "_id": "ccTbWxwh9McKK0yPSE9hfW"
   },
   {
-    "__type__": "99d4dh/4+NG/rwImXbWAVEi",
+    "__type__": "6b3a9Hhm/9NzZSHYFMf/URe",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 2
     },
     "_enabled": true,
-    "label": {
-      "__id__": 11
-    },
-    "text": "hello",
-    "sprite": {
-      "__id__": 13
-    },
-    "_id": "27fckwBxVMjoQerB51nqdk"
+    "_id": "a3/uGaFb1PapKKGY6nX9tk"
   }
 ]

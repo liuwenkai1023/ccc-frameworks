@@ -9,7 +9,7 @@ export default class BroadcastManager {
 
     private static _instance: BroadcastManager;
 
-    private _broadcastReceivers: Array<BroadcastReceiver> = [];
+    private _broadcastReceiverMap: BroadcastReceiverMap = {};
 
     private constructor() { }
 
@@ -41,12 +41,11 @@ export default class BroadcastManager {
      * @param action 需要响应广播的行为
      * @param data 广播传递的数据
      */
-    public sendBroadcast(action: String, data?: any | void) {
-        // 平均每个console.log()会额外消耗1ms左右
-        // console.info("[INFO]Sending the broadcast \"" + action + "\"");
-        for (const receiver of this._broadcastReceivers) {
+    public sendBroadcast(action: string, data?: any | void) {
+        let receivers = this._broadcastReceiverMap[action];
+        if (!receivers) return;
+        for (const receiver of receivers) {
             if (receiver != null && receiver.action == action) {
-                // console.info("[INFO]Received the broadcast \"" + action + "\". data =", data, ".")
                 if (receiver.handler) receiver.handler(data);
             }
         }
@@ -58,7 +57,10 @@ export default class BroadcastManager {
      * @param receiver 广播接收者
      */
     public addBroadcastReceiver(receiver: BroadcastReceiver) {
-        this._broadcastReceivers.push(receiver);
+        if (!this._broadcastReceiverMap[receiver.action]) {
+            this._broadcastReceiverMap[receiver.action] = [];
+        }
+        this._broadcastReceiverMap[receiver.action].push(receiver);
     }
 
 
@@ -67,6 +69,10 @@ export default class BroadcastManager {
      * @param receiver 广播接收者
      */
     public removeBroadcastReceiver(receiver: BroadcastReceiver) {
-        this._broadcastReceivers[this._broadcastReceivers.indexOf(receiver)] = null;
+        let receivers = this._broadcastReceiverMap[receiver.action];
+        if (!receivers) return;
+        receivers[receivers.indexOf(receiver)] = null;
     }
 }
+
+export interface BroadcastReceiverMap { [key: string]: Array<BroadcastReceiver> };

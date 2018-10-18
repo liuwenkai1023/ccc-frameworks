@@ -10,8 +10,8 @@ export interface BroadcastReceiverHandler {
  * 广播接收者
  */
 export default class BroadcastReceiver {
-    public _action: string;
-    public _handler: BroadcastReceiverHandler;
+    private _action: string;
+    private _handler: BroadcastReceiverHandler;
 
 
     /**
