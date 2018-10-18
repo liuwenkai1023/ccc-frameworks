@@ -1,14 +1,14 @@
-import WxUtil from "./wx/WxUtil";
-import Base64 from "./base64/Base64";
-import HttpManager from "./network/HttpManager";
-import AudioManager from "./audio/AudioMananger";
-import SocketManager from "./network/SocketManager";
-import LocalStorageManager from "./storage/StorageManager";
-import BroadcastManager from "./broadcast/BroadcastManager";
-import ShaderManager from "./shader/ShaderManager";
-import FileUtils from "./storage/FileUtils";
-import TimerComponent from "./timer/TimerManager";
-import TimerManager from "./timer/TimerManager";
+import WxUtil from "./utils/wx/WxUtil";
+import FileUtils from "./utils/storage/FileUtils";
+import Base64 from "./utils/base64/Base64";
+import TimerManager from "./utils/timer/TimerManager";
+import HttpManager from "./net/HttpManager";
+import AudioManager from "./utils/audio/AudioMananger";
+import SocketManager from "./net/SocketManager";
+import LocalStorageManager from "./utils/storage/StorageManager";
+import BroadcastManager from "./utils/broadcast/BroadcastManager";
+import ShaderManager from "./ui/shader/ShaderManager";
+
 
 /**
  * 工具类、管理类的整合

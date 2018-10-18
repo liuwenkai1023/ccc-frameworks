@@ -1,5 +1,5 @@
 import Base from "./Base";
-import BroadcastComponent from "./components/BroadcastComponent";
+import BroadcastComponent from "./utils/BroadcastComponent";
 // import TimerComponent from "./components/TimerComponent";
 // import AudioManager from "./audio/AudioMananger";
 // import HttpManager from "./network/HttpManager";
@@ -17,7 +17,7 @@ export default class BaseComponent extends cc.Component {
 
     get broadcastManager() {
         if (!this.__broadcastManager)
-            this.__broadcastManager = Base.BroadcastManager.registerBrocastComponent(this.node);
+            this.__broadcastManager = this.node.addComponent(BroadcastComponent);
         return this.__broadcastManager;
     }
 
