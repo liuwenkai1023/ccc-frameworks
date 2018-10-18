@@ -1,5 +1,5 @@
 import LZW from "./LZW";
-import GIFSprite, { GIFMessage } from "./GIFSprite";
+import GIFSprite, { GIFMessage } from "../components/GIFSpriteComponents";
 
 /**
  * GIF解析

@@ -6,7 +6,7 @@ export default class SocketManager {
     private _url: string;
     private _protocols: any;
     private _socket: WebSocket;
-    private _broadcstManager: BroadcastManager = BroadcastManager.instance();;
+    private _broadcstManager: BroadcastManager = BroadcastManager.instance();
 
     private _sendDatas: Array<String> = [];
     private _registerMsg: string = '{"action":"ACTION_REGISTER","data":"注册信息"}';

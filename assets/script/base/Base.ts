@@ -7,7 +7,8 @@ import LocalStorageManager from "./storage/StorageManager";
 import BroadcastManager from "./broadcast/BroadcastManager";
 import ShaderManager from "./shader/ShaderManager";
 import FileUtils from "./storage/FileUtils";
-import TimerComponent from "./components/TimerComponent";
+import TimerComponent from "./timer/TimerManager";
+import TimerManager from "./timer/TimerManager";
 
 /**
  * 工具类、管理类的整合
@@ -33,6 +34,13 @@ export default class Base {
      *  Base64：Base64工具类
      */
     public static readonly Base64: Base64 = Base64.instance();
+
+
+     /**
+     *  HttpManager：Http工具类
+     */
+    public static readonly TimerManager: TimerManager = TimerManager.instance();
+
 
     /**
      *  HttpManager：Http工具类
@@ -64,17 +72,6 @@ export default class Base {
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
 
-    /**
-     *  为节点注册timer组件
-     * @param target 节点
-     */
-    public static registerTimerComponent(target: cc.Node): TimerComponent {
-        let component = target.getComponent(TimerComponent);
-        if (!component) {
-            component = target.addComponent(TimerComponent);
-        }
-        return component;
-    }
 
 }
 

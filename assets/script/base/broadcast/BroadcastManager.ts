@@ -47,7 +47,7 @@ export default class BroadcastManager {
         for (const receiver of this._broadcastReceivers) {
             if (receiver != null && receiver.action == action) {
                 // console.info("[INFO]Received the broadcast \"" + action + "\". data =", data, ".")
-                receiver.handler(data);
+                if (receiver.handler) receiver.handler(data);
             }
         }
     }
