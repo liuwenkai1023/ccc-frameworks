@@ -3,22 +3,13 @@ export default abstract class BaseListAdapter {
 
     private dataSet: any[] = [];
 
-    public setDataSet(data: any[]) {
-        this.dataSet = data;
-    }
+    public abstract setDataSet(data: any[]);
 
-    public getCount(): number {
-        return this.dataSet.length;
-    }
+    public abstract getCount(): number;
 
-    public getItem(posIndex: number): any {
-        return this.dataSet[posIndex];
-    }
+    public abstract getItem(posIndex: number): any;
 
-    public _getView(item: cc.Node, posIndex: number): cc.Node {
-        this.updateView(item, posIndex);
-        return item;
-    }
+    public abstract _getView(item: cc.Node, posIndex: number): cc.Node;
 
     public abstract updateView(item: cc.Node, posIndex: number);
 }
