@@ -1,5 +1,18 @@
 {
+  "appKey": "BDA1ADE0-93DC-258B-66DB-58F81692D893",
+  "appSecret": "5140cfc22f2acaefcb6040fb941fd688",
+  "encryptJs": true,
   "excludeScenes": [],
+  "fb-instant-games": {},
+  "includeAnySDK": false,
+  "includeSDKBox": false,
+  "inlineSpriteFrames": true,
+  "inlineSpriteFrames_native": true,
+  "jailbreakPlatform": false,
+  "md5Cache": true,
+  "mergeStartScene": false,
+  "oauthLoginServer": "http://oauth.anysdk.com/api/User/LoginOauth/",
+  "optimizeHotUpdate": false,
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
@@ -7,7 +20,21 @@
     "upsideDown": false
   },
   "packageName": "org.liuwenkai.project",
-  "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
+  "privateKey": "54966EB3D5156CAF5F84D362C9256E7D",
+  "qqplay": {
+    "REMOTE_SERVER_ROOT": "",
+    "orientation": "portrait"
+  },
+  "startScene": "8a7dcf23-5804-4e2b-b53b-d51ebc74d9a0",
   "title": "project",
-  "webOrientation": "auto"
+  "webOrientation": "auto",
+  "wechatgame": {
+    "REMOTE_SERVER_ROOT": "",
+    "appid": "wx171b511bd9a4ace7",
+    "isSubdomain": false,
+    "orientation": "portrait",
+    "subContext": ""
+  },
+  "xxteaKey": "f12bde3d-3b11-4a",
+  "zipCompressJs": true
 }
