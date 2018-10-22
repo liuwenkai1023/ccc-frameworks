@@ -1,7 +1,5 @@
 import BaseListAdapter from "./listview/BaseListAdapter";
-
 // 感谢网友提供
-
 
 const { ccclass, property, disallowMultiple, requireComponent } = cc._decorator;
 
@@ -21,6 +19,10 @@ export default class BaseListView extends cc.Component {
 
     @property(cc.ScrollView)
     private scrollView: cc.ScrollView = null;
+
+    private w: number;
+
+    private h: number;
 
     private content: cc.Node = null;
 
@@ -65,9 +67,8 @@ export default class BaseListView extends cc.Component {
         }
         let itemOne = this._items.get() || cc.instantiate(this.itemTemplate);
         this._items.put(itemOne);
-        this._itemHeight = itemOne.height || 10;
-        this._itemWidth = itemOne.width || 10;
-
+        // this._itemHeight = itemOne.height || 10;
+        // this._itemWidth = itemOne.width || 10;
         if (this.horizontal) {
             this._itemsVisible = Math.ceil(this.content.getParent().width / this._itemWidth);
         } else {
@@ -221,7 +222,7 @@ export default class BaseListView extends cc.Component {
 
         // 更新相应位置.
         for (let index of updates) {
-            let child = this.adapter._getView(this._items.get() || cc.instantiate(this.itemTemplate), index);
+            let child = this.adapter.getView(this._items.get() || cc.instantiate(this.itemTemplate), index);
             this.horizontal ?
                 this._layoutHorizontal(child, index) :
                 this._layoutVertical(child, index);

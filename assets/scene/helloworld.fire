@@ -452,7 +452,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 342.33,
+      "width": 292.32,
       "height": 60
     },
     "_anchorPoint": {
@@ -498,8 +498,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "Hello, World!",
-    "_N$string": "Hello, World!",
+    "_string": "HelloWorld",
+    "_N$string": "HelloWorld",
     "_fontSize": 60,
     "_lineHeight": 60,
     "_enableWrapText": true,
@@ -626,6 +626,7 @@
       "__id__": 2
     },
     "_enabled": true,
+    "sprite": null,
     "_id": "83Z1dvIOJIEKQbMSZ71KLy"
   }
 ]

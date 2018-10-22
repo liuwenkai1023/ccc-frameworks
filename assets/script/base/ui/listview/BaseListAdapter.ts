@@ -1,15 +1,23 @@
 // 数据绑定的辅助适配器
 export default abstract class BaseListAdapter {
-
     private dataSet: any[] = [];
 
-    public abstract setDataSet(data: any[]);
+    public setDataSet(data: any[]) {
+        this.dataSet = data;
+    }
 
-    public abstract getCount(): number;
+    public getCount(): number {
+        return this.dataSet.length;
+    }
 
-    public abstract getItem(posIndex: number): any;
+    public getItem(posIndex: number): any {
+        return this.dataSet[posIndex];
+    }
 
-    public abstract _getView(item: cc.Node, posIndex: number): cc.Node;
+    public getView(item: cc.Node, posIndex: number): cc.Node {
+        this.updateView(item, posIndex);
+        return item;
+    }
 
     public abstract updateView(item: cc.Node, posIndex: number);
 }
