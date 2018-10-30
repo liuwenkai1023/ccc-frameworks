@@ -9,7 +9,7 @@ export default class HelloWorld extends BaseComponent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
 
-    __receiversConfig = [
+    __receiversData = [
         ["HELLO"],
     ];
 
