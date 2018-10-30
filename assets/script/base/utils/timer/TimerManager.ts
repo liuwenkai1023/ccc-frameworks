@@ -68,8 +68,8 @@ export default class TimerManager {
      * @param intervlTime 间隔时间
      * @param delay 延迟时间执行
      */
-    public runLoopTimer(handler: (dt: number) => void, intervlTime: number = 0.01, delay?: number) {
-        return this.schedule(handler, intervlTime | 0.01, cc.macro.REPEAT_FOREVER, delay | 0, false);
+    public runLoopTimer(handler: (dt: number) => void, intervlTime: number = 0.02, delay?: number) {
+        return this.schedule(handler, intervlTime ? intervlTime : 0.02, cc.macro.REPEAT_FOREVER, delay ? delay : 0, false);
     }
 
 

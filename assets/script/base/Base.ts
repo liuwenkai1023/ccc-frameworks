@@ -71,7 +71,7 @@ export default class BASE {
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
 
     /**
-     * UIManager: UIManager管理类适用于mvc模式
+     * UIManager: UIManager管理类适用于mvc模式中管理UI
      */
     public static readonly UIManager: UIManager = UIManager.instance();
 

@@ -31,18 +31,32 @@ export default class UIManager {
 
 
     /**
+     * 在UIManager中注册UIModel
+     * @param UIName UI的名字
+     * @param UIModel 对应的UIModel（ViewBase）
+     */
+    public registerUI(UIName: string, UIModel: ViewBase): boolean {
+        if (UIName && UIName.length > 0 && UIModel && UIModel instanceof ViewBase) {
+            this._UIMap[UIName] = UIModel;
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * 展示某个UI
      * @param UIName UI的名字 
      * @param data 展示UI时传递的数据
      * @param handler UI展示完成的回调
      */
-    public showUI(UIName: string, data?: any, handler?: Function) {
+    public showUI(UIName: string, data?: any | void, handler?: Function | void) {
         let UIModel = this._UIMap[UIName];
         if (!UIModel) return;
         let callback = () => {
             if (handler) handler(UIModel);
             UIModel.show();
-            UIModel.onShowEnd(data);
+            UIModel.onShowed(data);
         }
         if (!UIModel.isLoaded) {
             UIModel.onCreate(callback);

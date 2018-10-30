@@ -4,24 +4,19 @@ import BASE from "../BASE";
 
 export default abstract class ViewBase {
 
-    private __bindMap: { [key: string]: any };
+    private __bindMap: any;
     private __rootNode: cc.Node;
     private __timerManager: TimerManager;
     private __broadcastManager: BroadcastComponent;
 
-    private RESOURCE_FILENAME: string = null;
-    private RESOURCE_BINDING: Array<Array<any>> =
-        [
-            // ["varName", "nodePath", cc.Component],
-        ];
+    protected RESOURCE_FILENAME: string;
+    protected RESOURCE_BINDING: Array<Array<any>>;
+    protected RECEIVER_CONFIG: Array<Array<any>>;
 
 
     /**
-     * 广播接收者配置
+     * 得到计时器工具类
      */
-    protected __receiversData: Array<Array<string>>;
-
-
     get timerManager() {
         if (!this.__timerManager) {
             this.__timerManager = BASE.TimerManager.new();
@@ -42,7 +37,7 @@ export default abstract class ViewBase {
      * 得到当前资源节点
      */
     get rootNode(): cc.Node {
-        return this.rootNode;
+        return this.__rootNode;
     }
 
 
@@ -50,7 +45,7 @@ export default abstract class ViewBase {
      * 当前UIModel是否已经被加载
      */
     get isLoaded(): boolean {
-        return this.__rootNode && this.__rootNode.isValid;
+        return this.__rootNode && this.__rootNode.isValid && this.__rootNode.getParent() != null;
     }
 
 
@@ -85,20 +80,25 @@ export default abstract class ViewBase {
      * 初始化UI
      * @param handler 初始化回调
      */
-    public onCreate(handler: Function) {
+    public onCreate(handler?: Function | void, parentNode?: cc.Node | void) {
         if (!this.RESOURCE_FILENAME) return;
-        this._init();
-        cc.loader.load(this.RESOURCE_FILENAME, (error, prefab) => {
-            if (!error) return;
-            let curScene = cc.director.getScene();
+        // 杜绝连续创建
+        if (this.rootNode) { if (handler) handler(); return; }
+        cc.loader.loadRes(this.RESOURCE_FILENAME, (error, prefab) => {
+            if (error) return;
+            // 杜绝连续创建
+            if (this.rootNode) { if (handler) handler(); return; }
             let rootNode = <cc.Node>cc.instantiate(prefab);
-            if (!curScene || !rootNode) return;
-            curScene.addChild(rootNode);
+            if (!rootNode) return;
+            let parent = parentNode ? parentNode : cc.director.getScene();
+            if (!parent) return;
+            parent.addChild(rootNode);
             this.__rootNode = rootNode;
             this.createBinding();
             this.onLoad(rootNode);
             if (handler) handler();
         });
+        return this;
     }
 
 
@@ -112,9 +112,10 @@ export default abstract class ViewBase {
             let nodePath = bind[1];
             let component = bind[2];
             if (varName && nodePath) {
-                this.__bindMap[varName] = cc.find(nodePath);
-                if (component) {
+                this.__bindMap[varName] = cc.find(nodePath, this.__rootNode);
+                if (this.__bindMap[varName] && component) {
                     this.__bindMap[varName] = this.__bindMap[varName].getComponent(component);
+                    this.__bindMap[varName];
                 }
             }
         });
@@ -135,8 +136,10 @@ export default abstract class ViewBase {
      * 展示界面UI
      */
     public show() {
-        this.__rootNode.active = true;
-        this.__timerManager.resume();
+        if (!this.rootNode.active) {
+            this.rootNode.active = true;
+            this.timerManager.resume();
+        }
         this.onShow();
     }
 
@@ -145,8 +148,10 @@ export default abstract class ViewBase {
      * 隐藏界面UI
      */
     public hide() {
-        this.__rootNode.active = false;
-        this.__timerManager.pause();
+        if (this.rootNode.active) {
+            this.rootNode.active = false;
+            this.timerManager.pause();
+        }
         this.onHided();
     }
 
@@ -156,12 +161,12 @@ export default abstract class ViewBase {
      */
     public destory() {
         this.onDestory();
-        this.__rootNode.active = false;
-        this.__timerManager.pause();
-        this.__timerManager.removeAllTimers();
-        this.__broadcastManager.removeAllBroadcastReceiver();
-        this.__rootNode.removeFromParent();
-        this.__rootNode.removeAllChildren();
+        this.rootNode.active = false;
+        this.timerManager.pause();
+        this.timerManager.removeAllTimers();
+        this.broadcastManager.removeAllBroadcastReceiver();
+        this.rootNode.removeFromParent();
+        this.rootNode.removeAllChildren();
         this._init();
     }
 
@@ -170,7 +175,7 @@ export default abstract class ViewBase {
      * 初始化广播接收者
      */
     private __initReceiver() {
-        let receiverDatas = this.__receiversData ? this.__receiversData : [];
+        let receiverDatas = this.RECEIVER_CONFIG ? this.RECEIVER_CONFIG : [];
         for (const receiverData of receiverDatas) {
             this.broadcastManager.newAndRegisterReceiver(
                 receiverData[0],
