@@ -5,6 +5,9 @@ export default class UIManager {
     private static _instance: UIManager;
     private _UIMap: { [key: string]: ViewBase };
 
+    get uiMap() {
+        return this._UIMap;
+    }
 
     public static instance() {
         if (!this._instance) {
@@ -19,18 +22,27 @@ export default class UIManager {
     }
 
 
+    /**
+     * 初始化基本参数
+     */
     private init() {
         this._UIMap = {};
     }
 
 
-    showUI(UIName: string, data?: any, handler?: Function) {
+    /**
+     * 展示某个UI
+     * @param UIName UI的名字 
+     * @param data 展示UI时传递的数据
+     * @param handler UI展示完成的回调
+     */
+    public showUI(UIName: string, data?: any, handler?: Function) {
         let UIModel = this._UIMap[UIName];
         if (!UIModel) return;
         let callback = () => {
             if (handler) handler(UIModel);
             UIModel.show();
-            UIModel.onShowFinish(data);
+            UIModel.onShowEnd(data);
         }
         if (!UIModel.isLoaded) {
             UIModel.onCreate(callback);
@@ -40,7 +52,11 @@ export default class UIManager {
     }
 
 
-    closeUI(UIName: string) {
+    /**
+     * 关闭某个UI的展示
+     * @param UIName UI的名字
+     */
+    public closeUI(UIName: string) {
         let UIModel = this._UIMap[UIName];
         if (!UIModel) return false;
         if (UIModel.isLoaded) {
@@ -51,20 +67,27 @@ export default class UIManager {
     }
 
 
-    destoryUI(UIName: string) {
-        let UIModel = this._UIMap[UIName];
-        if (!UIModel) return;
-        UIModel.destory();
+    /**
+     * 销毁某个UI
+     * @param UIName UI的名字 
+     */
+    public destoryUI(UIName: string) {
+        if (this._UIMap.hasOwnProperty(UIName)) {
+            const UIModel = this._UIMap[UIName];
+            UIModel.destory();
+            return true;
+        }
+        return false;
     }
 
 
-    destoryAllUI() {
+    /**
+     * 销毁所有的UI
+     */
+    public destoryAllUI() {
         let UIMap = this._UIMap;
-        for (const key in UIMap) {
-            if (UIMap.hasOwnProperty(key)) {
-                const UIModel = UIMap[key];
-                UIModel.destory();
-            }
+        for (const UIName in UIMap) {
+            this.destoryUI(UIName);
         }
     }
 

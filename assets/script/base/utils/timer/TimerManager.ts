@@ -4,6 +4,7 @@
 export default class TimerManager {
 
     private static _instance: TimerManager;
+    private static __id: number = new Date().getTime();
 
     private constructor() {
         this.init();
@@ -17,7 +18,7 @@ export default class TimerManager {
         if (!TimerManager._instance) {
             TimerManager._instance = new TimerManager()
         }
-        return this._instance
+        return this._instance;
     }
 
 
@@ -26,7 +27,16 @@ export default class TimerManager {
     */
     private init() {
         // cc.director.getScheduler().enableForTarget(this);
-        this["_id"] = `Scheduler${new Date().getTime()}`;
+        this["_id"] = `Scheduler${TimerManager.__id++}`;
+    }
+
+
+    /**
+     * 得到一个全新的TimerManager
+     * 不怎么建议这样使用
+     */
+    public new() {
+        return new TimerManager();
     }
 
 

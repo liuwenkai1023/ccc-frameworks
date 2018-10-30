@@ -15,6 +15,7 @@ export default abstract class BaseComponent extends cc.Component {
      */
     protected __receiversData: Array<Array<string>>;
 
+
     /**
      * 得到广播管理器
      */
@@ -24,6 +25,7 @@ export default abstract class BaseComponent extends cc.Component {
         return this.__broadcastManager;
     }
 
+
     /**
      * 脚本加载时回调
      * 配置了__receiversData时，请先调用super.onLoad();
@@ -31,6 +33,7 @@ export default abstract class BaseComponent extends cc.Component {
     protected onLoad() {
         this.__initReceiver();
     }
+
 
     /**
      * 初始化广播接收者

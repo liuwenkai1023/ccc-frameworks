@@ -36,7 +36,7 @@ export default class BASE {
     public static readonly Base64: Base64 = Base64.instance();
 
     /**
-    *  HttpManager：Http工具类
+    *  TimerManager：TimerManager计时器工具类
     */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
 
