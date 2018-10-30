@@ -40,6 +40,7 @@ export default class HttpManager {
     public HTTP_GET(url: string, params: HttpParamsMap, handler: HttpResponseHanler) {
         let seq = this.SEQ++;
         let xhr = cc.loader.getXMLHttpRequest();
+        xhr.withCredentials = true;
         url = this.HTTP_HOST + url + this.encode("GET", params)
         xhr.open("GET", url, true);
         if (cc.sys.isNative) xhr.setRequestHeader("Accept-Encoding", "gzip,deflate");
@@ -59,6 +60,7 @@ export default class HttpManager {
         let seq = this.SEQ++;
         var xhr = cc.loader.getXMLHttpRequest();
         url = this.HTTP_HOST + url
+        xhr.withCredentials = true;
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type", "text/plain");
         xhr.timeout = 5000;
