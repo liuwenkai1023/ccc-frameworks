@@ -1,5 +1,5 @@
-import AdapterInterface from "./AdapterInterface";
+import Adapter from "./Adapter";
 
-export default class DefualtAdapter extends AdapterInterface {
+export default class DefualtAdapter extends Adapter {
 
 }
