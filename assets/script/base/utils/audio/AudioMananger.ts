@@ -55,11 +55,13 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playEffect(url) {
+        let id;
         (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
-                cc.audioEngine.playEffect(clip, false);
+                id = cc.audioEngine.playEffect(clip, false);
             }
         });
+        return id;
     }
 
 
@@ -68,11 +70,13 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playMusic(url) {
+        let id;
         (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
-                cc.audioEngine.playMusic(clip, true);
+                id = cc.audioEngine.playMusic(clip, true);
             }
         });
+        return id;
     }
 
 
