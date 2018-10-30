@@ -1,9 +1,5 @@
 import Base from "./Base";
 import BroadcastComponent from "./utils/BroadcastComponent";
-// import TimerComponent from "./components/TimerComponent";
-// import AudioManager from "./audio/AudioMananger";
-// import HttpManager from "./network/HttpManager";
-// import SocketManager from "./network/SocketManager";
 
 /**
  * BaseComponent组件

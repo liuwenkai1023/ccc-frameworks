@@ -13,7 +13,7 @@ export default class BaseGIFSprite extends cc.Component {
 
     @property({ visible: false })
     private _path: cc.RawAsset = null;
-    _oldTime: number;
+    // _oldTime: number;
 
     @property({ type: cc.RawAsset })
     set path(path) {
@@ -73,9 +73,10 @@ export default class BaseGIFSprite extends cc.Component {
         // }
     }
 
-    public setDefaultSpriteFrame(spriteFrame) {
+    public setDefaultSpriteFrame(spriteFrame: cc.SpriteFrame) {
         // console.log("setDefaultSpriteFrame", spriteFrame);
         this.sprite.spriteFrame = spriteFrame, true;
+        // this.sprite.spriteFrame.setTexture(spriteFrame.getTexture())
     }
 
 
@@ -93,7 +94,9 @@ export default class BaseGIFSprite extends cc.Component {
                     ),
                     cc.callFunc(
                         function () {
-                            this.sprite.spriteFrame = this._spriteFrames[this._index++ % this._spriteFrames.length], true;
+                            let sp = this._spriteFrames[this._index++ % this._spriteFrames.length];
+                            this.sprite.spriteFrame = sp;
+                            // this.sprite.spriteFrame.setTexture(sp.getTexture());
                         }.bind(this)
                     )
                 ]
