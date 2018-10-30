@@ -1,7 +1,5 @@
-import Base from "../Base";
 
 export default abstract class ViewBase {
-
 
     RESOURCE_FILENAME: string = null;
     RESOURCE_BINDING: Array<Array<any>> =
@@ -78,7 +76,6 @@ export default abstract class ViewBase {
         this.onDestory();
         this._rootNode.active = false;
         this._rootNode.removeFromParent();
-        this._rootNode.removeAllChildren();
         this._init();
     }
 

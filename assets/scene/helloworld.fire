@@ -545,16 +545,14 @@
     "_id": "ccTbWxwh9McKK0yPSE9hfW"
   },
   {
-    "__type__": "d836cY8fhRNUKmhWedCy86k",
+    "__type__": "d678eyKNR1KLI2HYyys57BX",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 2
     },
     "_enabled": true,
-    "sprite": {
-      "__id__": 11
-    },
-    "_id": "83Z1dvIOJIEKQbMSZ71KLy"
+    "sprite": null,
+    "_id": "32m5XVG/xGjqhR6r8ltqU9"
   }
 ]

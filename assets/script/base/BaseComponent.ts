@@ -1,4 +1,4 @@
-import Base from "./Base";
+import BASE from "./BASE";
 import BroadcastComponent from "./utils/BroadcastComponent";
 
 /**

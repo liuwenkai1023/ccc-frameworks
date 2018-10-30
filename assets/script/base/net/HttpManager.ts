@@ -1,4 +1,4 @@
-import NetConfig from "../config/NetConfig";
+import NetConfig from "./config/NetConfig";
 
 export interface HttpParamsMap { [key: string]: any };
 export interface HttpResponseHanler { (response: Response) }

@@ -8,11 +8,12 @@ import SocketManager from "./net/SocketManager";
 import LocalStorageManager from "./utils/storage/StorageManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import ShaderManager from "./ui/shader/ShaderManager";
+import UIManager from "./mvc/UIManager";
 
 /**
  * 工具类、管理类的整合
  */
-export default class Base {
+export default class BASE {
 
     /**
      *  全局模块window
@@ -34,12 +35,10 @@ export default class Base {
      */
     public static readonly Base64: Base64 = Base64.instance();
 
-
     /**
     *  HttpManager：Http工具类
     */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
-
 
     /**
      *  HttpManager：Http工具类
@@ -70,6 +69,12 @@ export default class Base {
      *  ShaderManager：Shader效果管理类
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
+
+    /**
+     * UIManager: UIManager管理类适用于mvc模式
+     */
+    public static readonly UIManager: UIManager = UIManager.instance();
+
 }
 
-Base.window.Base = Base;
+(<any>window).BASE = BASE;

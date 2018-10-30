@@ -3,7 +3,8 @@ import ViewBase from "./ViewBase";
 export default class UIManager {
 
     private static _instance: UIManager;
-    private _uiMap: { [key: string]: ViewBase };
+    private _UIMap: { [key: string]: ViewBase };
+
 
     public static instance() {
         if (!this._instance) {
@@ -12,51 +13,57 @@ export default class UIManager {
         return UIManager._instance;
     }
 
+
     private constructor() {
         this.init();
     }
 
+
     private init() {
-        this._uiMap = {};
+        this._UIMap = {};
     }
 
-    showUI(uiName: string, data?: any, handler?: Function) {
-        let view = this._uiMap[uiName];
-        if (!view) return;
+
+    showUI(UIName: string, data?: any, handler?: Function) {
+        let UIModel = this._UIMap[UIName];
+        if (!UIModel) return;
         let callback = () => {
-            if (handler) handler(view);
-            view.show();
-            view.onShowFinish(data);
+            if (handler) handler(UIModel);
+            UIModel.show();
+            UIModel.onShowFinish(data);
         }
-        if (!view.isLoaded) {
-            view.onCreate(callback);
+        if (!UIModel.isLoaded) {
+            UIModel.onCreate(callback);
         } else {
             callback();
         }
     }
 
-    closeUI(uiName: string) {
-        let view = this._uiMap[uiName];
-        if (!view) return false;
-        if (view.isLoaded) {
-            view.hide();
+
+    closeUI(UIName: string) {
+        let UIModel = this._UIMap[UIName];
+        if (!UIModel) return false;
+        if (UIModel.isLoaded) {
+            UIModel.hide();
             return true;
         }
         return false;
     }
 
-    destoryUI(uiName: string) {
-        let view = this._uiMap[uiName];
-        if (!view) return;
-        view.destory();
+
+    destoryUI(UIName: string) {
+        let UIModel = this._UIMap[UIName];
+        if (!UIModel) return;
+        UIModel.destory();
     }
 
+
     destoryAllUI() {
-        let uiMap = this._uiMap;
-        for (const key in uiMap) {
-            if (uiMap.hasOwnProperty(key)) {
-                const view = uiMap[key];
-                view.destory();
+        let UIMap = this._UIMap;
+        for (const key in UIMap) {
+            if (UIMap.hasOwnProperty(key)) {
+                const UIModel = UIMap[key];
+                UIModel.destory();
             }
         }
     }

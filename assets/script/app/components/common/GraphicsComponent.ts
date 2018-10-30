@@ -1,4 +1,3 @@
-import Base from "../../../base/Base";
 import BaseComponent from "../../../base/BaseComponent";
 const { ccclass, property, requireComponent, disallowMultiple } = cc._decorator;
 
