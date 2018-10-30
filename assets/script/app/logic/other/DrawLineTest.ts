@@ -24,7 +24,8 @@ export default class DrawLineTest extends cc.Component {
             this._pots = [];
         });
         this.node.on(cc.Node.EventType.TOUCH_MOVE, (tEvt: cc.Event.EventTouch) => {
-            let tTouch = this.node.convertToNodeSpaceAR(tEvt.getLocation());
+            // let tTouch = this.node.convertToNodeSpaceAR(tEvt.getLocation());
+            let tTouch = this.node.convertToNodeSpaceAR(tEvt["_touches"][0].getLocation());
             if (tTouch == null || tTouch.x == undefined || tTouch.y == undefined) {
                 return;
             }
@@ -46,10 +47,13 @@ export default class DrawLineTest extends cc.Component {
             return;
         }
         let tLineNormals = this.GetLineNormals(tPots);
-        let tVecNormals = this.GetVecNormals(tLineNormals);
+        let tVecNormals = tLineNormals;
+        // let tVecNormals = this.GetVecNormals(tLineNormals);
         let newRootNode = new cc.Node();
         let nSegments = Math.floor(tPots.length - 1);
         newRootNode.addComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic;
+        console.log(tPots, tLineNormals, tVecNormals);
+        let collider;
         for (let i = 0; i < nSegments; ++i) {
             let tPts: cc.Vec2[] = [];
             let tPoly: cc.Vec2[] = [];
@@ -60,10 +64,11 @@ export default class DrawLineTest extends cc.Component {
             tPoly[1] = tPts[0].add(tVecNormals[i].mul(-2));
             tPoly[2] = tPts[1].add(tVecNormals[i + 1].mul(-2));
             tPoly[3] = tPts[1].add(tVecNormals[i + 1].mul(2));
-           
-            let collider = newRootNode.addComponent("cc.PhysicsPolygonCollider").points = tPoly;
+
+            collider = newRootNode.addComponent("cc.PhysicsPolygonCollider").points = tPoly;
 
         }
+        // console.log(collider)
         this.node.addChild(newRootNode);
     }
 
@@ -87,8 +92,10 @@ export default class DrawLineTest extends cc.Component {
         for (let i = 0; i < pots.length - 1; ++i) {
             let vec1 = pots[i].sub(pots[i + 1]);
             let temp1 = cc.v2(vec1.y, -vec1.x).normalize();
+            // console.log("角度", vec1.angle(cc.v2(vec1.y, -vec1.x)) * 180 / Math.PI);
             lineNormals.push(temp1);
         }
+        lineNormals.push(lineNormals[0]);
         return lineNormals;
     }
 
@@ -109,7 +116,7 @@ export default class DrawLineTest extends cc.Component {
         }
         let graphic = this._graphics;
         let tLineNormals = this.GetLineNormals(pots);
-        let tVecNormals = this.GetVecNormals(tLineNormals);
+        let tVecNormals = tLineNormals;
         let tPoly = this.GetPolys(pots, tVecNormals);
         graphic.strokeColor = cc.color(0, 255, 0, 255);
         graphic.clear();
@@ -121,6 +128,7 @@ export default class DrawLineTest extends cc.Component {
             graphic.moveTo(pot.x, pot.y);
             graphic.lineTo(normalVec.x, normalVec.y);
             graphic.moveTo(pot.x, pot.y);
+            graphic.stroke();
         };
 
         for (let i = 0; i < tPoly.length; i++) {
@@ -137,30 +145,34 @@ export default class DrawLineTest extends cc.Component {
 
     }
 
-    public DrawLines(pots) {
-        if (pots.length <= 3) {
-            return;
-        }
-        let newNode = new cc.Node();
-        let graphic = newNode.addComponent(cc.Graphics);
-        let tLineNormals = this.GetLineNormals(pots);
-        let tVecNormals = this.GetVecNormals(tLineNormals);
-        let tPoly = this.GetPolys(pots, tVecNormals);
+    // public DrawLines(pots) {
+    //     if (pots.length <= 3) {
+    //         return;
+    //     }
+    //     let newNode = new cc.Node();
+    //     let graphic = newNode.addComponent(cc.Graphics);
+    //     let tLineNormals = this.GetLineNormals(pots);
+    //     let tVecNormals = this.GetVecNormals(tLineNormals);
+    //     let tPoly = this.GetPolys(pots, tVecNormals);
+    //     console.error(pots, tPoly)
+    //     newNode.addComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic;
+    //     newNode.addComponent(cc.PolygonCollider).points = tPoly;
+    //     newNode.addComponent("cc.PhysicsPolygonCollider").points = tPoly;
+    //     newNode.getComponent("cc.PhysicsPolygonCollider").enabled = true;
 
-        newNode.addComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic;
-        newNode.addComponent(cc.PolygonCollider).points = tPoly;
-        newNode.addComponent("cc.PhysicsPolygonCollider").points = tPoly;
-        newNode.getComponent("cc.PhysicsPolygonCollider").enabled = true;
-
-        this.node.addChild(newNode);
-        graphic.strokeColor = cc.color(0, 255, 0, 255);
-        graphic.clear();
-        for (let i = 0; i < pots.length; i++) {
-            let pot = pots[i];
-            graphic.lineTo(pot.x, pot.y);
-            graphic.moveTo(pot.x, pot.y);
-        };
-        graphic.moveTo(0, 0);
-        graphic.stroke();
-    }
+    //     this.node.addChild(newNode);
+    //     graphic.strokeColor = cc.color(0, 255, 0, 255);
+    //     graphic.clear();
+    //     this.enabled = true;
+    //     graphic.lineWidth = 10;
+    //     graphic.strokeColor = cc.Color.RED;
+    //     // graphic.fillColor = cc.Color.RED;
+    //     for (let i = 0; i < pots.length; i++) {
+    //         let pot = pots[i];
+    //         graphic.lineTo(pot.x, pot.y);
+    //         graphic.moveTo(pot.x, pot.y);
+    //     };
+    //     graphic.moveTo(0, 0);
+    //     graphic.stroke();
+    // }
 }
