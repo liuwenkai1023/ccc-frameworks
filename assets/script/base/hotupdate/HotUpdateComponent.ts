@@ -1,12 +1,8 @@
-import Base from "../base/Base";
-import BaseComponent from "../base/BaseComponent";
+
 import HotUpdatePanelComponent from "./HotUpdatePanelComponent";
+import BaseComponent from "../BaseComponent";
 const { ccclass, property, disallowMultiple } = cc._decorator;
 
-// Custom manifest removed the following assets:
-// 1. res/raw-assets/2a/2a40e5e7-4c4a-4350-9e5d-76757755cdd2.png
-// 2. res/raw-assets/2d/2d86a854-63c4-4b90-8b88-a4328b8526c2.png
-// So when custom manifest used, you should be able to find them in downloaded remote assets
 @ccclass
 @disallowMultiple
 export default class HotUpdateCompont extends BaseComponent {
@@ -28,18 +24,9 @@ export default class HotUpdateCompont extends BaseComponent {
     private _checkListener: any = null;
     private _updateListener: any = null;
 
-    // customManifestStr = JSON.stringify({
-    //     "packageUrl": "/remote-assets/", 
-    //     "remoteManifestUrl": "/remote-assets/project.manifest",
-    //     "remoteVersionUrl": "/remote-assets/version.manifest",
-    //     "version": "1.10",
-    //     "assets": {},
-    //     "searchPaths": []
-    // });
 
     // 用于初始化
     protected onLoad() {
-        cc.director.getScheduler().enableForTarget
         super.onLoad();
         //只能在Native中使用热更新
         if (!cc.sys.isNative) {
@@ -84,7 +71,6 @@ export default class HotUpdateCompont extends BaseComponent {
         this.panel.fileProgress.progress = 0;
         this.panel.byteProgress.progress = 0;
     }
-
 
 
     /**

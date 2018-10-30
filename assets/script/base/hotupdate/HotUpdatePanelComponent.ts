@@ -1,5 +1,5 @@
-import Base from "../base/Base";
-import BaseComponent from "../base/BaseComponent";
+import BaseComponent from "../BaseComponent";
+
 const { ccclass, property, disallowMultiple } = cc._decorator;
 
 @ccclass

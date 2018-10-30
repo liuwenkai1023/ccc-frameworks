@@ -9,7 +9,6 @@ import LocalStorageManager from "./utils/storage/StorageManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import ShaderManager from "./ui/shader/ShaderManager";
 
-
 /**
  * 工具类、管理类的整合
  */
@@ -36,9 +35,9 @@ export default class Base {
     public static readonly Base64: Base64 = Base64.instance();
 
 
-     /**
-     *  HttpManager：Http工具类
-     */
+    /**
+    *  HttpManager：Http工具类
+    */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
 
 
@@ -71,6 +70,6 @@ export default class Base {
      *  ShaderManager：Shader效果管理类
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
-
-
 }
+
+Base.window.Base = Base;

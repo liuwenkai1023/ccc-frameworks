@@ -3,7 +3,6 @@
  */
 export default class TimerManager {
 
-    // private _timers = [];
     private static _instance: TimerManager;
 
     private constructor() {
@@ -26,8 +25,8 @@ export default class TimerManager {
     * 初始化
     */
     private init() {
-        // this._timers = [];
-        cc.director.getScheduler().enableForTarget(this);
+        // cc.director.getScheduler().enableForTarget(this);
+        this["_id"] = `Scheduler${new Date().getTime()}`;
     }
 
 
