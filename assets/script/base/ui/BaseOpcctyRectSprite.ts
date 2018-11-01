@@ -1,6 +1,3 @@
-// import BaseComponent from "../BaseComponent";
-
-// //注意:模板创建后的import路径可能不对,还请重新import一次
 
 // const { ccclass, property, disallowMultiple, executeInEditMode, requireComponent } = cc._decorator;
 
@@ -77,7 +74,6 @@
 
 
 //     protected onLoad() {
-//         super.onLoad();
 //         this.sprite = this.node.getComponent(cc.Sprite);
 //         this.defSpriteFrame = this.sprite.spriteFrame;
 //     }
@@ -88,6 +84,12 @@
 //     }
 
 
+//     /**
+//      * 更改精灵纹理指定区域的透明度
+//      * @param sprite  精灵
+//      * @param rect    区域
+//      * @param opacity 透明度
+//      */
 //     public setSpriteRectOpacity(sprite: cc.Sprite, rect: cc.Rect, opacity: number) {
 //         let texture = sprite.spriteFrame.getTexture();
 //         let canvas = document.createElement('canvas');

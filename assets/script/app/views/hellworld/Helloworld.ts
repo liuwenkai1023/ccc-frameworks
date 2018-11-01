@@ -1,5 +1,6 @@
 import BaseComponent from "../../../base/BaseComponent";
 import BASE from "../../../base/BASE";
+import { HotUpdateEventType } from "../../../base/hotupdate/HotUpdate";
 
 const { ccclass, property } = cc._decorator;
 
@@ -10,7 +11,8 @@ export default class HelloWorld extends BaseComponent {
     sprite: cc.Sprite = null;
 
     __receiversData = [
-        ["HELLO"],
+        [HotUpdateEventType[HotUpdateEventType.HOT_NEED]],
+        [HotUpdateEventType[HotUpdateEventType.HOT_UPDATING]],
     ];
 
     protected onLoad() {
@@ -18,79 +20,39 @@ export default class HelloWorld extends BaseComponent {
     }
 
     protected start() {
-        let i = 0;
-        BASE.TimerManager.runLoopTimer(function () {
-            BASE.BroadcastManager.sendBroadcast("HELLO", i++);
-        }, 0.01);
-        // console.time("1")
         BASE.UIManager.showUI("TestUI");
         BASE.UIManager.showUI("TestUI");
         BASE.UIManager.showUI("TestUI");
-        // console.timeEnd("1")
-
     }
 
     protected onDestroy() {
         BASE.UIManager.destoryUI("TestUI");
     }
 
-    public HELLO(data) {
+    public HOT_NEED(data) {
+        this.node.getChildByName("shade").active = true;
+        console.log("1秒后开始进行热更新")
+        this.scheduleOnce(() => {
+            this.broadcastManager.sendBroadcast(HotUpdateEventType[HotUpdateEventType.START_UPDATE], null)
+        }, 1)
+    }
 
-        // if (data == 20) {
-        // console.log(data);
-        //     console.time("2")
-        //     BASE.UIManager.closeUI("TestUI");
-        //     console.timeEnd("2")
-        // }
-
-        // if (data % 100 == 0) {
-        // console.log(data);
-        //     console.time("3")
-
-
-        // }
-        this.node.getChildByName("label").getComponent(cc.Label).string = data + "?"
-        if (data == 100) {
-            BASE.UIManager.destoryUI("TestUI");
-            // BASE.UIManager.closeUI("TestUI");
-        } else if (data < 100) {
-            BASE.UIManager.showUI("TestUI", data + "?");
-        }
-        //     console.log(data);
-        //     console.time("4")
-        //     BASE.UIManager.closeUI("TestUI");
-        //     console.timeEnd("4")
-        // }
-
-        // if (data == 100) {
-        //     console.log(data);
-        //     console.time("5")
-        //     BASE.UIManager.showUI("TestUI");
-        //     console.timeEnd("5")
-        // }
-
-        // if (data == 120) {
-        //     console.log(data);
-        //     console.time("6")
-        //     BASE.UIManager.closeUI("TestUI");
-        //     console.timeEnd("6")
-        // }
-
-        // if (data == 150) {
-        //     console.log(data);
-        //     console.time("7")
-        //     BASE.UIManager.showUI("TestUI");
-        //     console.timeEnd("7")
-        // }
-
-        // if (data == 200) {
-        //     console.time("8")
-        //     BASE.UIManager.destoryUI("TestUI");
-        //     console.timeEnd("8")
-        // }
-
-
-        // console.log("BROADCAST_HELLO", 1);
+    public async HOT_UPDATING(data) {
+        await 0;
+        let event = data;
+        let format = '总下载进度:%s\%, 文件下载:%d/%d, 当前文件下载进度:%s\%,  已下载字节:%d/%d, %s';
+        console.log(
+            cc.js.formatStr(
+                format,
+                (event.getPercent() * 100).toFixed(2),
+                event.getDownloadedFiles(),
+                event.getTotalFiles(),
+                (event.getPercentByFile() * 100).toFixed(2),
+                event.getDownloadedBytes(),
+                event.getTotalBytes(),
+                event.getMessage()
+            )
+        );
     }
 
 }

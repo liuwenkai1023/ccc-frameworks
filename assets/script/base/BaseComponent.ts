@@ -13,7 +13,7 @@ export default abstract class BaseComponent extends cc.Component {
     /**
      * 广播接收者配置
      */
-    protected __receiversData: Array<Array<string>>;
+    protected __receiversData: Array<Array<string | Function>>;
 
 
     /**
@@ -42,7 +42,7 @@ export default abstract class BaseComponent extends cc.Component {
         let receiverDatas = this.__receiversData ? this.__receiversData : [];
         for (const receiverData of receiverDatas) {
             this.broadcastManager.newAndRegisterReceiver(
-                receiverData[0],
+                receiverData[0].toString(),
                 receiverData[1] ? receiverData[1] : (
                     this[receiverData[0].toString()] ? this[receiverData[0].toString()].bind(this) : null
                 )

@@ -12,25 +12,25 @@ export default class TestUI extends ViewBase {
     private label: cc.Label;
 
     protected onLoad(view: cc.Node) {
-        console.log("onLoad")
+        // console.log("onLoad")
         // this.label = <cc.Label>this.bindMap.label;
     }
 
     protected onShow() {
-        console.log("onShow")
+        // console.log("onShow")
     }
 
     public onShowed(data?: any | void) {
-        console.log("onShowed")
+        // console.log("onShowed")
         // this.label.string = data;
     }
 
     protected onHided() {
-        console.log("onHided")      
+        // console.log("onHided")      
     }
 
     protected onDestory() {
-        console.log("onDestory")
+        // console.log("onDestory")
     }
 
 }

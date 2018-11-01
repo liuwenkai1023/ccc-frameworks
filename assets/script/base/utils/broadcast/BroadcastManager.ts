@@ -24,17 +24,6 @@ export default class BroadcastManager {
         return this._instance
     }
 
-    // /**
-    //  * 为节点注册广播组件
-    //  * @param target 节点
-    //  */
-    // public registerBrocastComponent(target: cc.Node): BroadcastComponent {
-    //     let component = target.getComponent(BroadcastComponent);
-    //     if (!component) {
-    //         component = target.addComponent(BroadcastComponent);
-    //     }
-    //     return component;
-    // }
 
     /**
      * 发送广播
