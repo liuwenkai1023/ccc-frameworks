@@ -9,7 +9,7 @@ const { ccclass, property, requireComponent, disallowMultiple, executeInEditMode
 export default class BaseGIFSprite extends cc.Component {
 
     @property({ visible: false })
-    private _defaultSpriteFrame: cc.SpriteFrame;
+    private _defaultSpriteFrame: cc.SpriteFrame = null;
 
     @property({ visible: false })
     private _path: cc.RawAsset = null;
