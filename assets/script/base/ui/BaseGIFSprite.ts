@@ -12,20 +12,17 @@ export default class BaseGIFSprite extends cc.Component {
     private _defaultSpriteFrame: cc.SpriteFrame = null;
 
     @property({ visible: false })
-    private _path: cc.RawAsset = null;
-    // _oldTime: number;
+    private _path: cc.Asset = null;
 
-    @property({ type: cc.RawAsset })
-    set path(path) {
-        if (!path || (path && path.toString().length == 0)) {
-            return;
-        }
+    @property({ type: cc.Asset })
+    get path() { return this._path; }
+    set path(path: cc.Asset) {
+        if (path == null) return;
         this._path = path;
         this.clear();
         this.applayChange();
     }
 
-    get path() { return this._path; }
 
     public sprite: cc.Sprite = null;
     public _inited: boolean;
