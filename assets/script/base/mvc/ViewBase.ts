@@ -13,7 +13,7 @@ export default abstract class ViewBase {
 
     protected RESOURCE_FILENAME: string;
     protected RESOURCE_BINDING: Array<Array<any>>;
-    protected RECEIVER_CONFIG: Array<Array<any>>;
+    protected RECEIVER_CONFIG: Array<any | Array<any>>;
 
     /**
      * 得到计时器工具类
@@ -141,7 +141,10 @@ export default abstract class ViewBase {
      */
     private __initReceiver() {
         let receiverDatas = this.RECEIVER_CONFIG ? this.RECEIVER_CONFIG : [];
-        for (const receiverData of receiverDatas) {
+        for (let receiverData of receiverDatas) {
+            if (typeof receiverData == "string") {
+                receiverData = [receiverData];
+            }
             this.broadcastManager.newAndRegisterReceiver(
                 receiverData[0],
                 receiverData[1] ? receiverData[1] : (
