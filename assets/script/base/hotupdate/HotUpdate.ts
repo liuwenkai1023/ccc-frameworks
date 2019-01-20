@@ -259,6 +259,6 @@ export default class HotUpdate extends BaseComponent {
 
 
     protected onDestroy() {
-        this._assetManager.setEventCallback(null);
+        this._assetManager && this._assetManager.setEventCallback(null);
     }
 }
