@@ -49,17 +49,17 @@ export default class UIManager {
      * @param UIName UI的名字 
      * @param data 展示UI时传递的数据
      * @param handler UI展示完成的回调
+     * @param parentNode UI的父节点
      */
-    public showUI(UIName: string, data?: any | void, handler?: Function | void) {
+    public showUI(UIName: string, data?: any | void, handler?: Function | void, parentNode?: cc.Node | void) {
         let UIModel = this._UIMap[UIName];
         if (!UIModel) return;
         let callback = () => {
             if (handler) handler(UIModel);
-            UIModel.show();
-            UIModel.onShowed(data);
+            UIModel.show(data);
         }
         if (!UIModel.isLoaded) {
-            UIModel.onCreate(callback);
+            UIModel.onCreate(callback, parentNode);
         } else {
             callback();
         }

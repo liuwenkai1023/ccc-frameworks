@@ -1,18 +1,19 @@
 import BroadcastComponent from "../utils/BroadcastComponent";
 import TimerManager from "../utils/timer/TimerManager";
 import BASE from "../BASE";
+import Life from "./Lifecycle";
 
 export default abstract class ViewBase {
 
     private __bindMap: any;
     private __rootNode: cc.Node;
+    private __bLoading: boolean;
     private __timerManager: TimerManager;
     private __broadcastManager: BroadcastComponent;
 
     protected RESOURCE_FILENAME: string;
     protected RESOURCE_BINDING: Array<Array<any>>;
     protected RECEIVER_CONFIG: Array<Array<any>>;
-
 
     /**
      * 得到计时器工具类
@@ -81,10 +82,13 @@ export default abstract class ViewBase {
      * @param handler 初始化回调
      */
     public onCreate(handler?: Function | void, parentNode?: cc.Node | void) {
-        if (!this.RESOURCE_FILENAME) return;
+        if (!this.RESOURCE_FILENAME || this.__bLoading) return;
         // 杜绝连续创建
         if (this.rootNode) { if (handler) handler(); return; }
+        this.__bLoading = true;
+        this.onLoad();
         cc.loader.loadRes(this.RESOURCE_FILENAME, (error, prefab) => {
+            this.__bLoading = false;
             if (error) return;
             // 杜绝连续创建
             if (this.rootNode) { if (handler) handler(); return; }
@@ -94,8 +98,7 @@ export default abstract class ViewBase {
             if (!parent) return;
             parent.addChild(rootNode);
             this.__rootNode = rootNode;
-            this.createBinding();
-            this.onLoad(rootNode);
+            this.onCreateView(rootNode);
             if (handler) handler();
         });
         return this;
@@ -112,11 +115,12 @@ export default abstract class ViewBase {
             let nodePath = bind[1];
             let component = bind[2];
             if (varName && nodePath) {
-                this.__bindMap[varName] = cc.find(nodePath, this.__rootNode);
+                this.__bindMap[varName] = this.findView(nodePath);
                 if (this.__bindMap[varName] && component) {
                     this.__bindMap[varName] = this.__bindMap[varName].getComponent(component);
                     this.__bindMap[varName];
                 }
+                this[varName] = this.__bindMap[varName];
             }
         });
         this.bindComponent();
@@ -129,45 +133,6 @@ export default abstract class ViewBase {
     private bindComponent(): any {
         this.__broadcastManager = this.__rootNode.addComponent(BroadcastComponent);
         this.__initReceiver();
-    }
-
-
-    /**
-     * 展示界面UI
-     */
-    public show() {
-        if (!this.rootNode.active) {
-            this.rootNode.active = true;
-            this.timerManager.resume();
-        }
-        this.onShow();
-    }
-
-
-    /**
-     * 隐藏界面UI
-     */
-    public hide() {
-        if (this.rootNode.active) {
-            this.rootNode.active = false;
-            this.timerManager.pause();
-        }
-        this.onHided();
-    }
-
-
-    /**
-     * 销毁界面UI,但保留model
-     */
-    public destory() {
-        this.onDestory();
-        this.rootNode.active = false;
-        this.timerManager.pause();
-        this.timerManager.removeAllTimers();
-        this.broadcastManager.removeAllBroadcastReceiver();
-        this.rootNode.removeFromParent();
-        this.rootNode.removeAllChildren();
-        this._init();
     }
 
 
@@ -187,32 +152,82 @@ export default abstract class ViewBase {
     }
 
 
-    // 下面的抽象方法可以理解为生命周期回调
+    /**
+     * 寻找控件
+     * @param sPath 相对路径
+     * @param referenceNode 相对节点
+     */
+    public findView(sPath: string, referenceNode: cc.Node = this.__rootNode) {
+        return cc.find(sPath, referenceNode);
+    }
+
+
+    /**
+     * 展示界面UI
+     */
+    public show(data?: any) {
+        if (!this.rootNode.active) {
+            this.rootNode.active = true;
+            this.timerManager.resume();
+        }
+        this.onShowed(data);
+    }
+
+
+    /**
+     * 隐藏界面UI
+     */
+    public hide() {
+        if (this.rootNode.active) {
+            this.rootNode.active = false;
+            this.timerManager.pause();
+        }
+        this.onHided();
+    }
+
+
+    /**
+     * 销毁界面UI,但保留model
+     */
+    public destory() {
+        this.timerManager && this.timerManager.pause();
+        this.timerManager && this.timerManager.removeAllTimers();
+        this.broadcastManager && this.broadcastManager.removeAllBroadcastReceiver();
+        let rootNode = this.rootNode;
+        // this._init();
+        if (rootNode) {
+            if (rootNode.isValid) {
+                rootNode.active = false;
+                rootNode.removeFromParent();
+                rootNode.removeAllChildren();
+            }
+            this.onDestroy();
+        }
+        this._init();
+    }
+
 
     /**
      * 资源加载完毕
      * @param view 资源视图cc.Node
      */
-    protected abstract onLoad(view: cc.Node);
+    private onCreateView(view: cc.Node) {
+        view.addComponent(Life).viewBase = this;
+        this.createBinding();
+        this.onLoaded();
+        this.onStart(view);
+        // this.show();
+    };
 
-    /**
-     * 展示UI时回调
-     */
-    protected abstract onShow();
 
-    /**
-     * 展示UI完成时回调
-     * @param data 
-     */
-    public abstract onShowed(data?: any | void);
-
-    /**
-     * 隐藏UI时回调
-     */
+    // 生命周期回调
+    protected abstract onLoad();
+    protected abstract onLoaded();
+    protected abstract onStart(view?: cc.Node);
+    protected abstract onShowed(data?: any);
     protected abstract onHided();
+    public abstract onDestroy();
+    public update(dt?: number) { };
+    public lateUpdate() { };
 
-    /**
-     * 销毁时回调
-     */
-    protected abstract onDestory();
 }
