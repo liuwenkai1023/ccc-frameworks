@@ -1,11 +1,12 @@
 import BroadcastComponent from "../utils/BroadcastComponent";
 import TimerManager from "../utils/timer/TimerManager";
 import BASE from "../BASE";
-import Life from "./Lifecycle";
+import Lifecycle from "./Lifecycle";
 
 export default abstract class ViewBase {
 
     private __bindMap: any;
+    private __targets: Array<cc.Node>;
     private __rootNode: cc.Node;
     private __bLoading: boolean;
     private __timerManager: TimerManager;
@@ -14,6 +15,7 @@ export default abstract class ViewBase {
     protected RESOURCE_FILENAME: string;
     protected RESOURCE_BINDING: Array<Array<any>>;
     protected RECEIVER_CONFIG: Array<any | Array<any>>;
+
 
     /**
      * 得到计时器工具类
@@ -74,6 +76,7 @@ export default abstract class ViewBase {
         this.__timerManager = null;
         this.__rootNode = null;
         this.__bindMap = {};
+        this.__targets = [];
     }
 
 
@@ -83,19 +86,22 @@ export default abstract class ViewBase {
      */
     public onCreate(handler?: Function | void, parentNode?: cc.Node | void) {
         if (!this.RESOURCE_FILENAME || this.__bLoading) return;
-        // 杜绝连续创建
-        if (this.rootNode) { if (handler) handler(); return; }
+        if (this.rootNode) {
+            handler && handler();
+            return;
+        }
         this.__bLoading = true;
         this.onLoad();
         cc.loader.loadRes(this.RESOURCE_FILENAME, (error, prefab) => {
             this.__bLoading = false;
             if (error) return;
-            // 杜绝连续创建
-            if (this.rootNode) { if (handler) handler(); return; }
+            if (this.rootNode) {
+                handler && handler();
+                return;
+            }
             let rootNode = <cc.Node>cc.instantiate(prefab);
             if (!rootNode) return;
             let parent = parentNode ? parentNode : cc.director.getScene();
-            if (!parent) return;
             parent.addChild(rootNode);
             this.__rootNode = rootNode;
             this.onCreateView(rootNode);
@@ -161,7 +167,9 @@ export default abstract class ViewBase {
      * @param referenceNode 相对节点
      */
     public findView(sPath: string, referenceNode: cc.Node = this.__rootNode) {
-        return cc.find(sPath, referenceNode);
+        let node = cc.find(sPath, referenceNode);
+        // this.__targets.indexOf(node) == -1 && this.__targets.push(node);
+        return node;
     }
 
 
@@ -171,21 +179,21 @@ export default abstract class ViewBase {
     public show(data?: any) {
         if (!this.rootNode.active) {
             this.rootNode.active = true;
-            this.timerManager.resume();
+            this.resume();
         }
         this.onShowed(data);
     }
 
 
     /**
-     * 隐藏界面UI
+     * 关闭界面UI
      */
-    public hide() {
+    public close() {
         if (this.rootNode.active) {
             this.rootNode.active = false;
-            this.timerManager.pause();
+            this.pause();
         }
-        this.onHided();
+        this.onClosed();
     }
 
 
@@ -197,10 +205,9 @@ export default abstract class ViewBase {
         this.timerManager && this.timerManager.removeAllTimers();
         this.broadcastManager && this.broadcastManager.removeAllBroadcastReceiver();
         let rootNode = this.rootNode;
-        // this._init();
         if (rootNode) {
             if (rootNode.isValid) {
-                rootNode.active = false;
+                this.close();
                 rootNode.removeFromParent();
                 rootNode.removeAllChildren();
             }
@@ -211,26 +218,62 @@ export default abstract class ViewBase {
 
 
     /**
+     * 获取当前UI上的所有节点
+     */
+    public targets(target: cc.Node) {
+        (this.__targets.indexOf(target) == -1) && this.__targets.push(target);
+        target.children.forEach(element => {
+            this.targets(element);
+        });
+        return this.__targets;
+    }
+
+
+    /**
+     * 暂停当前UI所有Timer和Action运行
+     */
+    protected pause(bForcePauseAll: boolean = false) {
+        console.log("pause");
+        this.timerManager.pause();
+        if (!bForcePauseAll) {
+            this.targets(this.rootNode);
+            cc.director.getActionManager().pauseTargets(this.__targets);
+        } else {
+            this.__targets = cc.director.getActionManager().pauseAllRunningActions();
+        }
+    }
+
+
+    /**
+     * 恢复当前UI所有Timer和Action
+     */
+    protected resume() {
+        console.log("resume");
+        cc.director.getActionManager().resumeTargets(this.__targets);
+        this.timerManager.resume();
+    }
+
+
+    /**
      * 资源加载完毕
      * @param view 资源视图cc.Node
      */
     private onCreateView(view: cc.Node) {
-        view.addComponent(Life).viewBase = this;
+        view.addComponent(Lifecycle).viewBase = this;
         this.createBinding();
         this.onLoaded();
         this.onStart(view);
-        // this.show();
     };
 
 
     // 生命周期回调
-    protected abstract onLoad();
-    protected abstract onLoaded();
-    protected abstract onStart(view?: cc.Node);
-    protected abstract onShowed(data?: any);
-    protected abstract onHided();
-    public abstract onDestroy();
-    public update(dt?: number) { };
-    public lateUpdate() { };
+    abstract onLoad();
+    abstract onLoaded();
+    abstract onStart(view?: cc.Node);
+    abstract onShowed(data?: any);
+    abstract onClosed();
+    abstract onDestroy();
+    update(dt?: number) { };
+    lateUpdate() { };
 
 }

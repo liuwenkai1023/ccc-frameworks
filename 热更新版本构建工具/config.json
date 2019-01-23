@@ -1,9 +1,0 @@
-{
-	"url": "http://assets-remote.oss-cn-hangzhou.aliyuncs.com/hotupdate-test/assets-remote/",
-	"dest": "../assets-remote/",
-	"src": "../build/jsb-link/",
-	"version": "1.0.0",
-	"searchPaths": [
-		"assets-remote"
-	]
-}

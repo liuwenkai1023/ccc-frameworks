@@ -74,7 +74,7 @@ export default class UIManager {
         let UIModel = this._UIMap[UIName];
         if (!UIModel) return false;
         if (UIModel.isLoaded) {
-            UIModel.hide();
+            UIModel.close();
             return true;
         }
         return false;
