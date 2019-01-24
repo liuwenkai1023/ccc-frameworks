@@ -1,7 +1,7 @@
 import BroadcastComponent from "../utils/BroadcastComponent";
 import TimerManager from "../utils/timer/TimerManager";
-import BASE from "../BASE";
 import Lifecycle from "./Lifecycle";
+import BASE from "../BASE";
 
 export default abstract class ViewBase {
 
@@ -231,9 +231,10 @@ export default abstract class ViewBase {
 
     /**
      * 暂停当前UI所有Timer和Action运行
+     * @param bForcePauseAll 强制暂停整个场景运行的Action
      */
     protected pause(bForcePauseAll: boolean = false) {
-        console.log("pause");
+        // console.log("pause");
         this.timerManager.pause();
         if (!bForcePauseAll) {
             this.targets(this.rootNode);
@@ -248,7 +249,7 @@ export default abstract class ViewBase {
      * 恢复当前UI所有Timer和Action
      */
     protected resume() {
-        console.log("resume");
+        // console.log("resume");
         cc.director.getActionManager().resumeTargets(this.__targets);
         this.timerManager.resume();
     }

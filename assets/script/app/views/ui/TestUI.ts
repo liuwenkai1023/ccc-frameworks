@@ -1,13 +1,12 @@
-import ViewBase from "../../../base/mvc/ViewBase";
 import BASE from "../../../base/BASE";
+import ViewBase from "../../../base/mvc/ViewBase";
+
 
 export default class TestUI extends ViewBase {
 
     RESOURCE_FILENAME = "prefab/testUI";
 
-    RECEIVER_CONFIG = [
-        "HELLO",
-    ];
+    RECEIVER_CONFIG = ["HELLO",];
 
     RESOURCE_BINDING = [
         ["label", "testLabel", cc.Label]
@@ -25,34 +24,18 @@ export default class TestUI extends ViewBase {
 
     public onStart() {
         console.log("[onStart ]", "初始化当前UI逻辑、动画等");
-        this.label.node.runAction(cc.repeatForever(cc.sequence([
-            cc.scaleTo(0.1, 1.05),
-            cc.scaleTo(0.1, 1),
-        ])));
-        this.timerManager.runDelayTimer(() => {
-            this.broadcastManager.sendBroadcast("HELLO", "通过广播更新了Label");
-            this.pause();
-            // cc.director.loadScene("helloworld");
-        }, 3);
-        BASE.TimerManager.runDelayTimer(() => {
-            this.resume();
-        }, 6); 
-        BASE.TimerManager.runDelayTimer(() => {
-            this.pause(true);
-        }, 9);
     }
 
-    public onDestroy() {
-        console.log("[onDestroy]", "已销毁当前UI");
+    public onShowed(data?: any) {
+        console.log("[onShowed]", "已显示当前UI");
     }
 
     public onClosed() {
         console.log("[onHided ]", "已关闭当前UI");
     }
 
-    public onShowed(data?: any) {
-        console.log("[onShowed]", "已显示当前UI");
-        this.label.string = "RESOURCE_BINDING里声明的对象可以直接使用";
+    public onDestroy() {
+        console.log("[onDestroy]", "已销毁当前UI");
     }
 
     public update(dt: number) {
@@ -61,9 +44,6 @@ export default class TestUI extends ViewBase {
     public lateUpdate() {
     }
 
-    HELLO(data) {
-        this.label.string = data;
-    }
 }
 
 BASE.UIManager.registerUI("TestUI", new TestUI())

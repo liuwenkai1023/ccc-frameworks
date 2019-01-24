@@ -84,7 +84,7 @@ export default class AudioManager {
      * 暂停播放的音频
      */
     public pauseAll() {
-        console.log("cc.audioEngine.pauseAll");
+        // console.log("cc.audioEngine.pauseAll");
         cc.audioEngine.pauseAll();
     }
 
@@ -93,7 +93,7 @@ export default class AudioManager {
     * 恢复播放暂停的音频
     */
     public resumeAll() {
-        console.log("cc.audioEngine.resumeAll");
+        // console.log("cc.audioEngine.resumeAll");
         cc.audioEngine.resumeAll();
     }
 

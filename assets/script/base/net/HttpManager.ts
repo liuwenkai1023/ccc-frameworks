@@ -1,19 +1,16 @@
 import NetConfig from "./config/NetConfig";
 
 export interface HttpParamsMap { [key: string]: any };
-export interface HttpResponseHanler { (response: Response) }
-export interface HttpResponse { seq: number, request: string, event: string, data: string }
+export interface HttpResponseHanler { (response: HttpResponse) };
+export interface HttpResponse { seq: number, request: string, event: string, data: string };
 
 export default class HttpManager {
 
     // SEQ请求标记,递增
     private SEQ: number = 1;
-
     // HTTP请求地址
     private HTTP_HOST: string = NetConfig.HTTP_HOST;
-
     private static _instance: HttpManager;
-
 
     private constructor() {
     }
@@ -100,7 +97,6 @@ export default class HttpManager {
     private registerScriptHandler(seq, xhr, handler, url, method, data) {
         // 打印请求
         // console.info("【请求】【SEQ_%d】【%s】【%s】PARAMS=", seq, method, url, data)
-
         // 默认回调
         handler = handler || function (response: HttpResponse) {
             // console.warn("【警告】你还没有为当前请求'【SEQ_%d】【%s】'设置回调函数！", seq, method)
