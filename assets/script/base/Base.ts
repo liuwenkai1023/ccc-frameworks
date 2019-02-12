@@ -1,14 +1,15 @@
 import WxUtil from "./utils/wx/WxUtil";
+import HttpManager from "./net/HttpManager";
+import SocketManager from "./net/SocketManager";
+import LocalStorageManager from "./utils/storage/StorageManager";
+import UIManager from "./mvc/UIManager";
+import Loader from "./utils/load/Loader";
 import FileUtils from "./utils/storage/FileUtils";
 import Base64 from "./utils/base64/Base64";
 import TimerManager from "./utils/timer/TimerManager";
-import HttpManager from "./net/HttpManager";
 import AudioManager from "./utils/audio/AudioMananger";
-import SocketManager from "./net/SocketManager";
-import LocalStorageManager from "./utils/storage/StorageManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import ShaderManager from "./ui/shader/ShaderManager";
-import UIManager from "./mvc/UIManager";
 
 /**
  * 工具类、管理类的整合
@@ -74,6 +75,11 @@ export default class BASE {
      * UIManager: UIManager管理类适用于mvc模式中管理UI
      */
     public static readonly UIManager: UIManager = UIManager.instance();
+
+    /**
+     * Loader管理
+     */
+    public static readonly Loader: Loader = new Loader();
 
 }
 
