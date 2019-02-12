@@ -8,7 +8,6 @@ import SocketManager from "./net/SocketManager";
 import LocalStorageManager from "./utils/storage/StorageManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import ShaderManager from "./ui/shader/ShaderManager";
-import Loader from "./utils/load/Loader";
 
 
 /**
@@ -37,9 +36,9 @@ export default class Base {
     public static readonly Base64: Base64 = Base64.instance();
 
 
-    /**
-    *  HttpManager：Http工具类
-    */
+     /**
+     *  HttpManager：Http工具类
+     */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
 
 
@@ -73,7 +72,7 @@ export default class Base {
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
 
-    public static readonly Loader: Loader = new Loader();
+
 }
 
 
