@@ -1,4 +1,4 @@
-export default abstract class AdapterInterface {
+export default abstract class Adapter {
 
     // public abstract test();
 

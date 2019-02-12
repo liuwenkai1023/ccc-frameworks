@@ -29,7 +29,7 @@ export default class FileUtils {
      * 得到instance单例
      */
     public static instance() {
-        if (!cc.sys.isNative) { console.warn('当前非原生平台，FileUtils相关方法将不可用'); }
+        if (!cc.sys.isNative) { console.warn('警告:当前非原生平台，FileUtils相关方法将不可用'); }
         if (!this._instance) {
             this._instance = new FileUtils();
         }

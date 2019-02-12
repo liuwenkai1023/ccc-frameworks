@@ -1,1 +1,4 @@
-// tpl
+var MyApp = {
+
+}
+export default MyApp;

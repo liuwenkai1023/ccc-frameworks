@@ -97,6 +97,14 @@ export default class BroadcastComponent extends cc.Component {
 
     //销毁时注销所以广播接收者
     public onDestroy() {
+        this.removeAllBroadcastReceiver();
+    }
+
+    
+    /**
+     * 移除当前组件所有广播接收
+     */
+    public removeAllBroadcastReceiver() {
         for (const receiver of this._broadcastReceivers) {
             if (receiver != null) {
                 this.removeBroadcastReceiver(receiver);

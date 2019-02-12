@@ -3,8 +3,8 @@
  */
 export default class TimerManager {
 
-    // private _timers = [];
     private static _instance: TimerManager;
+    private static __id: number = new Date().getTime();
 
     private constructor() {
         this.init();
@@ -18,7 +18,7 @@ export default class TimerManager {
         if (!TimerManager._instance) {
             TimerManager._instance = new TimerManager()
         }
-        return this._instance
+        return this._instance;
     }
 
 
@@ -26,8 +26,17 @@ export default class TimerManager {
     * 初始化
     */
     private init() {
-        // this._timers = [];
-        cc.director.getScheduler().enableForTarget(this);
+        // cc.director.getScheduler().enableForTarget(this);
+        this["_id"] = `Scheduler${TimerManager.__id++}`;
+    }
+
+
+    /**
+     * 得到一个全新的TimerManager
+     * 不怎么建议这样使用
+     */
+    public new() {
+        return new TimerManager();
     }
 
 
@@ -59,8 +68,8 @@ export default class TimerManager {
      * @param intervlTime 间隔时间
      * @param delay 延迟时间执行
      */
-    public runLoopTimer(handler: (dt: number) => void, intervlTime: number = 0.01, delay?: number) {
-        return this.schedule(handler, intervlTime | 0.01, cc.macro.REPEAT_FOREVER, delay | 0, false);
+    public runLoopTimer(handler: (dt: number) => void, intervlTime: number = 0.02, delay?: number) {
+        return this.schedule(handler, intervlTime ? intervlTime : 0.02, cc.macro.REPEAT_FOREVER, delay ? delay : 0, false);
     }
 
 

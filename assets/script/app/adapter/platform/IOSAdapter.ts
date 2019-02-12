@@ -1,6 +1,6 @@
-import AdapterInterface from "./AdapterInterface";
+import Adapter from "./Adapter";
 
-export default class IOSAdapter extends AdapterInterface {
+export default class IOSAdapter extends Adapter {
 
 
 }

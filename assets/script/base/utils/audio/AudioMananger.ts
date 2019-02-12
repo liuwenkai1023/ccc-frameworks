@@ -55,11 +55,13 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playEffect(url) {
+        let id;
         (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
-                cc.audioEngine.playEffect(clip, false);
+                id = cc.audioEngine.playEffect(clip, false);
             }
         });
+        return id;
     }
 
 
@@ -68,11 +70,13 @@ export default class AudioManager {
      * @param url 音频地址
      */
     public playMusic(url) {
+        let id;
         (<any>cc.AudioClip)._loadByUrl(this.getAudioUrl(url), function (err, clip) {
             if (clip) {
-                cc.audioEngine.playMusic(clip, true);
+                id = cc.audioEngine.playMusic(clip, true);
             }
         });
+        return id;
     }
 
 
@@ -80,7 +84,7 @@ export default class AudioManager {
      * 暂停播放的音频
      */
     public pauseAll() {
-        console.log("cc.audioEngine.pauseAll");
+        // console.log("cc.audioEngine.pauseAll");
         cc.audioEngine.pauseAll();
     }
 
@@ -89,7 +93,7 @@ export default class AudioManager {
     * 恢复播放暂停的音频
     */
     public resumeAll() {
-        console.log("cc.audioEngine.resumeAll");
+        // console.log("cc.audioEngine.resumeAll");
         cc.audioEngine.resumeAll();
     }
 

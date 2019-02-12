@@ -1,19 +1,20 @@
 import WxUtil from "./utils/wx/WxUtil";
+import HttpManager from "./net/HttpManager";
+import SocketManager from "./net/SocketManager";
+import LocalStorageManager from "./utils/storage/StorageManager";
+import UIManager from "./mvc/UIManager";
+import Loader from "./utils/load/Loader";
 import FileUtils from "./utils/storage/FileUtils";
 import Base64 from "./utils/base64/Base64";
 import TimerManager from "./utils/timer/TimerManager";
-import HttpManager from "./net/HttpManager";
 import AudioManager from "./utils/audio/AudioMananger";
-import SocketManager from "./net/SocketManager";
-import LocalStorageManager from "./utils/storage/StorageManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import ShaderManager from "./ui/shader/ShaderManager";
-
 
 /**
  * 工具类、管理类的整合
  */
-export default class Base {
+export default class BASE {
 
     /**
      *  全局模块window
@@ -35,12 +36,10 @@ export default class Base {
      */
     public static readonly Base64: Base64 = Base64.instance();
 
-
-     /**
-     *  HttpManager：Http工具类
-     */
+    /**
+    *  TimerManager：TimerManager计时器工具类
+    */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
-
 
     /**
      *  HttpManager：Http工具类
@@ -72,7 +71,16 @@ export default class Base {
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
 
+    /**
+     * UIManager: UIManager管理类适用于mvc模式中管理UI
+     */
+    public static readonly UIManager: UIManager = UIManager.instance();
+
+    /**
+     * Loader管理
+     */
+    public static readonly Loader: Loader = new Loader();
 
 }
 
-
+(<any>window).BASE = BASE;

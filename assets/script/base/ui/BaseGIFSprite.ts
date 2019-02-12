@@ -9,23 +9,20 @@ const { ccclass, property, requireComponent, disallowMultiple, executeInEditMode
 export default class BaseGIFSprite extends cc.Component {
 
     @property({ visible: false })
-    private _defaultSpriteFrame: cc.SpriteFrame;
+    private _defaultSpriteFrame: cc.SpriteFrame = null;
 
     @property({ visible: false })
-    private _path: cc.RawAsset = null;
-    _oldTime: number;
+    private _path: cc.Asset = null;
 
-    @property({ type: cc.RawAsset })
-    set path(path) {
-        if (!path || (path && path.toString().length == 0)) {
-            return;
-        }
+    @property({ type: cc.Asset })
+    get path() { return this._path; }
+    set path(path: cc.Asset) {
+        if (path == null) return;
         this._path = path;
         this.clear();
         this.applayChange();
     }
 
-    get path() { return this._path; }
 
     public sprite: cc.Sprite = null;
     public _inited: boolean;
@@ -73,9 +70,10 @@ export default class BaseGIFSprite extends cc.Component {
         // }
     }
 
-    public setDefaultSpriteFrame(spriteFrame) {
+    public setDefaultSpriteFrame(spriteFrame: cc.SpriteFrame) {
         // console.log("setDefaultSpriteFrame", spriteFrame);
         this.sprite.spriteFrame = spriteFrame, true;
+        // this.sprite.spriteFrame.setTexture(spriteFrame.getTexture())
     }
 
 
@@ -93,7 +91,9 @@ export default class BaseGIFSprite extends cc.Component {
                     ),
                     cc.callFunc(
                         function () {
-                            this.sprite.spriteFrame = this._spriteFrames[this._index++ % this._spriteFrames.length], true;
+                            let sp = this._spriteFrames[this._index++ % this._spriteFrames.length];
+                            this.sprite.spriteFrame = sp;
+                            // this.sprite.spriteFrame.setTexture(sp.getTexture());
                         }.bind(this)
                     )
                 ]
