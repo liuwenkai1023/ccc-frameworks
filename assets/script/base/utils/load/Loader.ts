@@ -2,8 +2,8 @@ import LoaderItem from "./LoadItem";
 
 export default class Loader {
     private _parentLoader: Loader = null;
-    private _subLoaders: Loader[] = null;
-    private _loadItems: LoaderItem[] = null;
+    private _subLoaders: Array<Loader> = [];
+    private _loadItems: Array<LoaderItem> = [];
     private _released: boolean = false;
 
     /**
@@ -33,34 +33,7 @@ export default class Loader {
      */
     private _removeSubLoader(loader: Loader) {
         let index: number = this._subLoaders.indexOf(loader);
-        if (index >= 0) {
-            this._subLoaders.splice(index, 1);
-        }
-    }
-
-    /**
-     * 加载资源
-     * @param urls            加载资源项
-     * @param type            加载资源类型
-     * @param successHandler  加载成功回调
-     * @param errorHandler    加载失败回调
-     * @param progressHandler 加载进度回调
-     */
-    public load(urls: string[] | string, type: typeof cc.Asset, successHandler?: SuccessHandler, errorHandler?: ErrorHandler, progressHandler?: ProgressHandler) {
-        let item: LoaderItem = new LoaderItem(urls, type);
-        item.load((res: any[]) => {
-            if (this._released || item.isReleased) {
-                // 释放刚加载的资源，需在下一Tick释放，保证其它加载成功
-                return callInNextTick(() => {
-                    item.releaseWithout(this.rootLoader.getAllResources());
-                });
-            }
-            return successHandler && successHandler(res);
-        }, (error: Error) => {
-            if (this._released) return;
-            errorHandler && errorHandler(error);
-        }, progressHandler);
-        this._loadItems.push(item);
+        (index >= 0) && this._subLoaders.splice(index, 1);
     }
 
     /**
@@ -89,6 +62,31 @@ export default class Loader {
     }
 
     /**
+    * 加载资源
+    * @param urls            加载资源项
+    * @param type            加载资源类型
+    * @param successHandler  加载成功回调
+    * @param errorHandler    加载失败回调
+    * @param progressHandler 加载进度回调
+    */
+    public load(urls: string[] | string, type: typeof cc.Asset, successHandler?: SuccessHandler, errorHandler?: ErrorHandler, progressHandler?: ProgressHandler) {
+        let item: LoaderItem = new LoaderItem(urls, type);
+        item.load((res: any[]) => {
+            if (this._released || item.isReleased) {
+                // 释放刚加载的资源，需在下一Tick释放，保证其它加载成功
+                return this.callInNextTick(() => {
+                    item.releaseWithout(this.rootLoader.getAllResources());
+                });
+            }
+            return successHandler && successHandler(res);
+        }, (error: Error) => {
+            if (this._released) return;
+            errorHandler && errorHandler(error);
+        }, progressHandler);
+        this._loadItems.push(item);
+    }
+
+    /**
      * 得到当前Loader下所有依赖referenceId
      */
     public getAllResources(loader?: Loader): Object {
@@ -114,11 +112,13 @@ export default class Loader {
         return resources;
     }
 
+    callInNextTick(callback: Function, timeout?: number, ...args: any[]) {
+        setTimeout(callback && callback(), timeout, args);
+    }
+
 }
 
-function callInNextTick(callback: Function) {
-    setTimeout(callback && callback(), 0);
-}
+
 
 export interface ErrorHandler { (err: Error) };
 export interface SuccessHandler { (res: any[]) };

@@ -17,11 +17,6 @@ import ShaderManager from "./ui/shader/ShaderManager";
 export default class BASE {
 
     /**
-     *  全局模块window
-     */
-    public static window = <any>window;
-
-    /**
      *  WxUtil：微信相关工具类
      */
     public static readonly WxUtil: WxUtil = WxUtil.instance();
@@ -37,8 +32,8 @@ export default class BASE {
     public static readonly Base64: Base64 = Base64.instance();
 
     /**
-    *  TimerManager：TimerManager计时器工具类
-    */
+     *  TimerManager：TimerManager计时器工具类
+     */
     public static readonly TimerManager: TimerManager = TimerManager.instance();
 
     /**

@@ -1,47 +1,46 @@
 import BASE from "../../../base/BASE";
-import ViewBase from "../../../base/mvc/ViewBase";
+import ViewBaseEX from "../../../base/mvc/ViewBaseEx";
 
 
-export default class TestUI extends ViewBase {
 
-    RESOURCE_FILENAME = "prefab/testUI";
+export default class TestUI extends ViewBaseEX {
 
-    RECEIVER_CONFIG = ["HELLO",];
-
-    RESOURCE_BINDING = [
-        ["label", "testLabel", cc.Label]
-    ];
+    // prefab的路径
+    protected __resourcePath = "prefab/TestUI";
 
     private label: cc.Label;
 
-    public onLoad() {
-        console.log("[onLoad  ]", "初始化数据");
+    protected initData() {
+        // 资源绑定配置
+        this.pushBindingData({ name: "label", path: "testLabel", component: cc.Label });
+        // 广播接收者配置
+        this.pushReceiverData({ name: "HELLO", handler: null });
     }
 
-    public onLoaded() {
-        console.log("[onLoaded]", "初始化当前UI节点、组件以及监听等");
+    protected onLoad() {
+        super.onLoad();
+        this.initData();
     }
 
-    public onStart() {
-        console.log("[onStart ]", "初始化当前UI逻辑、动画等");
+    protected onStart(view?: cc.Node) {
+        super.onStart();
+        this.broadcastManager.sendBroadcast("HELLO", null);
     }
 
-    public onShowed(data?: any) {
-        console.log("[onShowed]", "已显示当前UI");
+    protected onShow(data?: any) {
+        super.onShow();
     }
 
-    public onClosed() {
-        console.log("[onHided ]", "已关闭当前UI");
+    protected onClose() {
+        super.onClose();
     }
 
-    public onDestroy() {
-        console.log("[onDestroy]", "已销毁当前UI");
+    protected onDestroy() {
+        super.onDestroy();
     }
 
-    public update(dt: number) {
-    }
-
-    public lateUpdate() {
+    HEELO() {
+        console.log("Say Hello!");
     }
 
 }

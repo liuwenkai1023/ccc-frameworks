@@ -1,4 +1,3 @@
-import BASE from "./BASE";
 import BroadcastComponent from "./utils/BroadcastComponent";
 
 /**
@@ -9,12 +8,17 @@ import BroadcastComponent from "./utils/BroadcastComponent";
 export default abstract class BaseComponent extends cc.Component {
 
     private __broadcastManager: BroadcastComponent;
+    private __bindMap: { [key: string]: cc.Node | typeof cc.Component };
+
+    /**
+     * 节点及组件绑定配置
+     */
+    protected _bindingsData: Array<BindingData>;
 
     /**
      * 广播接收者配置
      */
-    protected __receiversData: Array<Array<string | Function>>;
-
+    protected _receiversData: Array<ReceiverData>;
 
     /**
      * 得到广播管理器
@@ -31,6 +35,7 @@ export default abstract class BaseComponent extends cc.Component {
      * 配置了__receiversData时，请先调用super.onLoad();
      */
     protected onLoad() {
+        this.__initBinding();
         this.__initReceiver();
     }
 
@@ -39,15 +44,69 @@ export default abstract class BaseComponent extends cc.Component {
      * 初始化广播接收者
      */
     private __initReceiver() {
-        let receiverDatas = this.__receiversData ? this.__receiversData : [];
-        for (const receiverData of receiverDatas) {
+        let receiverDatas = this._receiversData ? this._receiversData : [];
+        for (let receiverData of receiverDatas) {
             this.broadcastManager.newAndRegisterReceiver(
-                receiverData[0].toString(),
-                receiverData[1] ? receiverData[1] : (
-                    this[receiverData[0].toString()] ? this[receiverData[0].toString()].bind(this) : null
+                receiverData.name,
+                receiverData.handler ? receiverData.handler : (
+                    this[receiverData.name] ? this[receiverData.name].bind(this) : null
                 )
             );
         }
     }
 
+
+    /**
+    * 绑定资源
+    */
+    private __initBinding() {
+        let resourceBinding = this._bindingsData ? this._bindingsData : [];
+        for (const bind of resourceBinding) {
+            if (bind.name && bind.path) {
+                this.__bindMap[bind.name] = this.findView(bind.path);
+                if (this.__bindMap[bind.name] && bind.component) {
+                    this.__bindMap[bind.name] = <typeof cc.Component>(<any>this.__bindMap[bind.name]).getComponent(bind.component);
+                }
+                this[bind.name] = this.__bindMap[bind.name];
+            }
+        }
+    }
+
+
+    /**
+     * 寻找控件
+     * @param sPath 相对路径
+     * @param referenceNode 相对节点
+     */
+    public findView(sPath: string, referenceNode: cc.Node = this.node) {
+        let node = cc.find(sPath, referenceNode);
+        return node;
+    }
+
+
+    /**
+     * 子类请先调用 super.onDestory()
+     */
+    protected onDestroy() {
+        this._bindingsData = null;
+        this._receiversData = null;
+        this.__bindMap = null;
+        this.__broadcastManager = null;
+    }
+
+    protected receiverPush(receiverData: ReceiverData) {
+        this._receiversData = this._receiversData ? this._receiversData : [];
+        this._receiversData.push(receiverData);
+    }
+
+    protected bindingPush(bindingData: BindingData) {
+        this._bindingsData = this._bindingsData ? this._bindingsData : [];
+        this._bindingsData.push(bindingData);
+    }
+
+    protected abstract onInitData();
+
 }
+
+export interface ReceiverData { name: string, handler?: Function };
+export interface BindingData { name: string, path: string, component?: typeof cc.Component };

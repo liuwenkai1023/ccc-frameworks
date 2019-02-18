@@ -46,9 +46,9 @@ export default class UIManager {
 
     /**
      * 展示某个UI
-     * @param UIName UI的名字 
-     * @param data 展示UI时传递的数据
-     * @param handler UI展示完成的回调
+     * @param UIName     UI的名字 
+     * @param data       UI展示时传递的数据
+     * @param handler    UI展示完成的回调
      * @param parentNode UI的父节点
      */
     public showUI(UIName: string, data?: any | void, handler?: Function | void, parentNode?: cc.Node | void) {

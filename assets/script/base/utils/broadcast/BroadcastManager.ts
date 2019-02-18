@@ -60,7 +60,7 @@ export default class BroadcastManager {
     public removeBroadcastReceiver(receiver: BroadcastReceiver) {
         let receivers = this._broadcastReceiverMap[receiver.action];
         if (!receivers) return;
-        receivers[receivers.indexOf(receiver)] = null;
+        receivers.splice(receivers.indexOf(receiver), 1);
     }
 }
 

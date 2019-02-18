@@ -10,12 +10,19 @@ export default class LoaderKeeper extends cc.Component {
         return this._loader;
     }
 
-    public init(loader: Loader) {
+    set loader(loader: Loader) {
         this._loader = loader;
-        return this;
     }
 
-    public onDestroy() {
+    onLoad() {
+
+    }
+
+    start() {
+
+    }
+
+    onDestroy() {
         if (this._loader) {
             this._loader.release();
             this._loader = null;

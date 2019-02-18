@@ -41,11 +41,11 @@ export default class BroadcastComponent extends cc.Component {
      * @param receiver 广播行为名称
      */
     private checkIsRepeat(receiver: BroadcastReceiver) {
-        this._broadcastReceivers.forEach(mReceiver => {
+        for (const mReceiver of this._broadcastReceivers) {
             if (receiver != null && mReceiver != null && receiver.action == mReceiver.action) {
                 return true;
             }
-        });
+        }
         return false;
     }
 
@@ -98,9 +98,11 @@ export default class BroadcastComponent extends cc.Component {
     //销毁时注销所以广播接收者
     public onDestroy() {
         this.removeAllBroadcastReceiver();
+        this._broadcastManager = null;
+        this._broadcastReceivers = null;
     }
 
-    
+
     /**
      * 移除当前组件所有广播接收
      */

@@ -2,14 +2,14 @@ import { SuccessHandler, ErrorHandler, ProgressHandler } from "./Loader";
 
 export default class LoaderItem {
 
-    public urls: string[] = null;          // 加载项列表
+    public urls: Array<string> = [];       // 加载项列表
     public type: typeof cc.Asset = null;   // 加载资源类型
-    public resources: Object = null;       // 所有使用资源的reference id
+    public resources: Object = {};         // 所有使用资源的reference id
     public isReleased: boolean = false;    // 是否已被释放
 
     constructor(urls, type) {
-        this.urls = urls;
         this.type = type;
+        this.urls = typeof urls == "string" ? [urls] : urls;
     }
 
     /**
@@ -22,6 +22,7 @@ export default class LoaderItem {
         for (let key of loader.getDependsRecursively(resource)) {
             this.resources[key] = true;
         }
+        // console.log(this);
     }
 
     /**

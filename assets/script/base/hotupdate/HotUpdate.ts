@@ -29,7 +29,7 @@ export default class HotUpdate extends BaseComponent {
     private _failCount: number = 0;
 
     // 初始化广播事件
-    __receiversData = [
+    _receiversData = [
         ["CHECK_UPDATE", this.checkUpdate.bind(this)],
         ["START_UPDATE", this.hotUpdate.bind(this)],
         ["RETRY_UPDATE", this.retry.bind(this)]
