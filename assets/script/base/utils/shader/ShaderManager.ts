@@ -54,7 +54,6 @@ export enum ShaderType {
 
 export default class ShaderManager {
     private static _instance: ShaderManager;
-
     private constructor() {
         SpriteHook.init();
     }
@@ -68,7 +67,7 @@ export default class ShaderManager {
 
     public setShader(_sprite: cc.Sprite, _shader: ShaderType, _handler?: { (mat: ShaderCustomMaterial) } | void) {
 
-        console.log(`【${_sprite.node.name}】->[setShader]->${ShaderType[_shader]}`);
+        // console.log(`【${_sprite.node.name}】->[setShader]->${ShaderType[_shader]}`);
 
         if (_shader == ShaderType.Default) {
             _sprite.setState(0);
@@ -89,7 +88,9 @@ export default class ShaderManager {
 
         sprite.activateMaterial(shaderName);
         mat.texture.update();
-
+        // let pixelScale = cc.view.getFrameSize().width / cc.view.getDesignResolutionSize().width;
+        // mat.setParamValue("iResolution", new cc.Vec3(sprite.node.width * pixelScale, sprite.node.height * pixelScale, 0));
+        // mat.setParamValue("texSize", new cc.Vec2(sprite.node.width * pixelScale, sprite.node.height * pixelScale));
         mat.setParamValue("iResolution", new cc.Vec3(sprite.node.width, sprite.node.height, 0));
         mat.setParamValue("texSize", new cc.Vec2(sprite.node.width, sprite.node.height));
         if (_handler) { _handler(mat); }
