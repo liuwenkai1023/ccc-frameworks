@@ -4,12 +4,11 @@ const { ccclass, property, requireComponent, disallowMultiple } = cc._decorator;
 @ccclass
 @disallowMultiple
 @requireComponent(cc.Graphics)
-export default class GraphicsComponent extends BaseComponent {
+export default class GraphicsComponent extends cc.Component {
+
     private graphics: cc.Graphics;
 
     private points: Array<cc.Vec2>;
-
-    // private c;
 
     protected onLoad() {
         super.onLoad();

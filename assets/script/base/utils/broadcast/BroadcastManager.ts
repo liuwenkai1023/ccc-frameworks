@@ -1,5 +1,5 @@
 import BroadcastReceiver from "./BroadcastReceiver";
-import BroadcastComponent from "../BroadcastComponent";
+import BroadcastComponent from "./BroadcastComponent";
 
 /**
  * 单例：广播管理器

@@ -1,25 +1,20 @@
-import WxUtil from "./utils/wx/WxUtil";
-import HttpManager from "./net/HttpManager";
-import SocketManager from "./net/SocketManager";
-import LocalStorageManager from "./utils/storage/StorageManager";
-import UIManager from "./mvc/UIManager";
-import Loader from "./utils/load/Loader";
-import FileUtils from "./utils/storage/FileUtils";
+import Loader from "./utils/loader/Loader";
 import Base64 from "./utils/base64/Base64";
-import TimerManager from "./utils/timer/TimerManager";
+import UIManager from "./mvc/UIManager";
+import FileUtils from "./utils/storage/FileUtils";
+import HttpManager from "./utils/net/HttpManager";
 import AudioManager from "./utils/audio/AudioMananger";
+import TimerManager from "./utils/timer/TimerManager";
+import SocketManager from "./utils/net/SocketManager";
+import ShaderManager from "./utils/shader/ShaderManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
-import ShaderManager from "./ui/shader/ShaderManager";
+import LocalStorageManager from "./utils/storage/StorageManager";
+
 
 /**
  * 工具类、管理类的整合
  */
 export default class BASE {
-
-    /**
-     *  WxUtil：微信相关工具类
-     */
-    public static readonly WxUtil: WxUtil = WxUtil.instance();
 
     /**
      *  FileUtils：文件管理相关工具类

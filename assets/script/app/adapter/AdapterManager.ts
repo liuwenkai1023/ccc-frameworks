@@ -1,11 +1,12 @@
-import Adapter from "./platform/Adapter";
+import AdapterInterface from "./AdapterInterface";
+import DefaultAdapter from "./platform/DefaultAdapter";
 import AndroidAdapter from "./platform/AndroidAdapter";
 import IOSAdapter from "./platform/IOSAdapter";
-import DefaultAdapter from "./platform/DefualtAdapter";
+
 
 export default class AdapterManager {
 
-    private _adapter: Adapter;
+    private _adapter: AdapterInterface;
 
     private static _instance: AdapterManager;
 

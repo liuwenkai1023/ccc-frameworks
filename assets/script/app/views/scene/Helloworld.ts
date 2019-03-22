@@ -1,6 +1,6 @@
 import BaseComponent from "../../../base/BaseComponent";
 import BASE from "../../../base/BASE";
-import { HotUpdateEventType as HUET } from "../../../base/hotupdate/HotUpdate";
+import { HotUpdateEventType as HUET } from "../../../base/components/HotUpdate";
 
 const { ccclass, property } = cc._decorator;
 
@@ -16,14 +16,15 @@ export default class HelloWorld extends BaseComponent {
     }
 
     onLoad() {
-        this.onInitData();
         super.onLoad();
     }
 
     start() {
-        BASE.UIManager.showUI("TestUI");
+        console.log("3秒后加载TestUI");
+        this.scheduleOnce(() => {
+            BASE.UIManager.showUI("TestUI");
+        }, 3)
     }
-
 
     public HOT_NEED(data) {
         this.node.getChildByName("shade").active = true;

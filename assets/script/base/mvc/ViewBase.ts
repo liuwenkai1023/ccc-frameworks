@@ -1,9 +1,9 @@
 import BASE from "../BASE";
 import Lifecycle from "./Lifecycle";
-import LoaderKeeper from "../utils/load/LoaderKeeper";
 import TimerManager from "../utils/timer/TimerManager";
-import BroadcastComponent from "../utils/BroadcastComponent";
+import BroadcastComponent from "../utils/broadcast/BroadcastComponent";
 import { BindingData, ReceiverData } from "../BaseComponent";
+import LoaderKeeper from "../utils/loader/LoaderKeeper";
 
 
 export default abstract class ViewBase {

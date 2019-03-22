@@ -1,4 +1,4 @@
-import BroadcastComponent from "./utils/BroadcastComponent";
+import BroadcastComponent from "./utils/broadcast/BroadcastComponent";
 
 /**
  * BaseComponent组件
@@ -20,6 +20,7 @@ export default abstract class BaseComponent extends cc.Component {
      */
     protected _receiversData: Array<ReceiverData>;
 
+
     /**
      * 得到广播管理器
      */
@@ -35,6 +36,7 @@ export default abstract class BaseComponent extends cc.Component {
      * 配置了__receiversData时，请先调用super.onLoad();
      */
     protected onLoad() {
+        this.onInitData();
         this.__initBinding();
         this.__initReceiver();
     }
@@ -79,14 +81,9 @@ export default abstract class BaseComponent extends cc.Component {
      * @param referenceNode 相对节点
      */
     public findView(sPath: string, referenceNode: cc.Node = this.node) {
-        let node = cc.find(sPath, referenceNode);
-        return node;
+        return cc.find(sPath, referenceNode);
     }
 
-
-    /**
-     * 子类请先调用 super.onDestory()
-     */
     protected onDestroy() {
         this._bindingsData = null;
         this._receiversData = null;
