@@ -6,7 +6,7 @@ export default class Outline extends Shader {
     public name = "Outline";
 
     public params = [
-        { name: 'iResolution', type: this.renderer.PARAM_FLOAT3 },
+        { name: 'resolution', type: this.renderer.PARAM_FLOAT3 },
     ];
 
     public defines = [];
@@ -14,11 +14,11 @@ export default class Outline extends Shader {
     public frag = `
     uniform sampler2D texture;
     varying vec2 uv0;
-    uniform vec3 iResolution;
+    uniform vec3 resolution;
 
     void main()
     {
-        vec2 onePixel = vec2(1.0 / iResolution.x, 1.0 / iResolution.y);
+        vec2 onePixel = vec2(1.0 / resolution.x, 1.0 / resolution.y);
 
         vec4 color = texture2D(texture, uv0.xy);
         vec4 colorRight = texture2D(texture, uv0.xy + vec2(0,onePixel.t));

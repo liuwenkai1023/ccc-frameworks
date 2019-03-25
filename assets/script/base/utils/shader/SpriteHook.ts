@@ -10,6 +10,8 @@ export default class SpriteHook {
 
     static init() {
         let prototype: any = <any>cc.Sprite.prototype;
+        // @ts-ignore
+        cc.dynamicAtlasManager.enabled = false;
         // 取自定义材质
         prototype.getMaterial = function (name) {
             // console.log("prototype.getMaterial")

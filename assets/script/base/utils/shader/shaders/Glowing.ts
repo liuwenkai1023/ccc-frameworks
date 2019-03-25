@@ -11,7 +11,7 @@ export default class Glowing extends Shader {
     
     public frag = `
     uniform sampler2D texture;
-    uniform vec3 iResolution;
+    uniform vec3 resolution;
     uniform float time;
     uniform vec4 color;
     varying vec2 uv0;
@@ -30,7 +30,7 @@ export default class Glowing extends Shader {
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
         vec2 uv = fragCoord.xy;
-        vec2 unit = 1.0 / iResolution.xy;
+        vec2 unit = 1.0 / resolution.xy;
         vec4 texel = texture2D(texture, uv);
         vec4 finalColor = vec4(0.0);
         float density = 0.0;

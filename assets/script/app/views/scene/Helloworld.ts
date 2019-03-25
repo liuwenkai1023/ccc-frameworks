@@ -20,10 +20,10 @@ export default class HelloWorld extends BaseComponent {
     }
 
     start() {
-        console.log("3秒后加载TestUI");
-        this.scheduleOnce(() => {
+        // console.log("3秒后加载TestUI");
+        // this.scheduleOnce(() => {
             BASE.UIManager.showUI("TestUI");
-        }, 3)
+        // }, 3)
     }
 
     public HOT_NEED(data) {

@@ -6,7 +6,7 @@ export default class Water extends Shader {
     public name = "Water";
 
     public params = [
-        { name: 'iResolution', type: this.renderer.PARAM_FLOAT3 },
+        { name: 'resolution', type: this.renderer.PARAM_FLOAT3 },
         { name: 'time', type: this.renderer.PARAM_FLOAT },
     ];
 
@@ -14,7 +14,7 @@ export default class Water extends Shader {
 
     public frag = `
     uniform sampler2D texture;
-    uniform vec3 iResolution;
+    uniform vec3 resolution;
     uniform float time;
     varying vec2 uv0;
 
@@ -28,10 +28,10 @@ export default class Water extends Shader {
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
         // 换成resolution
-        vec2 rs = iResolution.xy;
+        vec2 rs = resolution.xy;
         // 换成纹理坐标v_texCoord.xy
         vec2 uv = fragCoord;
-        vec2 q = uv+2./iResolution.x*(s(uv)-s(uv+rs));
+        vec2 q = uv+2./resolution.x*(s(uv)-s(uv+rs));
         //反转y
         //q.y=1.-q.y;
         fragColor = texture2D(texture, q);

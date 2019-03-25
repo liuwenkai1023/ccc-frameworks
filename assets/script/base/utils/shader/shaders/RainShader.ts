@@ -7,7 +7,7 @@ export default class RainShader extends Shader {
 
     public params = [
         { name: 'texSize', type: renderer.PARAM_FLOAT2 },
-        { name: 'iResolution', type: renderer.PARAM_FLOAT3 },
+        { name: 'resolution', type: renderer.PARAM_FLOAT3 },
         { name: 'time', type: renderer.PARAM_FLOAT },
     ];
 
@@ -41,7 +41,7 @@ export default class RainShader extends Shader {
     
     uniform sampler2D texture;
     uniform vec4 color;
-    uniform vec3 iResolution;
+    uniform vec3 resolution;
     uniform float time;
     uniform vec2 texSize;
     varying vec2 uv0;
@@ -141,9 +141,9 @@ export default class RainShader extends Shader {
         vec4 iMouse = vec4(0.0, 0.0, 0.0, 0.0);
         vec2 fragCoord = vec2(uv0.x * texSize.x - 0.5 * texSize.x, 0.5 * texSize.y - uv0.y * texSize.y);
     
-        vec2 uv = fragCoord.xy / iResolution.y;
-        vec2 UV = (fragCoord.xy+.5*iResolution.xy) / iResolution.xy;
-        vec3 M = iMouse.xyz/iResolution.xyz;
+        vec2 uv = fragCoord.xy / resolution.y;
+        vec2 UV = (fragCoord.xy+.5*resolution.xy) / resolution.xy;
+        vec3 M = iMouse.xyz/resolution.xyz;
         float T = time+M.x*2.;
         
         #ifdef HAS_HEART

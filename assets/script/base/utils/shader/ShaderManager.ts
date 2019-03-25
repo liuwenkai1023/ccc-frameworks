@@ -66,9 +66,7 @@ export default class ShaderManager {
     }
 
     public setShader(_sprite: cc.Sprite, _shader: ShaderType, _handler?: { (mat: ShaderCustomMaterial) } | void) {
-
         // console.log(`【${_sprite.node.name}】->[setShader]->${ShaderType[_shader]}`);
-
         if (_shader == ShaderType.Default) {
             _sprite.setState(0);
             return;
@@ -76,10 +74,9 @@ export default class ShaderManager {
 
         let shaderName = ShaderType[_shader];
         let shader = ShaderLib.instance().getShader(shaderName);
-
         let sprite: any = <any>_sprite;
-
         let mat: ShaderCustomMaterial = sprite.getMaterial(shaderName);
+
         if (!mat) {
             mat = new ShaderCustomMaterial(shader.name, shader.params, shader.defines);
             sprite.setMaterial(shaderName, mat);
@@ -88,10 +85,7 @@ export default class ShaderManager {
 
         sprite.activateMaterial(shaderName);
         mat.texture.update();
-        // let pixelScale = cc.view.getFrameSize().width / cc.view.getDesignResolutionSize().width;
-        // mat.setParamValue("iResolution", new cc.Vec3(sprite.node.width * pixelScale, sprite.node.height * pixelScale, 0));
-        // mat.setParamValue("texSize", new cc.Vec2(sprite.node.width * pixelScale, sprite.node.height * pixelScale));
-        mat.setParamValue("iResolution", new cc.Vec3(sprite.node.width, sprite.node.height, 0));
+        mat.setParamValue("resolution", new cc.Vec3(sprite.node.width, sprite.node.height, 0));
         mat.setParamValue("texSize", new cc.Vec2(sprite.node.width, sprite.node.height));
         if (_handler) { _handler(mat); }
         return mat;

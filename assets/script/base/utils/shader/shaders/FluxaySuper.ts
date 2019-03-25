@@ -22,7 +22,7 @@ export default class FluxaySuper extends Shader {
     {
         float time = time * .5+5.;
         // uv should be the 0-1 uv of texture...
-        vec2 uv = uv0.xy;//fragCoord.xy / iResolution.xy;
+        vec2 uv = uv0.xy;//fragCoord.xy / resolution.xy;
     
         vec2 p = mod(uv*TAU, TAU)-250.0;
     

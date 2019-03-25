@@ -1,6 +1,6 @@
 import ShaderManager, { ShaderType } from "../utils/shader/ShaderManager";
 
-const { ccclass, property,disallowMultiple, requireComponent, executeInEditMode } = cc._decorator;
+const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode } = cc._decorator;
 
 const NeedUpdate = [ShaderType.Fluxay, ShaderType.WaveShader, ShaderType.Water, ShaderType.RainShader, ShaderType.FluxaySuper];
 
@@ -48,7 +48,7 @@ export default class BaseShaderSprite extends cc.Component {
         switch (this._shader) {
             case ShaderType.Blur:
             case ShaderType.GaussBlurs:
-                mat.setParamValue('bluramount', 0.1);
+                mat.setParamValue('bluramount', 0.05);
                 break;
             case ShaderType.WaveShader:
                 mat.setParamValue('iOffset', new cc.Vec2(0, 0.1));
@@ -63,8 +63,7 @@ export default class BaseShaderSprite extends cc.Component {
     }
 
     protected onDestroy() {
-        if (this.sprite)
-            this.sprite.setState(0);
+        this.sprite && this.sprite.setState(0);
     }
 
 }
