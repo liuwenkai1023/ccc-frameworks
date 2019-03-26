@@ -65,6 +65,7 @@ export default abstract class BaseComponent extends cc.Component {
     */
     private __initBinding() {
         let resourceBinding = this._bindingsData ? this._bindingsData : [];
+        this.__bindMap = this.__bindMap ? this.__bindMap : {};
         for (const bind of resourceBinding) {
             if (bind.name && bind.path) {
                 this.__bindMap[bind.name] = this.findView(bind.path);

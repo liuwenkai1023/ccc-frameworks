@@ -1,5 +1,6 @@
-import BASE from "../../../base/BASE";
 import BaseComponent from "../../../base/BaseComponent";
+import UIManager from "../../../base/mvc/UIManager";
+import TestUI from "../ui/TestUI";
 
 const { ccclass, property } = cc._decorator;
 
@@ -10,7 +11,7 @@ export default class Main extends BaseComponent {
     }
 
     onLoaded() {
-        BASE.UIManager.showUI("TestUI");
+        UIManager.instance().ShowUI(TestUI);
     }
 
     start() {

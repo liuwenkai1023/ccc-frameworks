@@ -1,15 +1,15 @@
-import BASE from "../../../base/BASE";
-import ViewBaseEX from "../../../base/mvc/ViewBaseEx";
+import ViewBase from "../../../base/mvc/ViewBase";
 
+export default class TestUI extends ViewBase {
 
-export default class TestUI extends ViewBaseEX {
+    static UIName = "TestUI";
+    static ResourcePath = "prefab/TestUI";
 
     private label: cc.Label;
 
     onInitData() {
-        this.__resourcePath = "prefab/TestUI";
-        this.pushBind({ name: "label", path: "testLabel", component: cc.Label });
-        this.pushReceiver({ name: "HELLO", handler: null });
+        this.bPush({ name: "label", path: "testLabel", component: cc.Label });
+        this.rPush({ name: "HELLO", handler: null });
     }
 
     onLoaded() {
@@ -20,10 +20,14 @@ export default class TestUI extends ViewBaseEX {
         this.broadcastManager.sendBroadcast("HELLO", "Hello, this is a broadcst message.")
     }
 
+    update(dt?: number) {
+    }
+
+    onDestory() {
+    }
+
     HELLO(data) {
         console.log(data);
     }
 
 }
-
-BASE.UIManager.registerUI("TestUI", new TestUI())

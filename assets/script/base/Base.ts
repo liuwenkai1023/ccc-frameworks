@@ -1,6 +1,5 @@
 import Loader from "./utils/loader/Loader";
 import Base64 from "./utils/base64/Base64";
-import UIManager from "./mvc/UIManager";
 import FileUtils from "./utils/storage/FileUtils";
 import HttpManager from "./utils/net/HttpManager";
 import AudioManager from "./utils/audio/AudioMananger";
@@ -9,7 +8,6 @@ import SocketManager from "./utils/net/SocketManager";
 import ShaderManager from "./utils/shader/ShaderManager";
 import BroadcastManager from "./utils/broadcast/BroadcastManager";
 import LocalStorageManager from "./utils/storage/StorageManager";
-
 
 /**
  * 工具类、管理类的整合
@@ -64,7 +62,7 @@ export default class BASE {
     /**
      * UIManager: UIManager管理类适用于mvc模式中管理UI
      */
-    public static readonly UIManager: UIManager = UIManager.instance();
+    // public static readonly UIManager: UIManager = UIManager.instance();
 
     /**
      * Loader管理

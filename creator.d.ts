@@ -2780,6 +2780,7 @@ declare module cc {
 		父节点主要根据节点的 zIndex 和添加次序来排序，拥有更高 zIndex 的节点将被排在后面，如果两个节点的 zIndex 一致，先添加的节点会稳定排在另一个节点之前。<br/>
 		节点在 children 中的顺序决定了其渲染顺序。父节点永远在所有子节点之前被渲染 */
 		zIndex: number;		
+        parent: Node;
 		/**
 		
 		@param name name 

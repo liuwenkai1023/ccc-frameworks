@@ -1,12 +1,16 @@
-import ViewBase from "./ViewBase";
+import BASE from "../BASE";
+import UIComponent from "./ViewBase";
 
 export default class UIManager {
-
     private static _instance: UIManager;
-    private _UIMaps: { [key: string]: ViewBase };
+    private _UIMaps: { [key: string]: UI };
 
     get uiMaps() {
         return this._UIMaps;
+    }
+
+    private constructor() {
+        this.init();
     }
 
     public static instance() {
@@ -16,93 +20,84 @@ export default class UIManager {
         return UIManager._instance;
     }
 
-
-    private constructor() {
-        this.init();
-    }
-
-
-    /**
-     * 初始化基本参数
-     */
     private init() {
         this._UIMaps = {};
     }
 
-
-    /**
-     * 在UIManager中注册UIModel
-     * @param UIName UI的名字
-     * @param UIModel 对应的UIModel（ViewBase）
-     */
-    public registerUI(UIName: string, UIModel: ViewBase): boolean {
-        if (UIName && UIName.length > 0 && UIModel && UIModel instanceof ViewBase) {
-            this._UIMaps[UIName] = UIModel;
-            return true;
+    public ShowUI(UIModel: typeof UIComponent, parentNode?: cc.Node, _handler?: Function) {
+        let UIName = UIModel.UIName;
+        this.uiMaps[UIName] = !this.uiMaps[UIName] ? { name: UIName, component: null, status: LoadEnum.NORMAL } : this.uiMaps[UIName];
+        let UIMessage = this.uiMaps[UIName];
+        switch (UIMessage.status) {
+            case LoadEnum.LOADING:
+                break;
+            case LoadEnum.LOADED:
+                UIMessage.component.node.active = true;
+                _handler && _handler();
+                break;
+            case LoadEnum.NORMAL:
+                UIMessage.status = LoadEnum.LOADING;
+                BASE.Loader.load(UIModel.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
+                    this.initUI(UIModel, res[0], parentNode);
+                    _handler && _handler();
+                });
+                break;
         }
-        return false;
     }
 
-
-    /**
-     * 展示某个UI
-     * @param UIName     UI的名字 
-     * @param data       UI展示时传递的数据
-     * @param handler    UI展示完成的回调
-     * @param parentNode UI的父节点
-     */
-    public showUI(UIName: string, data?: any | void, handler?: Function | void, parentNode?: cc.Node | void) {
-        let UIModel = this._UIMaps[UIName];
-        if (!UIModel) return;
-        let callback = () => {
-            handler && handler(UIModel);
-            UIModel.show(data);
-        }
-        if (!UIModel.isLoaded) {
-            UIModel.onCreate(callback, parentNode);
+    private initUI(UIModel: typeof UIComponent, prefab: cc.Prefab, parentNode: cc.Node = cc.director.getScene()) {
+        let UIMessage = this.uiMaps[UIModel.UIName];
+        let uiNode = cc.instantiate(prefab);
+        if (uiNode && parent) {
+            uiNode.setParent(parentNode);
+            UIMessage.status = LoadEnum.LOADED;
+            let component = uiNode.getComponent(typeof UIModel);
+            if (!component) {
+                component = uiNode.addComponent(<any>UIModel);
+            }
+            UIMessage.component = component;
+            UIMessage.status = LoadEnum.LOADED;
         } else {
-            callback();
+            console.log("Error:创建UI时出错", UIMessage.name);
+            UIMessage.status = LoadEnum.NORMAL;
         }
+        // console.log(this.uiMaps);
     }
 
-
-    /**
-     * 关闭某个UI的展示
-     * @param UIName UI的名字
-     */
-    public closeUI(UIName: string) {
-        let UIModel = this._UIMaps[UIName];
-        if (!UIModel) return false;
-        if (UIModel.isLoaded) {
-            UIModel.close();
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * 销毁某个UI
-     * @param UIName UI的名字 
-     */
     public destoryUI(UIName: string) {
-        if (this._UIMaps.hasOwnProperty(UIName)) {
-            const UIModel = this._UIMaps[UIName];
-            UIModel.destory();
-            return true;
+        if (this.uiMaps.hasOwnProperty(UIName)) {
+            const UIMessage = this.uiMaps[UIName];
+            switch (UIMessage.status) {
+                case LoadEnum.LOADING:
+                    console.log("销毁UI失败，对应UI不存在(还在创建中)...", UIName);
+                    break;
+                case LoadEnum.LOADED:
+                    UIMessage.component.node.destroy();
+                    delete this.uiMaps[UIName];
+                    return true;
+            }
         }
         return false;
     }
 
+    public closeUI(UIName: string) {
+        if (this.uiMaps.hasOwnProperty(UIName)) {
+            const UIMessage = this.uiMaps[UIName];
+            if (UIMessage.status == LoadEnum.LOADED) {
+                UIMessage.component.node.active = false;
+                return true;
+            }
+        }
+        return false;
+    }
 
-    /**
-     * 销毁所有的UI
-     */
     public destoryAllUI() {
-        let UIMaps = this._UIMaps;
-        for (const UIName in UIMaps) {
+        for (const UIName in this.uiMaps) {
             this.destoryUI(UIName);
         }
     }
 
 }
+
+enum LoadEnum { NORMAL, LOADING, LOADED, }
+interface UI { name: string, status: LoadEnum, component: UIComponent }
