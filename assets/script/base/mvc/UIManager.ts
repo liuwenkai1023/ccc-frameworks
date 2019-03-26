@@ -3,10 +3,10 @@ import ViewBase from "./ViewBase";
 export default class UIManager {
 
     private static _instance: UIManager;
-    private _UIMap: { [key: string]: ViewBase };
+    private _UIMaps: { [key: string]: ViewBase };
 
-    get uiMap() {
-        return this._UIMap;
+    get uiMaps() {
+        return this._UIMaps;
     }
 
     public static instance() {
@@ -26,7 +26,7 @@ export default class UIManager {
      * 初始化基本参数
      */
     private init() {
-        this._UIMap = {};
+        this._UIMaps = {};
     }
 
 
@@ -37,7 +37,7 @@ export default class UIManager {
      */
     public registerUI(UIName: string, UIModel: ViewBase): boolean {
         if (UIName && UIName.length > 0 && UIModel && UIModel instanceof ViewBase) {
-            this._UIMap[UIName] = UIModel;
+            this._UIMaps[UIName] = UIModel;
             return true;
         }
         return false;
@@ -52,10 +52,10 @@ export default class UIManager {
      * @param parentNode UI的父节点
      */
     public showUI(UIName: string, data?: any | void, handler?: Function | void, parentNode?: cc.Node | void) {
-        let UIModel = this._UIMap[UIName];
+        let UIModel = this._UIMaps[UIName];
         if (!UIModel) return;
         let callback = () => {
-            if (handler) handler(UIModel);
+            handler && handler(UIModel);
             UIModel.show(data);
         }
         if (!UIModel.isLoaded) {
@@ -71,7 +71,7 @@ export default class UIManager {
      * @param UIName UI的名字
      */
     public closeUI(UIName: string) {
-        let UIModel = this._UIMap[UIName];
+        let UIModel = this._UIMaps[UIName];
         if (!UIModel) return false;
         if (UIModel.isLoaded) {
             UIModel.close();
@@ -86,8 +86,8 @@ export default class UIManager {
      * @param UIName UI的名字 
      */
     public destoryUI(UIName: string) {
-        if (this._UIMap.hasOwnProperty(UIName)) {
-            const UIModel = this._UIMap[UIName];
+        if (this._UIMaps.hasOwnProperty(UIName)) {
+            const UIModel = this._UIMaps[UIName];
             UIModel.destory();
             return true;
         }
@@ -99,8 +99,8 @@ export default class UIManager {
      * 销毁所有的UI
      */
     public destoryAllUI() {
-        let UIMap = this._UIMap;
-        for (const UIName in UIMap) {
+        let UIMaps = this._UIMaps;
+        for (const UIName in UIMaps) {
             this.destoryUI(UIName);
         }
     }

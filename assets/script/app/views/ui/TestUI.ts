@@ -2,7 +2,6 @@ import BASE from "../../../base/BASE";
 import ViewBaseEX from "../../../base/mvc/ViewBaseEx";
 
 
-
 export default class TestUI extends ViewBaseEX {
 
     // prefab的路径
