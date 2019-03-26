@@ -47,7 +47,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 720,
-      "height": 1080
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -57,7 +57,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 360,
-      "y": 540,
+      "y": 640,
       "z": 0
     },
     "_scale": {
@@ -113,7 +113,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 720,
-      "height": 1080
+      "height": 1280
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -215,7 +215,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "label",
+    "_name": "testLabel",
     "_objFlags": 512,
     "_parent": {
       "__id__": 1
@@ -3161,8 +3161,8 @@
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
-    "_top": -1.625,
-    "_bottom": 139.125,
+    "_top": 98.375,
+    "_bottom": 239.125,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

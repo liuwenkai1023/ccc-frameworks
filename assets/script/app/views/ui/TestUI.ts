@@ -4,42 +4,24 @@ import ViewBaseEX from "../../../base/mvc/ViewBaseEx";
 
 export default class TestUI extends ViewBaseEX {
 
-    // prefab的路径
-    protected __resourcePath = "prefab/TestUI";
-
     private label: cc.Label;
 
-    protected initData() {
-        // 资源绑定配置
-        this.pushBindingData({ name: "label", path: "testLabel", component: cc.Label });
-        // 广播接收者配置
-        this.pushReceiverData({ name: "HELLO", handler: null });
+    onInitData() {
+        this.__resourcePath = "prefab/TestUI";
+        this.pushBind({ name: "label", path: "testLabel", component: cc.Label });
+        this.pushReceiver({ name: "HELLO", handler: null });
     }
 
-    protected onLoad() {
-        super.onLoad();
-        this.initData();
+    onLoaded() {
+        this.label.string = "Label changed by broadcast.";
     }
 
-    protected onStart(view?: cc.Node) {
-        super.onStart();
-        this.broadcastManager.sendBroadcast("HELLO", null);
+    start() {
+        this.broadcastManager.sendBroadcast("HELLO", "Hello, this is a broadcst message.")
     }
 
-    protected onShow(data?: any) {
-        super.onShow();
-    }
-
-    protected onClose() {
-        super.onClose();
-    }
-
-    protected onDestroy() {
-        super.onDestroy();
-    }
-
-    HEELO() {
-        console.log("Say Hello!");
+    HELLO(data) {
+        console.log(data);
     }
 
 }

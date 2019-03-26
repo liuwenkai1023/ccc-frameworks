@@ -39,7 +39,9 @@ export default abstract class BaseComponent extends cc.Component {
         this.onInitData();
         this.__initBinding();
         this.__initReceiver();
+        this.onLoaded();
     }
+
 
 
     /**
@@ -91,18 +93,23 @@ export default abstract class BaseComponent extends cc.Component {
         this.__broadcastManager = null;
     }
 
-    protected receiverPush(receiverData: ReceiverData) {
+    protected rPush(receiverData: ReceiverData) {
         this._receiversData = this._receiversData ? this._receiversData : [];
         this._receiversData.push(receiverData);
     }
 
-    protected bindingPush(bindingData: BindingData) {
+    protected bPush(bindingData: BindingData) {
         this._bindingsData = this._bindingsData ? this._bindingsData : [];
         this._bindingsData.push(bindingData);
     }
 
-    protected abstract onInitData();
-
+    abstract onInitData();
+    abstract onLoaded();
+    abstract start();
+    abstract update(dt?: number);
+    abstract onDestory();
+    // update(dt?: number) { };
+    // onDestory() { };
 }
 
 export interface ReceiverData { name: string, handler?: Function };

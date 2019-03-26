@@ -1,4 +1,4 @@
-import BaseComponent from "../BaseComponent";
+import BaseComponent from "../../base/BaseComponent";
 
 const { ccclass, property, requireComponent, disallowMultiple, executeInEditMode } = cc._decorator;
 
@@ -18,7 +18,6 @@ export enum HotUpdateEventType {
 @ccclass
 export default class HotUpdate extends BaseComponent {
 
-
     @property({ type: cc.Asset })
     private manifestUrl: cc.Asset = null;
 
@@ -29,19 +28,13 @@ export default class HotUpdate extends BaseComponent {
     private _assetManager = null;
     // private _failCount: number = 0;
 
-
-    protected onInitData() {
-        this.receiverPush({ name: "CHECK_UPDATE", handler: this.checkUpdate.bind(this) });
-        this.receiverPush({ name: "START_UPDATE", handler: this.hotUpdate.bind(this) });
-        this.receiverPush({ name: "RETRY_UPDATE", handler: this.retry.bind(this) });
+    onInitData() {
+        this.rPush({ name: "CHECK_UPDATE", handler: this.checkUpdate.bind(this) });
+        this.rPush({ name: "START_UPDATE", handler: this.hotUpdate.bind(this) });
+        this.rPush({ name: "RETRY_UPDATE", handler: this.retry.bind(this) });
     }
 
-    
-    /**
-     * 初始化
-     */
-    protected onLoad() {
-        super.onLoad();
+    onLoaded() {
         if (!cc.sys.isNative) return;
         this._storagePath = ((jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/') + 'remote-assets');
         this._assetManager = new jsb.AssetsManager('', this._storagePath, this.versionCompareHandle);
@@ -49,8 +42,11 @@ export default class HotUpdate extends BaseComponent {
         if (cc.sys.os === cc.sys.OS_ANDROID) {
             this._assetManager.setMaxConcurrentTask(2);
         }
-        this.checkUpdate();
         cc.log('远程资源的存储路径 : ' + this._storagePath);
+    }
+
+    start() {
+        this.checkUpdate();
     }
 
 

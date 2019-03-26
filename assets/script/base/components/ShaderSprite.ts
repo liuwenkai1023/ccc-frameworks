@@ -63,7 +63,7 @@ export default class BaseShaderSprite extends cc.Component {
     }
 
     protected onDestroy() {
-        this.sprite && this.sprite.setState(0);
+        CC_EDITOR && this.sprite && this.sprite.setState(0);
     }
 
 }

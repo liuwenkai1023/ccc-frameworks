@@ -207,10 +207,8 @@ export default abstract class ViewBase {
     private onCreateView(view: cc.Node) {
         view.addComponent(Lifecycle).viewBase = this;
         this.__createBinding();
-        this.callInNextTick(() => {
-            this.onStart.bind(this);
-            this.onStart((view))
-        });
+        this.onLoaded();
+        this.callInNextTick(this.start.bind(this));
     }
 
     callInNextTick(callback: Function, timeout?: number, ...args: any[]) {
@@ -218,11 +216,12 @@ export default abstract class ViewBase {
     }
 
     // 生命周期回调
-    protected abstract onLoad();
-    protected abstract onStart(view?: cc.Node);
-    protected abstract onShow(data?: any);
-    protected abstract onClose();
-    protected abstract onDestroy();
+    abstract onLoad();
+    abstract onLoaded();
+    abstract start();
+    abstract onShow(data?: any);
+    abstract onClose();
+    abstract onDestroy();
     update(dt?: number) { };
     lateUpdate() { };
 
