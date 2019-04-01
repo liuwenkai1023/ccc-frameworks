@@ -92,6 +92,7 @@ export default abstract class BaseComponent extends cc.Component {
         this._receiversData = null;
         this.__bindMap = null;
         this.__broadcastManager = null;
+        this.onDestory();
     }
 
     protected rPush(receiverData: ReceiverData) {

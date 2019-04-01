@@ -3,14 +3,18 @@ import UIComponent from "./ViewBase";
 
 export default class UIManager {
     private static _instance: UIManager;
-    private _UIMaps: { [key: string]: UI };
+    private _UIMaps: { [key: string]: UIMessage };
 
-    get uiMaps() {
+    get UIMaps() {
         return this._UIMaps;
     }
 
     private constructor() {
         this.init();
+    }
+
+    private init() {
+        this._UIMaps = {};
     }
 
     public static instance() {
@@ -19,24 +23,20 @@ export default class UIManager {
         }
         return UIManager._instance;
     }
-
-    private init() {
-        this._UIMaps = {};
-    }
-
-    public ShowUI(UIModel: typeof UIComponent, parentNode?: cc.Node, _handler?: Function) {
+   
+    public showUI(UIModel: typeof UIComponent, parentNode?: cc.Node, _handler?: Function) {
         let UIName = UIModel.UIName;
-        this.uiMaps[UIName] = !this.uiMaps[UIName] ? { name: UIName, component: null, status: LoadEnum.NORMAL } : this.uiMaps[UIName];
-        let UIMessage = this.uiMaps[UIName];
-        switch (UIMessage.status) {
+        this.UIMaps[UIName] = !this.UIMaps[UIName] ? { name: UIName, component: null, status: LoadEnum.NORMAL } : this.UIMaps[UIName];
+        let UIMsg = this.UIMaps[UIName];
+        switch (UIMsg.status) {
             case LoadEnum.LOADING:
                 break;
             case LoadEnum.LOADED:
-                UIMessage.component.node.active = true;
+                UIMsg.component.node.active = true;
                 _handler && _handler();
                 break;
             case LoadEnum.NORMAL:
-                UIMessage.status = LoadEnum.LOADING;
+                UIMsg.status = LoadEnum.LOADING;
                 BASE.Loader.load(UIModel.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     this.initUI(UIModel, res[0], parentNode);
                     _handler && _handler();
@@ -46,45 +46,55 @@ export default class UIManager {
     }
 
     private initUI(UIModel: typeof UIComponent, prefab: cc.Prefab, parentNode: cc.Node = cc.director.getScene()) {
-        let UIMessage = this.uiMaps[UIModel.UIName];
-        let uiNode = cc.instantiate(prefab);
-        if (uiNode && parent) {
-            uiNode.setParent(parentNode);
-            UIMessage.status = LoadEnum.LOADED;
-            let component = uiNode.getComponent(typeof UIModel);
+        let UIMsg = this.UIMaps[UIModel.UIName];
+        let UINode = cc.instantiate(prefab);
+        if (UINode && parent) {
+            UINode.setParent(parentNode);
+            UIMsg.status = LoadEnum.LOADED;
+            let component = UINode.getComponent(typeof UIModel);
             if (!component) {
-                component = uiNode.addComponent(<any>UIModel);
+                component = UINode.addComponent(<any>UIModel);
             }
-            UIMessage.component = component;
-            UIMessage.status = LoadEnum.LOADED;
+            UIMsg.component = component;
+            UIMsg.status = LoadEnum.LOADED;
         } else {
-            console.log("Error:创建UI时出错", UIMessage.name);
-            UIMessage.status = LoadEnum.NORMAL;
+            console.log("Error:创建UI时出错", UIMsg.name);
+            UIMsg.status = LoadEnum.NORMAL;
         }
         // console.log(this.uiMaps);
     }
 
     public destoryUI(UIName: string) {
-        if (this.uiMaps.hasOwnProperty(UIName)) {
-            const UIMessage = this.uiMaps[UIName];
-            switch (UIMessage.status) {
+        if (this.UIMaps.hasOwnProperty(UIName)) {
+            const UIMsg = this.UIMaps[UIName];
+            switch (UIMsg.status) {
                 case LoadEnum.LOADING:
                     console.log("销毁UI失败，对应UI不存在(还在创建中)...", UIName);
                     break;
                 case LoadEnum.LOADED:
-                    UIMessage.component.node.destroy();
-                    delete this.uiMaps[UIName];
+                    UIMsg.component.node.destroy();
+                    delete this.UIMaps[UIName];
+                    cc.sys.garbageCollect();
                     return true;
             }
         }
         return false;
     }
 
+    public getUI(UIName): UIMessage {
+        if (this.UIMaps.hasOwnProperty(UIName)) {
+            const UIMsg = this.UIMaps[UIName];
+            if (UIMsg.status == LoadEnum.LOADED) {
+                return UIMsg;
+            }
+        }
+    }
+
     public closeUI(UIName: string) {
-        if (this.uiMaps.hasOwnProperty(UIName)) {
-            const UIMessage = this.uiMaps[UIName];
-            if (UIMessage.status == LoadEnum.LOADED) {
-                UIMessage.component.node.active = false;
+        if (this.UIMaps.hasOwnProperty(UIName)) {
+            const UIMsg = this.UIMaps[UIName];
+            if (UIMsg.status == LoadEnum.LOADED) {
+                UIMsg.component.node.active = false;
                 return true;
             }
         }
@@ -92,7 +102,7 @@ export default class UIManager {
     }
 
     public destoryAllUI() {
-        for (const UIName in this.uiMaps) {
+        for (const UIName in this.UIMaps) {
             this.destoryUI(UIName);
         }
     }
@@ -100,4 +110,4 @@ export default class UIManager {
 }
 
 enum LoadEnum { NORMAL, LOADING, LOADED, }
-interface UI { name: string, status: LoadEnum, component: UIComponent }
+interface UIMessage { name: string, status: LoadEnum, component: UIComponent }

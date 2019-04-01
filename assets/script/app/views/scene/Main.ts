@@ -11,7 +11,22 @@ export default class Main extends BaseComponent {
     }
 
     onLoaded() {
-        UIManager.instance().ShowUI(TestUI);
+        this.b();
+
+    }
+
+    a() {
+        this.scheduleOnce(() => {
+            UIManager.instance().destoryUI(TestUI.UIName);
+            this.b();
+        }, 5)
+    }
+
+    b() {
+        this.scheduleOnce(() => {
+            UIManager.instance().showUI(TestUI);
+            this.a();
+        }, 5)
     }
 
     start() {

@@ -1,4 +1,5 @@
 import ViewBase from "../../../base/mvc/ViewBase";
+import UIManager from "../../../base/mvc/UIManager";
 
 export default class TestUI extends ViewBase {
 
@@ -27,7 +28,6 @@ export default class TestUI extends ViewBase {
     }
 
     HELLO(data) {
-        console.log(data);
     }
 
 }
