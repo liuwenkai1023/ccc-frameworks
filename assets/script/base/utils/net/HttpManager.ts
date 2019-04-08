@@ -1,4 +1,4 @@
-import config from "./config/config";
+import config from "./config";
 
 export interface HttpParamsMap { [key: string]: any };
 export interface HttpResponseHanler { (response: HttpResponse) };

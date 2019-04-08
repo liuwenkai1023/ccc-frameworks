@@ -1,4 +1,4 @@
-import config from "./config/config";
+import config from "./config";
 import BroadcastManager from "../broadcast/BroadcastManager";
 
 export default class SocketManager {
