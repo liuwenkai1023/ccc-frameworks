@@ -15,9 +15,9 @@ export default class AudioManager {
      */
     static instance(): AudioManager {
         if (!AudioManager._instance) {
-            AudioManager._instance = new AudioManager()
+            AudioManager._instance = new AudioManager();
         }
-        return this._instance
+        return this._instance;
     }
 
 

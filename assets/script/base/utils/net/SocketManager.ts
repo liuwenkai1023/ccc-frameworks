@@ -60,8 +60,8 @@ export default class SocketManager {
      */
     public open(url?: string | void) {
         this.setUrl(url == null ? SocketManager.DEFAULT_URL : url)
-        this.close()
-        this.init()
+        this.close();
+        this.init();
     }
 
 
@@ -78,7 +78,7 @@ export default class SocketManager {
      */
     public close() {
         if (this._socket != null) {
-            this._socket.close()
+            this._socket.close();
             this._closeByUser = true;
         }
         this._sendDatas.pop();
@@ -117,13 +117,13 @@ export default class SocketManager {
      */
     private reconnect() {
         if (this._curReconnectTimes == SocketManager.MAX_RECONNECT_TIMES) {
-            this._broadcstManager.emit("SOCKET_RECONNECT_FAILED")
+            this._broadcstManager.emit("SOCKET_RECONNECT_FAILED");
             // console.warn("警告:socket断线重连失败,已重试%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
             return;
         }
-        this._broadcstManager.emit("SOCKET_RECONNECTTING", this._curReconnectTimes++)
+        this._broadcstManager.emit("SOCKET_RECONNECTTING", this._curReconnectTimes++);
         // console.log("提示:socket断线，正在尝试重新连接%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
-        this.init()
+        this.init();
     }
 
 
@@ -131,7 +131,7 @@ export default class SocketManager {
      * 身份认证消息
      */
     private sendRegisterMsg() {
-        this._sendDatas.unshift(this._registerMsg)
+        this._sendDatas.unshift(this._registerMsg);
         this.send(null);
     }
 
@@ -143,7 +143,7 @@ export default class SocketManager {
     private onOpen(event: Event) {
         // console.log("提示:socket连接已打开", event)
         this._curReconnectTimes = 0;
-        this.sendRegisterMsg()
+        this.sendRegisterMsg();
     }
 
 
@@ -155,7 +155,7 @@ export default class SocketManager {
         // console.log("提示:socket连接已关闭", event)
         this._socket = null;
         if (!this._closeByUser) {
-            this.reconnect()
+            this.reconnect();
         };
     }
 
@@ -166,7 +166,7 @@ export default class SocketManager {
      */
     private onMessage(event: MessageEvent) {
         // console.log("提示:socket收到消息", event.data)
-        this._broadcstManager.emit("SAY_HELLO_2", event.data)
+        this._broadcstManager.emit("SAY_HELLO_2", event.data);
     }
 
 

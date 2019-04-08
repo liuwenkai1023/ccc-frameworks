@@ -6,10 +6,10 @@ export interface HttpResponse { seq: number, request: string, event: string, dat
 
 export default class HttpManager {
 
-    // SEQ请求标记,递增
-    private SEQ: number = 1;
-    // HTTP请求地址
-    private HTTP_HOST: string = config.HTTP_HOST;
+    private SEQ: number = 1;// SEQ请求标记,递增
+
+    private HTTP_HOST: string = config.HTTP_HOST; // HTTP请求地址
+
     private static _instance: HttpManager;
 
     private constructor() {
@@ -17,9 +17,9 @@ export default class HttpManager {
 
 
     /**
-      * 获取HttpManager单例
-      * @param url socket连接地址
-      */
+     * 获取HttpManager单例
+     * @param url socket连接地址
+     */
     public static instance() {
         if (HttpManager._instance == null) {
             HttpManager._instance = new HttpManager();
