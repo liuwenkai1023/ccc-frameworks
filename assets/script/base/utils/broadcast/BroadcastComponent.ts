@@ -1,48 +1,52 @@
 const { ccclass, disallowMultiple, property } = cc._decorator;
-import BroadcastReceiver, { BroadcastReceiverHandler } from "./BroadcastReceiver";
 import BroadcastManager from "./BroadcastManager";
+import BroadcastEvent from "./BroadcastEvent";
 
 /**
  * 广播组件
- * 节点上建议使用此组件，广播会在生命周期结束时自动销毁
  */
 // @ccclass
 @disallowMultiple
 export default class BroadcastComponent extends cc.Component {
 
-    private _broadcastReceivers: Array<BroadcastReceiver> = [];
+    private _broadcastEvents: Array<BroadcastEvent> = [];
     private _broadcastManager: BroadcastManager;
 
+    public onLoad() {
+        this._broadcastManager = BroadcastManager.instance();
+    }
+
     /**
-     * 实例化并注册广播接收者
-     * @param action 广播行为名称
-     * @param handler 行为对应的回调
+     * 注册广播事件
+     * @param eventName     广播事件名称
+     * @param eventCallback 广播事件的回调
+     * @param once          广播事件是否只执行1次
      */
-    public newAndRegisterReceiver(action: string, handler: BroadcastReceiverHandler) {
-        let receiver = new BroadcastReceiver(action, handler);
-        return this.registerReceiver(receiver);
+    public on(eventName: string, eventCallback: Function, once: boolean = false) {
+        let event = new BroadcastEvent(eventName, eventCallback, once);
+        return this.register(event);
     }
 
 
     /**
-     * 注册广播接收者
-     * @param receiver 广播接收者
+     * 注册广播事件
+     * @param broadcastEvent 广播事件
      */
-    public registerReceiver(receiver: BroadcastReceiver) {
-        if (this.checkIsRepeat(receiver)) throw "同一广播组件上不能注册相同的广播行为";
-        this._broadcastReceivers.push(receiver);
-        this._broadcastManager.addBroadcastReceiver(receiver);
-        return receiver;
+    public register(broadcastEvent: BroadcastEvent) {
+        if (this.checkRepeat(broadcastEvent)) throw "同一广播组件上不能注册相同的广播事件";
+        this._broadcastEvents.push(broadcastEvent);
+        this._broadcastManager.register(broadcastEvent);
+        return broadcastEvent;
     }
 
 
     /**
-     * 检查是否重复注册行为
-     * @param receiver 广播行为名称
+     * 检查事件是否重复注册行为
+     * @param broadcastEvent 广播事件名称
      */
-    private checkIsRepeat(receiver: BroadcastReceiver) {
-        for (const mReceiver of this._broadcastReceivers) {
-            if (receiver != null && mReceiver != null && receiver.action == mReceiver.action) {
+    private checkRepeat(broadcastEvent: BroadcastEvent) {
+        for (const _broadcastEvent of this._broadcastEvents) {
+            if (broadcastEvent != null && _broadcastEvent != null && broadcastEvent.eventName == _broadcastEvent.eventName) {
                 return true;
             }
         }
@@ -51,28 +55,13 @@ export default class BroadcastComponent extends cc.Component {
 
 
     /**
-     * 移除广播接收者
-     * @param receiver 广播接收者
+     * 得到广播事件
+     * @param eventName 广播事件名称
      */
-    public removeBroadcastReceiver(receiver: BroadcastReceiver | string) {
-        if (typeof receiver === 'string') {
-            receiver = this.getBroadcastReceiver(receiver);
-        }
-        if (receiver != null) {
-            this._broadcastReceivers[this._broadcastReceivers.indexOf(receiver)] = null;
-            this._broadcastManager.removeBroadcastReceiver(receiver);
-        }
-    }
-
-
-    /**
-     * 得到对应广播接收者
-     * @param action 广播行为名称
-     */
-    public getBroadcastReceiver(action: string): BroadcastReceiver {
-        for (const receiver of this._broadcastReceivers) {
-            if (receiver != null && receiver.action == action) {
-                return receiver;
+    public getEventByName(eventName: string): BroadcastEvent {
+        for (const broadcastEvent of this._broadcastEvents) {
+            if (broadcastEvent != null && broadcastEvent.eventName == eventName) {
+                return broadcastEvent;
             }
         }
         return null;
@@ -80,37 +69,44 @@ export default class BroadcastComponent extends cc.Component {
 
 
     /**
-     * 发送广播
-     * @param action 需要响应广播的行为
-     * @param data 广播传递的数据
-     */
-    public sendBroadcast(action: string, data: any) {
-        this._broadcastManager.sendBroadcast(action, data);
-    }
-
-
-    //加载时初始化
-    public onLoad() {
-        this._broadcastManager = BroadcastManager.instance();
-    }
-
-
-    //销毁时注销所以广播接收者
-    public onDestroy() {
-        this.removeAllBroadcastReceiver();
-        this._broadcastManager = null;
-        this._broadcastReceivers = null;
+    * 触发广播事件
+    * @param eventName 广播事件名称
+    * @param data 触发事件传递的数据
+    */
+    public emit(eventName: string, data: any) {
+        this._broadcastManager.emit(eventName, data);
     }
 
 
     /**
-     * 移除当前组件所有广播接收
+     * 移除广播事件
+     * @param broadcastEvent 广播事件
      */
-    public removeAllBroadcastReceiver() {
-        for (const receiver of this._broadcastReceivers) {
-            if (receiver != null) {
-                this.removeBroadcastReceiver(receiver);
-            }
+    public unregister(broadcastEvent: BroadcastEvent | string) {
+        if (typeof broadcastEvent === 'string') {
+            broadcastEvent = this.getEventByName(broadcastEvent);
+        }
+        if (broadcastEvent != null) {
+            delete this._broadcastEvents[this._broadcastEvents.indexOf(broadcastEvent)];
+            this._broadcastManager.unregister(broadcastEvent);
         }
     }
+
+
+    /**
+     * 移除当前组件所有广播事件
+     */
+    public unregisterAll() {
+        for (const broadcastEvent of this._broadcastEvents) {
+            broadcastEvent && this.unregister(broadcastEvent);
+        }
+    }
+
+
+    onDestroy() {
+        this.unregisterAll();
+        this._broadcastEvents = null;
+        this._broadcastManager = null;
+    }
+
 }

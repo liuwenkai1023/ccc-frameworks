@@ -1,15 +1,14 @@
-import BroadcastReceiver from "./BroadcastReceiver";
+import BroadcastEvent from "./BroadcastEvent";
 import BroadcastComponent from "./BroadcastComponent";
 
 /**
  * 单例：广播管理器
- * 不建议直接使用此类,节点还请使用广播组件BroadcastComponent(避免忘记注销广播而引起异常)
  */
 export default class BroadcastManager {
 
     private static _instance: BroadcastManager;
 
-    private _broadcastReceiverMap: BroadcastReceiverMap = {};
+    private _broadcastEventMap: BroadcastEventMap = {};
 
     private constructor() { }
 
@@ -26,42 +25,42 @@ export default class BroadcastManager {
 
 
     /**
-     * 发送广播
-     * @param action 需要响应广播的行为
-     * @param data 广播传递的数据
+     * 触发广播事件
+     * @param eventName 需要响应的事件名
+     * @param data 广播需要传递的数据
      */
-    public sendBroadcast(action: string, data?: any | void) {
-        let receivers = this._broadcastReceiverMap[action];
-        if (!receivers) return;
-        for (const receiver of receivers) {
-            if (receiver != null && receiver.action == action) {
-                if (receiver.handler) receiver.handler(data);
+    public emit(eventName: string, data?: any | void) {
+        let events = this._broadcastEventMap[eventName];
+        if (!events) return;
+        for (const event of events) {
+            if (event != null && event.eventName == eventName) {
+                event.call(this,data);
             }
         }
     }
 
 
     /**
-     * 记录广播接收者
-     * @param receiver 广播接收者
+     * 注册广播事件
+     * @param broadcastEvent 广播事件
      */
-    public addBroadcastReceiver(receiver: BroadcastReceiver) {
-        if (!this._broadcastReceiverMap[receiver.action]) {
-            this._broadcastReceiverMap[receiver.action] = [];
+    public register(broadcastEvent: BroadcastEvent) {
+        if (!this._broadcastEventMap[broadcastEvent.eventName]) {
+            this._broadcastEventMap[broadcastEvent.eventName] = [];
         }
-        this._broadcastReceiverMap[receiver.action].push(receiver);
+        this._broadcastEventMap[broadcastEvent.eventName].push(broadcastEvent);
     }
 
 
     /**
-     * 移除广播接收者
-     * @param receiver 广播接收者
+     * 移除广播事件
+     * @param broadcastEvent 广播事件
      */
-    public removeBroadcastReceiver(receiver: BroadcastReceiver) {
-        let receivers = this._broadcastReceiverMap[receiver.action];
-        if (!receivers) return;
-        receivers.splice(receivers.indexOf(receiver), 1);
+    public unregister(broadcastEvent: BroadcastEvent) {
+        let events = this._broadcastEventMap[broadcastEvent.eventName];
+        if (!events) return;
+        events.splice(events.indexOf(broadcastEvent), 1);
     }
 }
 
-export interface BroadcastReceiverMap { [key: string]: Array<BroadcastReceiver> };
+export interface BroadcastEventMap { [key: string]: Array<BroadcastEvent> };
