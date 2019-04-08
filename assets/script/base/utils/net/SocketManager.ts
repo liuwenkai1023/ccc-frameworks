@@ -117,11 +117,11 @@ export default class SocketManager {
      */
     private reconnect() {
         if (this._curReconnectTimes == SocketManager.MAX_RECONNECT_TIMES) {
-            this._broadcstManager.sendBroadcast("SOCKET_RECONNECT_FAILED")
+            this._broadcstManager.emit("SOCKET_RECONNECT_FAILED")
             // console.warn("警告:socket断线重连失败,已重试%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
             return;
         }
-        this._broadcstManager.sendBroadcast("SOCKET_RECONNECTTING", this._curReconnectTimes++)
+        this._broadcstManager.emit("SOCKET_RECONNECTTING", this._curReconnectTimes++)
         // console.log("提示:socket断线，正在尝试重新连接%d/%d", this._curReconnectTimes, SocketManager.MAX_RECONNECT_TIMES)
         this.init()
     }
@@ -166,7 +166,7 @@ export default class SocketManager {
      */
     private onMessage(event: MessageEvent) {
         // console.log("提示:socket收到消息", event.data)
-        this._broadcstManager.sendBroadcast("SAY_HELLO_2", event.data)
+        this._broadcstManager.emit("SAY_HELLO_2", event.data)
     }
 
 
