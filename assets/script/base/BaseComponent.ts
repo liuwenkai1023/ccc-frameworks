@@ -19,9 +19,9 @@ export default abstract class BaseComponent extends cc.Component {
         if (!this._broadcastManager) {
             this._broadcastManager = this.node.addComponent(BroadcastComponent);
         }
-
         return this._broadcastManager;
     }
+
 
     /**
      * 绑定广播接收者
@@ -34,8 +34,15 @@ export default abstract class BaseComponent extends cc.Component {
         );
     }
 
-    public bindView(variableName: string, nodePath: string, component?: typeof cc.Component) {
-        let variable = this.findView(nodePath);
+
+    /**
+     * 绑定组件或节点到某个变量
+     * @param variableName  变量名
+     * @param nodePath      节点路径
+     * @param component     绑定为??组件(可选)
+     */
+    public bindView(variableName: string, nodePath: string, component?: typeof cc.Component, referenceNode?: cc.Node) {
+        let variable = this.findView(nodePath, referenceNode);
         if (variable && component) {
             variable = (<any>variable).getComponent(component);
         }
@@ -43,20 +50,15 @@ export default abstract class BaseComponent extends cc.Component {
         return variable;
     }
 
+
     /**
      * 寻找控件
-     * @param sPath 相对路径
-     * @param referenceNode 相对节点
+     * @param sPath         相对路径
+     * @param referenceNode 相对于节点
      */
     public findView(sPath: string, referenceNode: cc.Node = this.node) {
         return cc.find(sPath, referenceNode);
     }
-
-
-    abstract onLoad();
-    abstract start();
-    abstract update(dt?: number);
-    abstract onDestroy();
 
 }
 
