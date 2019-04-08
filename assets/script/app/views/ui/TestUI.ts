@@ -1,5 +1,4 @@
 import ViewBase from "../../../base/mvc/ViewBase";
-import UIManager from "../../../base/mvc/UIManager";
 
 export default class TestUI extends ViewBase {
 
@@ -8,26 +7,16 @@ export default class TestUI extends ViewBase {
 
     private label: cc.Label;
 
-    onInitData() {
-        this.bPush({ name: "label", path: "testLabel", component: cc.Label });
-        this.rPush({ name: "HELLO", handler: null });
-    }
-
-    onLoaded() {
+    onLoad() {
+        this.bindView("label", "testLabel", cc.Label);
+        this.bindBroadEvent("HELLO");
         this.label.string = "Label changed by broadcast.";
     }
 
     start() {
-        this.broadcastManager.sendBroadcast("HELLO", "Hello, this is a broadcst message.")
-    }
-
-    update(dt?: number) {
-    }
-
-    onDestory() {
-    }
-
-    HELLO(data) {
+        this.scheduleOnce(() => {
+            this.broadcastManager.emit("HELLO", "Hello, this is a broadcst message.");
+        }, 2);
     }
 
 }

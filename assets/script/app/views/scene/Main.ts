@@ -7,12 +7,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Main extends BaseComponent {
 
-    onInitData() {
-    }
-
-    onLoaded() {
+    onLoad() {
         this.b();
-
     }
 
     a() {
@@ -27,15 +23,6 @@ export default class Main extends BaseComponent {
             UIManager.instance().showUI(TestUI);
             this.a();
         }, 5)
-    }
-
-    start() {
-    }
-
-    update(dt: number) {
-    }
-
-    onDestory() {
     }
 
 }
