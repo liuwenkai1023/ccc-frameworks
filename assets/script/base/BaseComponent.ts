@@ -7,76 +7,41 @@ import BroadcastComponent from "./utils/broadcast/BroadcastComponent";
  */
 export default abstract class BaseComponent extends cc.Component {
 
-    private __broadcastManager: BroadcastComponent;
-    private __bindMap: { [key: string]: cc.Node | typeof cc.Component };
+    private _broadcastManager: BroadcastComponent;
 
-    /**
-     * 节点及组件绑定配置
-     */
-    protected _bindingsData: Array<BindingData>;
-
-    /**
-     * 广播接收者配置
-     */
-    protected _receiversData: Array<ReceiverData>;
+    protected _broadcastEventData: Array<BroadcastEventData>;
 
 
     /**
      * 得到广播管理器
      */
     get broadcastManager() {
-        if (!this.__broadcastManager)
-            this.__broadcastManager = this.node.addComponent(BroadcastComponent);
-        return this.__broadcastManager;
-    }
-
-
-    /**
-     * 脚本加载时回调
-     * 配置了__receiversData时，请先调用super.onLoad();
-     */
-    protected onLoad() {
-        this.onInitData();
-        this.__initBinding();
-        this.__initReceiver();
-        this.onLoaded();
-    }
-
-
-
-    /**
-     * 初始化广播接收者
-     */
-    private __initReceiver() {
-        let receiverDatas = this._receiversData ? this._receiversData : [];
-        for (let receiverData of receiverDatas) {
-            this.broadcastManager.newAndRegisterReceiver(
-                receiverData.name,
-                receiverData.handler ? receiverData.handler : (
-                    this[receiverData.name] ? this[receiverData.name].bind(this) : null
-                )
-            );
+        if (!this._broadcastManager) {
+            this._broadcastManager = this.node.addComponent(BroadcastComponent);
         }
-    }
 
+        return this._broadcastManager;
+    }
 
     /**
-    * 绑定资源
-    */
-    private __initBinding() {
-        let resourceBinding = this._bindingsData ? this._bindingsData : [];
-        this.__bindMap = this.__bindMap ? this.__bindMap : {};
-        for (const bind of resourceBinding) {
-            if (bind.name && bind.path) {
-                this.__bindMap[bind.name] = this.findView(bind.path);
-                if (this.__bindMap[bind.name] && bind.component) {
-                    this.__bindMap[bind.name] = <typeof cc.Component>(<any>this.__bindMap[bind.name]).getComponent(bind.component);
-                }
-                this[bind.name] = this.__bindMap[bind.name];
-            }
-        }
+     * 绑定广播接收者
+     */
+    public bindBroadEvent(eventName: string, eventCallback?: Function, once?: boolean) {
+        this.broadcastManager.on(
+            eventName,
+            eventCallback ? eventCallback : (this[eventName] ? this[eventName].bind(this) : null),
+            once
+        );
     }
 
+    public bindView(variableName: string, nodePath: string, component?: typeof cc.Component) {
+        let variable = this.findView(nodePath);
+        if (variable && component) {
+            variable = (<any>variable).getComponent(component);
+        }
+        this[variableName] = variable;
+        return variable;
+    }
 
     /**
      * 寻找控件
@@ -87,32 +52,13 @@ export default abstract class BaseComponent extends cc.Component {
         return cc.find(sPath, referenceNode);
     }
 
-    protected onDestroy() {
-        this._bindingsData = null;
-        this._receiversData = null;
-        this.__bindMap = null;
-        this.__broadcastManager = null;
-        this.onDestory();
-    }
 
-    protected rPush(receiverData: ReceiverData) {
-        this._receiversData = this._receiversData ? this._receiversData : [];
-        this._receiversData.push(receiverData);
-    }
-
-    protected bPush(bindingData: BindingData) {
-        this._bindingsData = this._bindingsData ? this._bindingsData : [];
-        this._bindingsData.push(bindingData);
-    }
-
-    abstract onInitData();
-    abstract onLoaded();
+    abstract onLoad();
     abstract start();
     abstract update(dt?: number);
-    abstract onDestory();
-    // update(dt?: number) { };
-    // onDestory() { };
+    abstract onDestroy();
+
 }
 
-export interface ReceiverData { name: string, handler?: Function };
-export interface BindingData { name: string, path: string, component?: typeof cc.Component };
+export interface BroadcastEventData { eventName: string, eventCallback?: Function, once?: boolean };
+export interface BindingData { variableName: string, nodePath: string, component?: typeof cc.Component };
