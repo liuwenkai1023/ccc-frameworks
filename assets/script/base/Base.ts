@@ -1,6 +1,7 @@
 import Loader from "./utils/loader/Loader";
 import Base64 from "./utils/base64/Base64";
 import FileUtils from "./utils/storage/FileUtils";
+import UIManager from "./mvc/UIManager";
 import HttpManager from "./utils/net/HttpManager";
 import AudioManager from "./utils/audio/AudioMananger";
 import TimerManager from "./utils/timer/TimerManager";
@@ -62,7 +63,7 @@ export default class BASE {
     /**
      * UIManager: UIManager管理类适用于mvc模式中管理UI
      */
-    // public static readonly UIManager: UIManager = UIManager.instance();
+    public static readonly UIManager: UIManager = UIManager.instance();
 
     /**
      * Loader管理
