@@ -1,5 +1,5 @@
-import BASE from "../BASE";
 import ViewBase from "./ViewBase";
+import Loader from "../utils/loader/Loader";
 
 export default class UIManager {
     private static _instance: UIManager;
@@ -20,7 +20,7 @@ export default class UIManager {
         if (!this._instance) {
             this._instance = new UIManager();
         }
-        return UIManager._instance;
+        return this._instance;
     }
 
 
@@ -37,7 +37,7 @@ export default class UIManager {
                 break;
             case LoadEnum.NORMAL:
                 UIMessage.status = LoadEnum.LOADING;
-                BASE.Loader.load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
+                Loader.instance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     this.initUI(viewBase, res[0], parentNode);
                     callback && callback();
                 });
@@ -119,5 +119,5 @@ export default class UIManager {
 
 }
 
-enum LoadEnum { NORMAL, LOADING, LOADED, }
-interface UIMessageI { name: string, status: LoadEnum, component: ViewBase }
+export enum LoadEnum { NORMAL, LOADING, LOADED, }
+export interface UIMessageI { name: string, status: LoadEnum, component: ViewBase }

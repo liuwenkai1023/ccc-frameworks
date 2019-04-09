@@ -59,16 +59,16 @@ export default class BASE {
      *  ShaderManager：Shader效果管理类
      */
     public static readonly ShaderManager: ShaderManager = ShaderManager.instance();
-
+    
     /**
-     * UIManager: UIManager管理类适用于mvc模式中管理UI
+     *  UIManager: UIManager管理类适用于mvc模式中管理UI
      */
     public static readonly UIManager: UIManager = UIManager.instance();
 
     /**
-     * Loader管理
+     *  Loader管理
      */
-    public static readonly Loader: Loader = new Loader();
+    public static readonly Loader: Loader = Loader.instance();
 
 }
 

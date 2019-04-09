@@ -6,6 +6,17 @@ export default class Loader {
     private _loadItems: Array<LoaderItem> = [];
     private _released: boolean = false;
 
+    private static _instance: Loader;
+    
+    private constructor(){}
+
+    public static instance() {
+        if (!this._instance) {
+            this._instance = new Loader();
+        }
+        return this._instance;
+    }
+
     /**
      * 获取到根管理器
      */
