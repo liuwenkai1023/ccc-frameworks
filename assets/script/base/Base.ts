@@ -7,7 +7,7 @@ import AudioManager from "./utils/audio/AudioMananger";
 import TimerManager from "./utils/timer/TimerManager";
 import SocketManager from "./utils/net/SocketManager";
 import ShaderManager from "./utils/shader/ShaderManager";
-import BroadcastManager from "./utils/broadcast/BroadcastManager";
+import EventManager from "./utils/event/EventManager";
 import LocalStorageManager from "./utils/storage/StorageManager";
 
 /**
@@ -53,7 +53,7 @@ export default class BASE {
     /**
      *  BroadcastManager：广播管理类。节点脚本上不建议使用，还请使用BroadcastComponent
      */
-    public static readonly BroadcastManager: BroadcastManager = BroadcastManager.instance();
+    public static readonly EventManager: EventManager = EventManager.instance();
 
     /**
      *  ShaderManager：Shader效果管理类

@@ -8,21 +8,7 @@ const { ccclass, property } = cc._decorator;
 export default class Main extends BaseComponent {
 
     onLoad() {
-        this.b();
-    }
-
-    a() {
-        this.scheduleOnce(() => {
-            UIManager.instance().destoryUI(TestUI.UIName);
-            this.b();
-        }, 5)
-    }
-
-    b() {
-        this.scheduleOnce(() => {
-            UIManager.instance().showUI(TestUI);
-            this.a();
-        }, 5)
+		UIManager.instance().showUI(TestUI);
     }
 
 }

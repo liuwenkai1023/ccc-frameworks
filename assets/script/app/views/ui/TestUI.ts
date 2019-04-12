@@ -9,14 +9,17 @@ export default class TestUI extends ViewBase {
 
     onLoad() {
         this.bindView("label", "testLabel", cc.Label);
-        this.bindBroadEvent("HELLO");
-        this.label.string = "Label changed by broadcast.";
+        this.bindEvent("HELLO", this.sayHello);
     }
 
     start() {
         this.scheduleOnce(() => {
-            this.broadcastManager.emit("HELLO", "Hello, this is a broadcst message.");
+            this.eventTarget.dispatch("HELLO", "Hello, this is a event message.");
         }, 2);
+    }
+
+    sayHello(data) {
+        this.label.string = data;
     }
 
 }

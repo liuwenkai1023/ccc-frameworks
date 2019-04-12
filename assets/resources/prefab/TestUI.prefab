@@ -216,7 +216,7 @@
   {
     "__type__": "cc.Node",
     "_name": "testLabel",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 1
     },
@@ -241,18 +241,18 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 336.86,
-      "height": 60
+      "width": 586,
+      "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 1
     },
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -457,
+      "y": -420,
       "z": 0
     },
     "_scale": {
@@ -289,8 +289,8 @@
     "_useOriginalSize": false,
     "_string": "Shader Test.",
     "_N$string": "Shader Test.",
-    "_fontSize": 60,
-    "_lineHeight": 60,
+    "_fontSize": 50,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -298,7 +298,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_N$overflow": 3,
     "_id": ""
   },
   {

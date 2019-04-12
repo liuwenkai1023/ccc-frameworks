@@ -30,9 +30,9 @@ export default class HotUpdate extends BaseComponent {
     // private _failCount: number = 0;
 
     onInitData() {
-        this.broadcastManager.on("CHECK_UPDATE", this.checkUpdate.bind(this));
-        this.broadcastManager.on("START_UPDATE", this.hotUpdate.bind(this));
-        this.broadcastManager.on("RETRY_UPDATE", this.retry.bind(this));
+        this.eventTarget.on("CHECK_UPDATE", this.checkUpdate.bind(this));
+        this.eventTarget.on("START_UPDATE", this.hotUpdate.bind(this));
+        this.eventTarget.on("RETRY_UPDATE", this.retry.bind(this));
     }
 
     onLoad() {
@@ -46,7 +46,7 @@ export default class HotUpdate extends BaseComponent {
         cc.log('远程资源的存储路径 : ' + this._storagePath);
     }
 
-    
+
     start() {
         this.checkUpdate();
     }
@@ -59,20 +59,20 @@ export default class HotUpdate extends BaseComponent {
         switch (event.getEventCode()) {
             case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:
                 console.log("没有发现本地清单文件，跳过热更新.");
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_PASSED], event)
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_PASSED], event);
                 break;
             case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
             case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:
                 console.log("下载清单文件失败，跳过热更新.");
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event)
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event);
                 break;
             case jsb.EventAssetsManager.ALREADY_UP_TO_DATE:
                 console.log("当前已经是最新版本.");
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_PASSED], event)
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_PASSED], event);
                 break;
             case jsb.EventAssetsManager.NEW_VERSION_FOUND:
                 console.log('找到新版本，请尝试更新.');
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_NEED], event)
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_NEED], event);
                 break;
             default:
                 return;
@@ -94,30 +94,30 @@ export default class HotUpdate extends BaseComponent {
                 break;
             case jsb.EventAssetsManager.UPDATE_PROGRESSION:
                 // console.log('正在更新.');
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_UPDATING], event)
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_UPDATING], event);
                 break;
             case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
             case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:
                 console.log('下载清单文件失败，跳过热更新.');
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event);
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event);
                 failed = true;
                 break;
             case jsb.EventAssetsManager.ALREADY_UP_TO_DATE:
                 console.log('当前已经是最新版本.');
-                this.broadcastManager.emit("PASSED", event);
+                this.eventTarget.dispatch("PASSED", event);
                 failed = true;
                 cc.game.restart();
                 break;
             case jsb.EventAssetsManager.UPDATE_FINISHED:
                 console.log('更新完成. ' + event.getMessage());
-                this.broadcastManager.emit("FINISHED", event);
+                this.eventTarget.dispatch("FINISHED", event);
                 needRestart = true;
                 cc.game.restart();
                 break;
             case jsb.EventAssetsManager.UPDATE_FAILED:
                 console.log('更新失败. ' + event.getMessage());
-                this.broadcastManager.emit(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event);
-                this.broadcastManager.emit("HOT_ERROE", event);
+                this.eventTarget.dispatch(HotUpdateEventType[HotUpdateEventType.HOT_ERROE], event);
+                this.eventTarget.dispatch("HOT_ERROE", event);
                 this._updating = false;
                 this._canRetry = true;
                 break;
@@ -168,7 +168,7 @@ export default class HotUpdate extends BaseComponent {
         if (this._updating) { return; }
         this.loadLocalManifest();
         if (!this._assetManager.getLocalManifest() || !this._assetManager.getLocalManifest().isLoaded()) {
-            this.broadcastManager.emit("PASSED", { msg: "未能加载本地清单 ..." });
+            this.eventTarget.dispatch("PASSED", { msg: "未能加载本地清单 ..." });
             return;
         }
         this._assetManager.setEventCallback(this.checkCb.bind(this));
@@ -198,8 +198,8 @@ export default class HotUpdate extends BaseComponent {
      * 进行热更新
      */
     private hotUpdate() {
-        console.log("进行热更新")
-        console.log(this._assetManager, this._updating)
+        console.log("进行热更新");
+        console.log(this._assetManager, this._updating);
         if (this._assetManager && !this._updating) {
             this._assetManager.setEventCallback(this.updateCb.bind(this));
             // load对应清单文件

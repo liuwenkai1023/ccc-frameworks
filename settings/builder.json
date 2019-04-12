@@ -7,7 +7,7 @@
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
-  "inlineSpriteFrames_native": true,
+  "inlineSpriteFrames_native": false,
   "jailbreakPlatform": false,
   "md5Cache": true,
   "mergeStartScene": false,
@@ -19,7 +19,7 @@
     "portrait": true,
     "upsideDown": false
   },
-  "packageName": "org.liuwenkai.project",
+  "packageName": "org.liuwenkai.project2",
   "privateKey": "54966EB3D5156CAF5F84D362C9256E7D",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
