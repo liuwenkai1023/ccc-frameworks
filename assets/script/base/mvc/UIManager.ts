@@ -32,9 +32,16 @@ export default class UIManager {
             case LoadEnum.LOADING:
                 break;
             case LoadEnum.LOADED:
-                UIMessage.component.node.active = true;
+                if (UIMessage.component && UIMessage.component.isValid) {
+                    UIMessage.component.node.active = true;
+                } else {
+                    UIMessage.status = LoadEnum.DESTORY;
+                    this.showUI(viewBase, parentNode, callback);
+                    return;
+                }
                 callback && callback();
                 break;
+            case LoadEnum.DESTORY:
             case LoadEnum.NORMAL:
                 UIMessage.status = LoadEnum.LOADING;
                 Loader.instance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
@@ -49,10 +56,10 @@ export default class UIManager {
     private initUI(viewBase: typeof ViewBase, prefab: cc.Prefab, parentNode: cc.Node = cc.director.getScene()) {
         let UIMessage = this.UIMaps[viewBase.UIName];
         let UINode = cc.instantiate(prefab);
-        if (UINode && parent) {
+        if (UINode && parentNode) {
             UINode.setParent(parentNode);
             UIMessage.status = LoadEnum.LOADED;
-            let component = UINode.getComponent(typeof viewBase);
+            let component = UINode.getComponent(viewBase);
             if (!component) {
                 component = UINode.addComponent(<any>viewBase);
             }
@@ -62,7 +69,6 @@ export default class UIManager {
             console.log("Error:创建UI时出错", UIMessage.name);
             UIMessage.status = LoadEnum.NORMAL;
         }
-        // console.log(this.uiMaps);
     }
 
 
@@ -119,5 +125,10 @@ export default class UIManager {
 
 }
 
-export enum LoadEnum { NORMAL, LOADING, LOADED, }
+export enum LoadEnum {
+    NORMAL,
+    LOADING,
+    LOADED,
+    DESTORY
+}
 export interface UIMessageI { name: string, status: LoadEnum, component: ViewBase }
