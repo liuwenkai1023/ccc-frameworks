@@ -1,6 +1,7 @@
-import ViewBase from "../../../base/mvc/ViewBase";
+import { ViewBase } from "../../../base/mvc/ViewBase";
+import { Base64 } from "../../../base/utils/Base64";
 
-export default class TestUI extends ViewBase {
+export class TestUI extends ViewBase {
 
     static UIName = "TestUI";
     static ResourcePath = "prefab/TestUI";
@@ -14,12 +15,12 @@ export default class TestUI extends ViewBase {
 
     start() {
         this.scheduleOnce(() => {
-            this.eventTarget.dispatch("HELLO", "Hello, this is a event message.");
+            this.Event.notify("HELLO", "Hello, this is a broadcast message.");
         }, 2);
     }
 
     sayHello(data) {
-        this.label.string = data;
+        this.label.string = data.data;
     }
 
 }

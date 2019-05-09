@@ -1,9 +1,14 @@
-import ViewBase from "./ViewBase";
-import Loader from "../utils/loader/Loader";
+import { ViewBase } from "./ViewBase";
+import { Lifecycle } from "./Lifecycle";
+import { Loader } from "../loader/Loader";
 
-export default class UIManager {
+export class UIManager {
+
     private static _instance: UIManager;
-    private _UIMaps: { [key: string]: UIMessageI };
+
+    private _seq: number = 0;
+    private _scene: cc.Scene;
+    private _UIMap: { [key: string]: UIMessageI };
 
 
     private constructor() {
@@ -12,7 +17,7 @@ export default class UIManager {
 
 
     private init() {
-        this._UIMaps = {};
+        this._UIMap = {};
     }
 
 
@@ -26,27 +31,27 @@ export default class UIManager {
 
     public showUI(viewBase: typeof ViewBase, parentNode?: cc.Node, callback?: Function) {
         let UIName = viewBase.UIName;
-        this.UIMaps[UIName] = !this.UIMaps[UIName] ? { name: UIName, component: null, status: LoadEnum.NORMAL } : this.UIMaps[UIName];
-        let UIMessage = this.UIMaps[UIName];
+        this.UIMap[UIName] = !this.UIMap[UIName] ? { name: UIName, component: null, status: LoadEnum.NORMAL, canceled: false } : this.UIMap[UIName];
+        let UIMessage = this.UIMap[UIName];
         switch (UIMessage.status) {
             case LoadEnum.LOADING:
+                UIMessage.canceled && this.log(UIName, "loading restore...");
+                UIMessage.canceled = false;
                 break;
             case LoadEnum.LOADED:
-                if (UIMessage.component && UIMessage.component.isValid) {
-                    UIMessage.component.node.active = true;
-                } else {
-                    UIMessage.status = LoadEnum.DESTORY;
-                    this.showUI(viewBase, parentNode, callback);
-                    return;
-                }
+                this.log(UIName, "already loaded");
+                UIMessage.component.node.active = true;
                 callback && callback();
                 break;
-            case LoadEnum.DESTORY:
             case LoadEnum.NORMAL:
+                this.log(UIName, "loading start...");
                 UIMessage.status = LoadEnum.LOADING;
                 Loader.instance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
-                    this.initUI(viewBase, res[0], parentNode);
-                    callback && callback();
+                    if (UIMessage.canceled) {
+                        UIMessage.status = LoadEnum.NORMAL;
+                    } else {
+                        this.initUI(viewBase, res[0], parentNode) && callback && callback();
+                    }
                 });
                 break;
         }
@@ -54,35 +59,40 @@ export default class UIManager {
 
 
     private initUI(viewBase: typeof ViewBase, prefab: cc.Prefab, parentNode: cc.Node = cc.director.getScene()) {
-        let UIMessage = this.UIMaps[viewBase.UIName];
+        let UIMessage = this.UIMap[viewBase.UIName];
         let UINode = cc.instantiate(prefab);
-        if (UINode && parentNode) {
+        if (UINode && parentNode && parentNode.isValid) {
             UINode.setParent(parentNode);
             UIMessage.status = LoadEnum.LOADED;
             let component = UINode.getComponent(viewBase);
             if (!component) {
                 component = UINode.addComponent(<any>viewBase);
             }
+            (!UINode.getComponent(Lifecycle)) && UINode.addComponent(Lifecycle).init(viewBase);
             UIMessage.component = component;
-            UIMessage.status = LoadEnum.LOADED;
-        } else {
-            console.log("Error:创建UI时出错", UIMessage.name);
-            UIMessage.status = LoadEnum.NORMAL;
+            this.log(viewBase.UIName, "loaded");
+            return true;
         }
+        CC_DEBUG && console.log("Error:创建UI时出错", UIMessage.name);
+        UIMessage.status = LoadEnum.NORMAL;
+        return false;
     }
 
 
     public destoryUI(UIName: string) {
-        if (this.UIMaps.hasOwnProperty(UIName)) {
-            const UIMessage = this.UIMaps[UIName];
+        if (this.UIMap.hasOwnProperty(UIName)) {
+            const UIMessage = this.UIMap[UIName];
             switch (UIMessage.status) {
                 case LoadEnum.LOADING:
-                    console.log("销毁UI失败，对应UI不存在(还在创建中)...", UIName);
-                    break;
+                    this.log(UIName, "loading cancel...");
+                    UIMessage.canceled = true;
+                    return true;
                 case LoadEnum.LOADED:
-                    UIMessage.component.node.destroy();
-                    delete this.UIMaps[UIName];
+                    UIMessage.component.isValid && UIMessage.component.node.destroy();
+                    delete this.UIMap[UIName];
                     cc.sys.garbageCollect();
+                    return true;
+                default:
                     return true;
             }
         }
@@ -91,8 +101,8 @@ export default class UIManager {
 
 
     public getUI(UIName): UIMessageI {
-        if (this.UIMaps.hasOwnProperty(UIName)) {
-            const UIMessage = this.UIMaps[UIName];
+        if (this.UIMap.hasOwnProperty(UIName)) {
+            const UIMessage = this.UIMap[UIName];
             if (UIMessage.status == LoadEnum.LOADED) {
                 return UIMessage;
             }
@@ -101,8 +111,8 @@ export default class UIManager {
 
 
     public closeUI(UIName: string) {
-        if (this.UIMaps.hasOwnProperty(UIName)) {
-            const UIMessage = this.UIMaps[UIName];
+        if (this.UIMap.hasOwnProperty(UIName)) {
+            const UIMessage = this.UIMap[UIName];
             if (UIMessage.status == LoadEnum.LOADED) {
                 UIMessage.component.node.active = false;
                 return true;
@@ -113,14 +123,24 @@ export default class UIManager {
 
 
     public destoryAllUI() {
-        for (const UIName in this.UIMaps) {
+        for (const UIName in this.UIMap) {
             this.destoryUI(UIName);
         }
     }
 
 
-    get UIMaps() {
-        return this._UIMaps;
+    private log(UIName: string, status: string) {
+        if (CC_DEBUG) {
+            let seq = ++this._seq;
+            let scene = cc.director.getScene();
+            this._scene = scene ? scene : this._scene;
+            console.log(`[${seq}][Scene：${this._scene.name}][UI：${UIName}] -> ${status}.`);
+        }
+    }
+
+
+    get UIMap() {
+        return this._UIMap;
     }
 
 }
@@ -128,7 +148,9 @@ export default class UIManager {
 export enum LoadEnum {
     NORMAL,
     LOADING,
-    LOADED,
-    DESTORY
+    LOADED
 }
-export interface UIMessageI { name: string, status: LoadEnum, component: ViewBase }
+
+export interface UIMessageI {
+    canceled: boolean, name: string, status: LoadEnum, component: ViewBase, scene?: cc.Scene
+}

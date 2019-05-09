@@ -1,15 +1,15 @@
-import EventTarget from "./utils/event/EventTarget";
+import { ObservationComponent } from "./event/ObservationComponent";
 
 /**
  * BaseComponent组件
- * 用户新建的组件脚本建立继承本组件
+ * 建议用户新建的组件脚本建立继承本组件
  */
-export default abstract class BaseComponent extends cc.Component {
+export abstract class BaseComponent extends cc.Component {
 
-    private _eventTarget: EventTarget;
+    private _eventComponent: ObservationComponent;
 
-    public bindEvent(type: string, callback?: Function, once?: boolean) {
-        return this.eventTarget.on(type, callback ? callback.bind(this) : (this[type] ? this[type].bind(this) : null), once);
+    public bindEvent(type: string, callback?: Function, once: boolean = false) {
+        return this.Event.on(type, callback ? callback.bind(this) : (this[type] ? this[type].bind(this) : null), once);
     }
 
     public bindView(variableName: string, nodePath: string, component?: typeof cc.Component, referenceNode?: cc.Node) {
@@ -25,14 +25,11 @@ export default abstract class BaseComponent extends cc.Component {
         return cc.find(sPath, referenceNode);
     }
 
-    get eventTarget() {
-        if (!this._eventTarget) {
-            this._eventTarget = this.node.addComponent(EventTarget);
+    get Event() {
+        if (!this._eventComponent) {
+            this._eventComponent = this.node.addComponent(ObservationComponent);
         }
-        return this._eventTarget;
+        return this._eventComponent;
     }
 
 }
-
-export interface BroadcastEventData { eventName: string, eventCallback?: Function, once?: boolean };
-export interface BindingData { variableName: string, nodePath: string, component?: typeof cc.Component };

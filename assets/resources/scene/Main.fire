@@ -154,9 +154,6 @@
       },
       {
         "__id__": 11
-      },
-      {
-        "__id__": 12
       }
     ],
     "_prefab": null,
@@ -440,15 +437,5 @@
     "_N$alphaThreshold": 0,
     "_N$inverted": false,
     "_id": "35gjQUQtBGO4SdmTLEMu+H"
-  },
-  {
-    "__type__": "9d563RxdxFLJKi20HWcGkuz",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 4
-    },
-    "_enabled": true,
-    "_id": "5244AefClFV5OrkXP+93Ui"
   }
 ]

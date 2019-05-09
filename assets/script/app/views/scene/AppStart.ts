@@ -1,9 +1,10 @@
-import BaseComponent from "../../../base/BaseComponent";
+import { UIManager } from "../../../base/mvc/UIManager";
+import { BaseComponent } from "../../../base/BaseComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class AppStart extends BaseComponent {
+export class AppStart extends BaseComponent {
 
     private fadeTime: number;
     private targetTime: number;
@@ -34,6 +35,7 @@ export default class AppStart extends BaseComponent {
     }
 
     onDestroy() {
+        UIManager.instance().destoryAllUI();
     }
 
 }

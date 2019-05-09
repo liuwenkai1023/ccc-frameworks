@@ -1,14 +1,14 @@
-import BaseComponent from "../../../base/BaseComponent";
-import UIManager from "../../../base/mvc/UIManager";
-import TestUI from "../ui/TestUI";
+import { TestUI } from "../ui/TestUI";
+import { UIManager } from "../../../base/mvc/UIManager";
+import { BaseComponent } from "../../../base/BaseComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Main extends BaseComponent {
+export class Main extends BaseComponent {
 
-    onLoad() {
-		UIManager.instance().showUI(TestUI);
-    }
+  onLoad() {
+    UIManager.instance().showUI(TestUI);
+  }
 
 }
