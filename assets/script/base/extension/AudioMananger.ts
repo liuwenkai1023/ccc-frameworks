@@ -10,6 +10,7 @@ export class AudioManager {
         this.init();
     }
 
+    
     /**
      * 获取音频管理器
      */

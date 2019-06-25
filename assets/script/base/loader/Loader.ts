@@ -1,14 +1,20 @@
 import { LoaderItem } from "./LoadItem";
 
 export class Loader {
+
     private _parentLoader: Loader = null;
+
     private _subLoaders: Array<Loader> = [];
+
     private _loadItems: Array<LoaderItem> = [];
+
     private _released: boolean = false;
 
     private static _instance: Loader;
 
+
     private constructor() { }
+
 
     public static instance() {
         if (!this._instance) {
@@ -16,6 +22,7 @@ export class Loader {
         }
         return this._instance;
     }
+
 
     /**
      * 获取到根管理器
@@ -28,6 +35,7 @@ export class Loader {
         return root;
     }
 
+
     /**
      * 创建子管理器
      */
@@ -38,6 +46,7 @@ export class Loader {
         return loader;
     }
 
+
     /**
      * 移除子管理器
      * @param loader  需移除的子管理器
@@ -46,6 +55,7 @@ export class Loader {
         let index: number = this._subLoaders.indexOf(loader);
         (index >= 0) && this._subLoaders.splice(index, 1);
     }
+
 
     /**
      * 释放管理器
@@ -57,6 +67,7 @@ export class Loader {
         let allResouces: Object = this.rootLoader.getAllResources();
         this._releaseWithout(allResouces);
     }
+
 
     /**
      * 选择性释放资源
@@ -71,6 +82,7 @@ export class Loader {
             loader._releaseWithout(allResouces);
         }
     }
+
 
     /**
     * 加载资源
@@ -96,6 +108,7 @@ export class Loader {
         }, progressHandler);
         this._loadItems.push(item);
     }
+
 
     /**
      * 得到当前Loader下所有依赖referenceId
@@ -123,6 +136,7 @@ export class Loader {
         return resources;
     }
 
+
     callInNextTick(callback: Function, timeout?: number, ...args: any[]) {
         setTimeout(callback && callback(), timeout, args);
     }
@@ -130,7 +144,8 @@ export class Loader {
 }
 
 
-
 export interface ErrorHandler { (err: Error) };
+
 export interface SuccessHandler { (res: any[]) };
+
 export interface ProgressHandler { (completedCount: number, totalCount: number, item: any) };

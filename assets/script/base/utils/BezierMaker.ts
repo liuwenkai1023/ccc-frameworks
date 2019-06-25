@@ -6,7 +6,9 @@
 export default class BezierMaker {
 
     private _bezierArr: Array<Point>;
+
     private _bezierCtrlNodesArr: Array<Point>;
+
 
     /**
      * @param bezierCtrlNodesArr 控制点数组，包含x，y坐标
@@ -15,6 +17,7 @@ export default class BezierMaker {
         this._bezierArr = [];
         this._bezierCtrlNodesArr = bezierCtrlNodesArr ? bezierCtrlNodesArr : [];
     }
+
 
     /**
      * 贝塞尔公式调用
@@ -37,6 +40,7 @@ export default class BezierMaker {
         return { x: x, y: y };
     }
 
+
     /**
      * 得到当前贝塞尔曲线上的点
      *  @param count 需要获得的点个数
@@ -49,6 +53,7 @@ export default class BezierMaker {
         return bezierArr;
     }
 
+
     /**
      * 递归阶乘
      */
@@ -60,6 +65,7 @@ export default class BezierMaker {
         }
     }
 
+
     /**
      * 当前贝塞尔曲线上的点get(默认100个)
      */
@@ -70,12 +76,14 @@ export default class BezierMaker {
         return this._bezierArr;
     }
 
+
     /**
      * 贝塞尔曲线控制点数组get
      */
     get bezierCtrlNodesArr() {
         return this._bezierCtrlNodesArr;
     }
+
 
     /**
      * 贝塞尔曲线控制点数组set
@@ -85,6 +93,7 @@ export default class BezierMaker {
         this._bezierArr = [];
         this._bezierCtrlNodesArr = bezierCtrlNodesArr;
     }
+
 }
 
 /**

@@ -4,6 +4,7 @@
 export class TimerManager {
 
     private static _instance: TimerManager;
+    
     private static __id: number = new Date().getTime();
 
     private constructor() {

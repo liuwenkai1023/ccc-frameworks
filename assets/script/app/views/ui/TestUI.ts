@@ -1,5 +1,4 @@
 import { ViewBase } from "../../../base/mvc/ViewBase";
-import { Base64 } from "../../../base/utils/Base64";
 
 export class TestUI extends ViewBase {
 
@@ -10,13 +9,13 @@ export class TestUI extends ViewBase {
 
     onLoad() {
         this.bindView("label", "testLabel", cc.Label);
-        this.bindEvent("HELLO", this.sayHello);
+        this.bindEvent("HELLO", this.sayHello.bind(this));
     }
 
     start() {
         this.scheduleOnce(() => {
-            this.Event.notify("HELLO", "Hello, this is a broadcast message.");
-        }, 2);
+            this.Event.emit("HELLO", "Hello, this is a event message.");
+        }, 1);
     }
 
     sayHello(data) {
