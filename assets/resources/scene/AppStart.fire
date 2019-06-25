@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.265625,
-      "y": 0.265625,
+      "x": 0.29765625,
+      "y": 0.29765625,
       "z": 1
     },
     "_quat": {
@@ -52,7 +52,6 @@
       "z": 0,
       "w": 1
     },
-    "_zIndex": 0,
     "groupIndex": 0,
     "autoReleaseAssets": false,
     "_id": "fd830f1b-8e80-4223-a2f0-53865788f5ce"
@@ -124,7 +123,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "fe11caRZZIfYN4usdJb1ko"
   },
@@ -185,7 +183,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "21ubtN2/dHuqMMnrWgDhOY"
   },
@@ -278,7 +275,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "d17nq9LAxBXJqC1AZBy2r0"
   },
@@ -345,7 +341,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "caAd6fJW9Oy4Lm8mwlyuwg"
   },
@@ -357,8 +352,6 @@
       "__id__": 6
     },
     "_enabled": true,
-    "_srcBlendFactor": 1,
-    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "抵制不良游戏,拒绝盗版游戏  注意自我保护,谨防受骗上当\n适度游戏益脑,沉迷游戏伤身  合理安排时间,享受健康生活",
     "_N$string": "抵制不良游戏,拒绝盗版游戏  注意自我保护,谨防受骗上当\n适度游戏益脑,沉迷游戏伤身  合理安排时间,享受健康生活",
@@ -368,10 +361,12 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": "41pxYGr1lGNKo5IT96CWaN"
   },
   {
@@ -476,7 +471,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "37bawbTzJMQZ9PX7mPqpiW"
   },
@@ -488,8 +482,6 @@
       "__id__": 10
     },
     "_enabled": true,
-    "_srcBlendFactor": 1,
-    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "ICON",
     "_N$string": "ICON",
@@ -499,10 +491,12 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": "0fVRRwredLb5IqvbTIBNZp"
   },
   {
