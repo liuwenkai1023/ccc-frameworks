@@ -1,4 +1,4 @@
-import { ShaderManager, ShaderType } from "../../base/extension/shader/ShaderManager";
+import { ShaderManager, ShaderType } from "../extension/shader/ShaderManager";
 
 const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode } = cc._decorator;
 

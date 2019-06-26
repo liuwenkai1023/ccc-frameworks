@@ -1,6 +1,6 @@
 import { TestUI } from "../ui/TestUI";
-import { UIManager } from "../../../base/mvc/UIManager";
-import { BaseComponent } from "../../../base/BaseComponent";
+import { UIManager } from "../../base/mvc/UIManager";
+import { BaseComponent } from "../../base/BaseComponent";
 
 const { ccclass, property } = cc._decorator;
 

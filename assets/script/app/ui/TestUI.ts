@@ -1,4 +1,4 @@
-import { ViewBase } from "../../../base/mvc/ViewBase";
+import { ViewBase } from "../../base/mvc/ViewBase";
 
 export class TestUI extends ViewBase {
 
