@@ -12,6 +12,7 @@ export class AppStart extends BaseComponent {
     private preLoaded: boolean;
 
     onLoad() {
+        // cc.view.enableAntiAlias(false);
         this.initData();
         this.CCMaskHook();
         this.CCButtonHook();
