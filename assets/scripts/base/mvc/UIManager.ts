@@ -1,7 +1,6 @@
 import { ViewBase } from "./ViewBase";
 import { Lifecycle } from "./Lifecycle";
 import { Loader } from "../loader/Loader";
-import SingletonFactory from "../utils/SingleFactory";
 
 export class UIManager {
 
@@ -47,7 +46,7 @@ export class UIManager {
             case LoadEnum.NORMAL:
                 this.log(UIName, "loading start...");
                 UIMessage.status = LoadEnum.LOADING;
-                SingletonFactory.getInstance(Loader).load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
+                APP.SingletonFactory.getInstance(Loader).load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     if (UIMessage.canceled) {
                         UIMessage.status = LoadEnum.NORMAL;
                     } else {

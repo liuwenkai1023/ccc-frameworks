@@ -1,5 +1,4 @@
 import { ShaderManager, ShaderType } from "../extension/shader/ShaderManager";
-import SingletonFactory from "../utils/SingleFactory";
 
 const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode, menu } = cc._decorator;
 
@@ -45,7 +44,7 @@ export default class BaseShaderSprite extends cc.Component {
 
     private applyShaderSettings() {
         // console.log("shaderType:" + ShaderType[this._shader]);
-        let mat = SingletonFactory.getInstance(ShaderManager).setShader(this.sprite, this._shader);
+        let mat = APP.SingletonFactory.getInstance(ShaderManager).setShader(this.sprite, this._shader);
         if (!mat) return;
         switch (this._shader) {
             case ShaderType.Blur:

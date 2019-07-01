@@ -1,6 +1,10 @@
+import SingletonFactory from "./base/utils/SingleFactory";
+
 export default class MyApp {
 
     private static _instance: MyApp;
+
+    public SingletonFactory: typeof SingletonFactory;
 
     public static getInstance() {
         if (!this._instance) {
@@ -9,7 +13,7 @@ export default class MyApp {
         return this._instance;
     }
 
-   constructor() {
+    private constructor() {
         this.init();
     }
 
@@ -18,5 +22,7 @@ export default class MyApp {
     }
 
 }
+
+MyApp.prototype.SingletonFactory = SingletonFactory;
 
 window[`APP`] = MyApp.getInstance();

@@ -1,6 +1,5 @@
 import { ViewBase } from "./ViewBase";
 import { UIManager } from "./UIManager";
-import SingletonFactory from "../utils/SingleFactory";
 
 
 export class Lifecycle extends cc.Component {
@@ -14,7 +13,7 @@ export class Lifecycle extends cc.Component {
 
 
     onDestroy() {
-        SingletonFactory.getInstance(UIManager).destoryUI(this.viewBase.UIName);
+        APP.SingletonFactory.getInstance(UIManager).destoryUI(this.viewBase.UIName);
         this.viewBase = null;
     }
 
