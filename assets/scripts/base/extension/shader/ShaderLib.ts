@@ -18,7 +18,7 @@ export class ShaderLib {
     }
 
 
-    public static instance() {
+    public static getInstance() {
         if (!this._instance) {
             this._instance = new ShaderLib();
         }

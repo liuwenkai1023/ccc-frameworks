@@ -13,7 +13,7 @@ export default class EventsManager {
     /**
      * 获取事件管理器
      */
-    static instance(): EventsManager {
+    static getInstance(): EventsManager {
         if (!EventsManager._instance) {
             EventsManager._instance = new EventsManager()
         }

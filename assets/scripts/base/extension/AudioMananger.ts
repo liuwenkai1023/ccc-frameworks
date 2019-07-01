@@ -14,7 +14,7 @@ export class AudioManager {
     /**
      * 获取音频管理器
      */
-    static instance(): AudioManager {
+    static getInstance(): AudioManager {
         if (!AudioManager._instance) {
             AudioManager._instance = new AudioManager();
         }

@@ -56,7 +56,7 @@ export abstract class BaseComponent extends cc.Component {
      */
     get Event() {
         if (!this._eventsManager) {
-            this._eventsManager = EventsManager.instance();
+            this._eventsManager = EventsManager.getInstance();
         }
         return this._eventsManager;
     }

@@ -21,7 +21,7 @@ export class UIManager {
     }
 
 
-    public static instance() {
+    public static getInstance() {
         if (!this._instance) {
             this._instance = new UIManager();
         }
@@ -46,7 +46,7 @@ export class UIManager {
             case LoadEnum.NORMAL:
                 this.log(UIName, "loading start...");
                 UIMessage.status = LoadEnum.LOADING;
-                Loader.instance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
+                Loader.getInstance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     if (UIMessage.canceled) {
                         UIMessage.status = LoadEnum.NORMAL;
                     } else {

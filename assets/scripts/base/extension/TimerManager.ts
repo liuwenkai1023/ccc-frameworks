@@ -15,7 +15,7 @@ export class TimerManager {
     /**
      * 获取Timer管理器
      */
-    public static instance(): TimerManager {
+    public static getInstance(): TimerManager {
         if (!TimerManager._instance) {
             TimerManager._instance = new TimerManager()
         }

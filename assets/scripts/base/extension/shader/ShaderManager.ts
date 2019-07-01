@@ -34,7 +34,7 @@ export class ShaderManager {
         SpriteHook.init();
     }
 
-    public static instance() {
+    public static getInstance() {
         if (!this._instance) {
             this._instance = new ShaderManager();
         }
@@ -49,7 +49,7 @@ export class ShaderManager {
         }
 
         let shaderName = ShaderType[_shader];
-        let shader = ShaderLib.instance().getShader(shaderName);
+        let shader = ShaderLib.getInstance().getShader(shaderName);
         let sprite: any = <any>_sprite;
         let mat: ShaderCustomMaterial = sprite.getMaterial(shaderName);
 

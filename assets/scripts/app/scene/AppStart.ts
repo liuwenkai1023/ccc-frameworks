@@ -63,7 +63,7 @@ export class AppStart extends BaseComponent {
     }
 
     onDestroy() {
-        UIManager.instance().destoryAllUI();
+        UIManager.getInstance().destoryAllUI();
     }
 
 }

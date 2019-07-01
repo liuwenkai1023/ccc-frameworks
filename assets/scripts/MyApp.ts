@@ -2,7 +2,7 @@ export default class MyApp {
 
     private static _instance: MyApp;
 
-    public static instance() {
+    public static getInstance() {
         if (!this._instance) {
             this._instance = new MyApp();
         }
@@ -19,4 +19,4 @@ export default class MyApp {
 
 }
 
-window[`APP`] = MyApp.instance();
+window[`APP`] = MyApp.getInstance();

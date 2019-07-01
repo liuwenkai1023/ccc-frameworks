@@ -23,7 +23,7 @@ export class AdapterManager {
     /**
      * 获取单例
      */
-    static instance(): AdapterManager {
+    static getInstance(): AdapterManager {
         if (!AdapterManager._instance) {
             AdapterManager._instance = new AdapterManager();
         }

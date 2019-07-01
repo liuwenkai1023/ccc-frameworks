@@ -16,7 +16,7 @@ export class Loader {
     private constructor() { }
 
 
-    public static instance() {
+    public static getInstance() {
         if (!this._instance) {
             this._instance = new Loader();
         }
