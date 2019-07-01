@@ -1,4 +1,4 @@
-const { ccclass, property, requireComponent, executeInEditMode } = cc._decorator;
+const { ccclass, property, requireComponent, executeInEditMode, menu } = cc._decorator;
 
 const ModeData = ["-1", "numeric", "alphanumeric", "octet"];
 
@@ -22,6 +22,7 @@ export enum EcclevelType {
 @ccclass
 @requireComponent(cc.Graphics)
 @executeInEditMode
+@menu("扩展组件/QRCode")
 export default class NewClass extends cc.Component {
 
     @property({ visible: false })
@@ -185,7 +186,7 @@ export default class NewClass extends cc.Component {
         this.updateGraphics(dataArray);
     }
 
-    
+
     async updateGraphics(dataArray: Array<Array<number>>) {
         // dataArray
         let size = dataArray.length * this.cellSize + this.padding * 2;

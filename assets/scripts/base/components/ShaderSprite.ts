@@ -1,6 +1,6 @@
 import { ShaderManager, ShaderType } from "../extension/shader/ShaderManager";
 
-const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode } = cc._decorator;
+const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode, menu } = cc._decorator;
 
 const NeedUpdate = [ShaderType.Fluxay, ShaderType.WaveShader, ShaderType.Water, ShaderType.RainShader, ShaderType.FluxaySuper];
 
@@ -8,6 +8,7 @@ const NeedUpdate = [ShaderType.Fluxay, ShaderType.WaveShader, ShaderType.Water, 
 @disallowMultiple
 @executeInEditMode
 @requireComponent(cc.Sprite)
+@menu("扩展组件/ShaderSprite")
 export default class BaseShaderSprite extends cc.Component {
 
     @property({ visible: false })

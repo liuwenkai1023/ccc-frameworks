@@ -1,6 +1,6 @@
 import { BaseComponent } from "../BaseComponent";
 
-const { ccclass, property, requireComponent, disallowMultiple, executeInEditMode } = cc._decorator;
+const { ccclass, property, menu } = cc._decorator;
 
 /**
  * 热更广播事件枚举
@@ -16,6 +16,7 @@ export enum HotUpdateEventType {
 }
 
 @ccclass
+@menu("扩展组件/HotUpdate")
 export class HotUpdate extends BaseComponent {
 
 
