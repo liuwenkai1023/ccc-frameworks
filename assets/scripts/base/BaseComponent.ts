@@ -1,4 +1,5 @@
 import EventsManager from "./event/EventManager";
+import SingletonFactory from "./utils/SingleFactory";
 
 /**
  * BaseComponent组件
@@ -56,7 +57,7 @@ export abstract class BaseComponent extends cc.Component {
      */
     get Event() {
         if (!this._eventsManager) {
-            this._eventsManager = EventsManager.getInstance();
+            this._eventsManager = SingletonFactory.getInstance(EventsManager);
         }
         return this._eventsManager;
     }

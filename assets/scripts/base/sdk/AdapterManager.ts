@@ -7,9 +7,9 @@ export class AdapterManager {
 
     private _adapter: AdapterInterface;
 
-    private static _instance: AdapterManager;
+    // private static _instance: AdapterManager;
 
-    private constructor() {
+   constructor() {
         this.init();
     }
 
@@ -20,15 +20,15 @@ export class AdapterManager {
     }
 
 
-    /**
-     * 获取单例
-     */
-    static getInstance(): AdapterManager {
-        if (!AdapterManager._instance) {
-            AdapterManager._instance = new AdapterManager();
-        }
-        return this._instance;
-    }
+    // /**
+    //  * 获取单例
+    //  */
+    // static getInstance(): AdapterManager {
+    //     if (!AdapterManager._instance) {
+    //         AdapterManager._instance = new AdapterManager();
+    //     }
+    //     return this._instance;
+    // }
 
 
     /**

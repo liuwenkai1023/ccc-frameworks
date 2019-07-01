@@ -10,18 +10,18 @@ export class Loader {
 
     private _released: boolean = false;
 
-    private static _instance: Loader;
+    // private static _instance: Loader;
 
 
-    private constructor() { }
+   constructor() { }
 
 
-    public static getInstance() {
-        if (!this._instance) {
-            this._instance = new Loader();
-        }
-        return this._instance;
-    }
+    // public static getInstance() {
+    //     if (!this._instance) {
+    //         this._instance = new Loader();
+    //     }
+    //     return this._instance;
+    // }
 
 
     /**

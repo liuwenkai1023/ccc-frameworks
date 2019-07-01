@@ -1,17 +1,18 @@
 import { ViewBase } from "./ViewBase";
 import { Lifecycle } from "./Lifecycle";
 import { Loader } from "../loader/Loader";
+import SingletonFactory from "../utils/SingleFactory";
 
 export class UIManager {
 
-    private static _instance: UIManager;
+    // private static _instance: UIManager;
 
     private _seq: number = 0;
     private _scene: cc.Scene;
     private _UIMap: { [key: string]: UIMessageI };
 
 
-    private constructor() {
+    constructor() {
         this.init();
     }
 
@@ -21,12 +22,12 @@ export class UIManager {
     }
 
 
-    public static getInstance() {
-        if (!this._instance) {
-            this._instance = new UIManager();
-        }
-        return this._instance;
-    }
+    // public static getInstance() {
+    //     if (!this._instance) {
+    //         this._instance = new UIManager();
+    //     }
+    //     return this._instance;
+    // }
 
 
     public showUI(viewBase: typeof ViewBase, parentNode?: cc.Node, callback?: Function) {
@@ -46,7 +47,7 @@ export class UIManager {
             case LoadEnum.NORMAL:
                 this.log(UIName, "loading start...");
                 UIMessage.status = LoadEnum.LOADING;
-                Loader.getInstance().load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
+                SingletonFactory.getInstance(Loader).load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     if (UIMessage.canceled) {
                         UIMessage.status = LoadEnum.NORMAL;
                     } else {

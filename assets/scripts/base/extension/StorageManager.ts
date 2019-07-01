@@ -3,16 +3,16 @@
  */
 export class LocalStorageManager {
 
-    private static _instance: LocalStorageManager;
+    // private static _instance: LocalStorageManager;
 
-    private constructor() { };
+   constructor() { };
 
-    public static getInstance() {
-        if (!this._instance) {
-            this._instance = new LocalStorageManager();
-        }
-        return this._instance;
-    }
+    // public static getInstance() {
+    //     if (!this._instance) {
+    //         this._instance = new LocalStorageManager();
+    //     }
+    //     return this._instance;
+    // }
 
 
     /**

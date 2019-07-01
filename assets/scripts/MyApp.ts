@@ -9,7 +9,7 @@ export default class MyApp {
         return this._instance;
     }
 
-    private constructor() {
+   constructor() {
         this.init();
     }
 

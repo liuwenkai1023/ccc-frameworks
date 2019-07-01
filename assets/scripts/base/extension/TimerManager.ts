@@ -3,24 +3,24 @@
  */
 export class TimerManager {
 
-    private static _instance: TimerManager;
+    // private static _instance: TimerManager;
     
     private static __id: number = new Date().getTime();
 
-    private constructor() {
+   constructor() {
         this.init();
     }
 
 
-    /**
-     * 获取Timer管理器
-     */
-    public static getInstance(): TimerManager {
-        if (!TimerManager._instance) {
-            TimerManager._instance = new TimerManager()
-        }
-        return this._instance;
-    }
+    // /**
+    //  * 获取Timer管理器
+    //  */
+    // public static getInstance(): TimerManager {
+    //     if (!TimerManager._instance) {
+    //         TimerManager._instance = new TimerManager()
+    //     }
+    //     return this._instance;
+    // }
 
 
     /**

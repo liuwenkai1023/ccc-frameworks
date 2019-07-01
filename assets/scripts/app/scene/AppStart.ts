@@ -1,5 +1,6 @@
 import { UIManager } from "../../base/mvc/UIManager";
 import { BaseComponent } from "../../base/BaseComponent";
+import SingletonFactory from "../../base/utils/SingleFactory";
 
 const { ccclass, property } = cc._decorator;
 
@@ -63,7 +64,7 @@ export class AppStart extends BaseComponent {
     }
 
     onDestroy() {
-        UIManager.getInstance().destoryAllUI();
+        SingletonFactory.getInstance(UIManager).destoryAllUI();
     }
 
 }

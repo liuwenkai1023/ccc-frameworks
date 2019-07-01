@@ -4,22 +4,22 @@ export class AudioManager {
 
     private _effectVolume: number = 1.0;
 
-    private static _instance: AudioManager;
+    // private static _instance: AudioManager;
 
-    private constructor() {
+   constructor() {
         this.init();
     }
 
     
-    /**
-     * 获取音频管理器
-     */
-    static getInstance(): AudioManager {
-        if (!AudioManager._instance) {
-            AudioManager._instance = new AudioManager();
-        }
-        return this._instance;
-    }
+    // /**
+    //  * 获取音频管理器
+    //  */
+    // static getInstance(): AudioManager {
+    //     if (!AudioManager._instance) {
+    //         AudioManager._instance = new AudioManager();
+    //     }
+    //     return this._instance;
+    // }
 
 
     /**

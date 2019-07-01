@@ -1,6 +1,7 @@
 import { ShaderLib } from "./ShaderLib";
 import { SpriteHook } from "./SpriteHook";
 import { ShaderCustomMaterial } from "./CustomMaterial";
+import SingletonFactory from "../../utils/SingleFactory";
 
 export enum ShaderType {
     Default,
@@ -29,17 +30,17 @@ export enum ShaderType {
 }
 
 export class ShaderManager {
-    private static _instance: ShaderManager;
-    private constructor() {
+    // private static _instance: ShaderManager;
+    constructor() {
         SpriteHook.init();
     }
 
-    public static getInstance() {
-        if (!this._instance) {
-            this._instance = new ShaderManager();
-        }
-        return this._instance;
-    }
+    // public static getInstance() {
+    //     if (!this._instance) {
+    //         this._instance = new ShaderManager();
+    //     }
+    //     return this._instance;
+    // }
 
     public setShader(_sprite: cc.Sprite, _shader: ShaderType, _handler?: { (mat: ShaderCustomMaterial) } | void) {
         // console.log(`【${_sprite.node.name}】->[setShader]->${ShaderType[_shader]}`);
@@ -49,7 +50,7 @@ export class ShaderManager {
         }
 
         let shaderName = ShaderType[_shader];
-        let shader = ShaderLib.getInstance().getShader(shaderName);
+        let shader = SingletonFactory.getInstance(ShaderLib).getShader(shaderName);
         let sprite: any = <any>_sprite;
         let mat: ShaderCustomMaterial = sprite.getMaterial(shaderName);
 

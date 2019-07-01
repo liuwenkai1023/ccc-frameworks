@@ -3,22 +3,22 @@
  */
 export default class EventsManager {
 
-    private static _instance: EventsManager;
+    // private static _instance: EventsManager;
 
     private _eventMap: EventMap = {};
 
-    private constructor() { }
+   constructor() { }
 
 
-    /**
-     * 获取事件管理器
-     */
-    static getInstance(): EventsManager {
-        if (!EventsManager._instance) {
-            EventsManager._instance = new EventsManager()
-        }
-        return this._instance
-    }
+    // /**
+    //  * 获取事件管理器
+    //  */
+    // static getInstance(): EventsManager {
+    //     if (!EventsManager._instance) {
+    //         EventsManager._instance = new EventsManager()
+    //     }
+    //     return this._instance
+    // }
 
 
     /**
