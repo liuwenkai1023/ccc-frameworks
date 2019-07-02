@@ -57,6 +57,11 @@ export abstract class BaseComponent extends cc.Component {
     get Event() {
         if (!this._eventsManager) {
             this._eventsManager = App.SingletonFactory.getInstance(EventsManager);
+            let onDestroy = this.onDestroy;
+            this.onDestroy = () => {
+                this.Event.offTarget(this);
+                onDestroy && onDestroy();
+            };
         }
         return this._eventsManager;
     }

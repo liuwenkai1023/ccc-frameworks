@@ -7,7 +7,7 @@ export default class EventsManager {
 
     private _eventMap: EventMap = {};
 
-   constructor() { }
+    constructor() { }
 
 
     // /**
@@ -85,6 +85,15 @@ export default class EventsManager {
     }
 
 
+    /**
+     *  移除对应target上的所有事件
+     * @param target 
+     */
+    offTarget(target: Object) {
+        this.unregister(null, target);
+    }
+
+
     // /**
     //  * 注册事件
     //  * @param eventName 事件名
@@ -131,7 +140,6 @@ export default class EventsManager {
 
 
     // private _hasEvent(eventName: string, target: Object) {
-
     // }
 
 
