@@ -1,4 +1,5 @@
 import { ViewBase } from "../../base/mvc/ViewBase";
+import HttpUtil from "../../base/utils/HttpUtil";
 
 export class TestUI extends ViewBase {
 
@@ -16,6 +17,9 @@ export class TestUI extends ViewBase {
         this.scheduleOnce(() => {
             this.Event.emit("HELLO", "Hello, this is a event message.");
         }, 1);
+
+        HttpUtil.HttpPost("http://www.baidu.com/", null, (res) => {
+        });
     }
 
     sayHello(data) {
