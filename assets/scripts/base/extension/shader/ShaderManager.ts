@@ -49,7 +49,7 @@ export class ShaderManager {
         }
 
         let shaderName = ShaderType[_shader];
-        let shader = APP.SingletonFactory.getInstance(ShaderLib).getShader(shaderName);
+        let shader = App.SingletonFactory.getInstance(ShaderLib).getShader(shaderName);
         let sprite: any = <any>_sprite;
         let mat: ShaderCustomMaterial = sprite.getMaterial(shaderName);
 

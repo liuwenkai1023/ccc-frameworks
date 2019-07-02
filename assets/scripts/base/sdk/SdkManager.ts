@@ -3,7 +3,7 @@ import { AndroidAdapter } from "./platform/AndroidAdapter";
 import { DefaultAdapter } from "./platform/DefaultAdapter";
 import { AdapterInterface } from "./AdapterInterface";
 
-export class AdapterManager {
+export class SdkManager {
 
     private _adapter: AdapterInterface;
 

@@ -1,6 +1,6 @@
 import SingletonFactory from "./base/utils/SingleFactory";
 
-export default class MyApp {
+export class MyApp {
 
     private static _instance: MyApp;
 
@@ -25,4 +25,4 @@ export default class MyApp {
 
 MyApp.prototype.SingletonFactory = SingletonFactory;
 
-window[`APP`] = MyApp.getInstance();
+window[`App`] = MyApp.getInstance();

@@ -63,7 +63,7 @@ export class AppStart extends BaseComponent {
     }
 
     onDestroy() {
-        APP.SingletonFactory.getInstance(UIManager).destoryAllUI();
+        App.SingletonFactory.getInstance(UIManager).destoryAllUI();
     }
 
 }

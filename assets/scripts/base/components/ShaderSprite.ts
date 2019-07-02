@@ -44,7 +44,7 @@ export default class BaseShaderSprite extends cc.Component {
 
     private applyShaderSettings() {
         // console.log("shaderType:" + ShaderType[this._shader]);
-        let mat = APP.SingletonFactory.getInstance(ShaderManager).setShader(this.sprite, this._shader);
+        let mat = App.SingletonFactory.getInstance(ShaderManager).setShader(this.sprite, this._shader);
         if (!mat) return;
         switch (this._shader) {
             case ShaderType.Blur:

@@ -8,7 +8,7 @@ const { ccclass, property } = cc._decorator;
 export class Main extends BaseComponent {
 
   onLoad() {
-    APP.SingletonFactory.getInstance(UIManager).showUI(TestUI);
+    App.SingletonFactory.getInstance(UIManager).showUI(TestUI);
   }
 
 }

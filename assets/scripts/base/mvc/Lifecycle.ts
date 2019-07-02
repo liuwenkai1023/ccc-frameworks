@@ -13,7 +13,7 @@ export class Lifecycle extends cc.Component {
 
 
     onDestroy() {
-        APP.SingletonFactory.getInstance(UIManager).destoryUI(this.viewBase.UIName);
+        App.SingletonFactory.getInstance(UIManager).destoryUI(this.viewBase.UIName);
         this.viewBase = null;
     }
 
