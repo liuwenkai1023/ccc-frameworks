@@ -7,6 +7,7 @@ export class UIManager {
     // private static _instance: UIManager;
 
     private _seq: number = 0;
+    private _seqS: number = 0;
     private _scene: cc.Scene;
     private _UIMap: { [key: string]: UIMessageI };
 
@@ -35,16 +36,16 @@ export class UIManager {
         let UIMessage = this.UIMap[UIName];
         switch (UIMessage.status) {
             case LoadEnum.LOADING:
-                UIMessage.canceled && this.log(UIName, "loading restore...");
+                UIMessage.canceled && this.log(UIName, "loading restore...", "color:#bada55;");
                 UIMessage.canceled = false;
                 break;
             case LoadEnum.LOADED:
-                this.log(UIName, "already loaded");
+                this.log(UIName, "already loaded", "color:#19A316;");
                 UIMessage.component.node.active = true;
                 callback && callback();
                 break;
             case LoadEnum.NORMAL:
-                this.log(UIName, "loading start...");
+                this.log(UIName, "loading start...", "color:rgb(4,192,0);");
                 UIMessage.status = LoadEnum.LOADING;
                 App.SingletonFactory.getInstance(Loader).load(viewBase.ResourcePath, cc.Prefab, (res: cc.Prefab[]) => {
                     if (UIMessage.canceled) {
@@ -70,7 +71,7 @@ export class UIManager {
             }
             (!UINode.getComponent(Lifecycle)) && UINode.addComponent(Lifecycle).init(viewBase);
             UIMessage.component = component;
-            this.log(viewBase.UIName, "loaded");
+            this.log(viewBase.UIName, "loaded", "color:rgb(4,192,0);");
             return true;
         }
         CC_DEBUG && console.log("Error:创建UI时出错", UIMessage.name);
@@ -84,10 +85,11 @@ export class UIManager {
             const UIMessage = this.UIMap[UIName];
             switch (UIMessage.status) {
                 case LoadEnum.LOADING:
-                    this.log(UIName, "loading cancel...");
+                    this.log(UIName, "loading cancel...", "color:#FFC107");
                     UIMessage.canceled = true;
                     return true;
                 case LoadEnum.LOADED:
+                    this.log(UIName, "ui destoryed", "color:#F36");
                     UIMessage.component.isValid && UIMessage.component.node.destroy();
                     delete this.UIMap[UIName];
                     cc.sys.garbageCollect();
@@ -129,12 +131,13 @@ export class UIManager {
     }
 
 
-    private log(UIName: string, status: string) {
+    private log(UIName: string, status: string, color: string = `color: #000;`) {
         if (CC_DEBUG) {
             let seq = ++this._seq;
             let scene = cc.director.getScene();
             this._scene = scene ? scene : this._scene;
-            console.log(`[${seq}][Scene：${this._scene.name}][UI：${UIName}] -> ${status}.`);
+            console.log(`[${seq}] %c[Scene${this._seqS}：${this._scene.name}][UI：${UIName}]%c -> %c${status}.`, `padding:1px 3px;border-radius:2px;border:1px solid #000a;`, ``, `padding:1px 3px;border-radius:2px;border:1px solid #000a;` + color);
+            (!scene) && this._seqS++;
         }
     }
 
