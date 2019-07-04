@@ -136,7 +136,8 @@ export class UIManager {
             let seq = ++this._seq;
             let scene = cc.director.getScene();
             this._scene = scene ? scene : this._scene;
-            console.log(`[${seq}] %c[Scene${this._seqS}：${this._scene.name}][UI：${UIName}]%c -> %c${status}.`, `padding:1px 3px;border-radius:2px;border:1px solid #000a;`, ``, `padding:1px 3px;border-radius:2px;border:1px solid #000a;` + color);
+            (!CC_JSB) && console.log(`[${seq}] %c[Scene${this._seqS}：${this._scene.name}][UI：${UIName}]%c -> %c${status}.`, `padding:1px 3px;border-radius:2px;border:1px solid #000a;`, ``, `padding:1px 3px;border-radius:2px;border:1px solid #000a;` + color);
+            (CC_JSB) && console.log(`[${seq}][Scene${this._seqS}：${this._scene.name}][UI：${UIName}] -> ${status}.`);
             (!scene) && this._seqS++;
         }
     }
