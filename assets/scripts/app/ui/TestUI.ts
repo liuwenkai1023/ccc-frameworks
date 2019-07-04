@@ -18,8 +18,14 @@ export class TestUI extends ViewBase {
             this.Event.emit("HELLO", "Hello, this is a event message.");
         }, 1);
 
-        HttpUtil.HttpPost("http://www.baidu.com/", null, (res) => {
-        });
+        // HttpUtil.HttpPost("http://localhost:7456/", null, (res) => {
+        // }, true);
+
+        // HttpUtil.HttpGet("http://localhost:7456/", null, (res) => {
+        // }, true);
+
+        // HttpUtil.HttpDownload("http://localhost:7456", "test.html", (err, path) => { 
+        // });
     }
 
     sayHello(data) {
