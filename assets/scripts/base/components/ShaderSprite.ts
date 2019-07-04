@@ -1,4 +1,4 @@
-import { ShaderManager, ShaderType } from "../extension/shader/ShaderManager";
+import { ShaderManager, ShaderType, ShaderTypeMap } from "../extension/shader/ShaderManager";
 
 const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode, menu } = cc._decorator;
 
@@ -14,12 +14,43 @@ export default class BaseShaderSprite extends cc.Component {
     @property({ visible: false })
     private _shader: ShaderType = ShaderType.Default;
 
-    @property({ type: cc.Enum(ShaderType) })
+    @property({ visible: false })
+    private _mosaicSize: number = 10;
+
+    @property({ visible: false })
+    private _bluramount: number = 0.05;
+
+    @property({ displayName: "着色器", type: cc.Enum(ShaderTypeMap) })
     get shader() { return this._shader; }
     set shader(type) {
         this._shader = type;
         this.applyShaderSettings();
     }
+
+    @property({ displayName: "马赛克大小", step: 1, min: 1, visible: function () { return this._shader == ShaderType.Mosaic; } })
+    set mosaicSize(mosaicSize) {
+        mosaicSize = Math.floor(mosaicSize);
+        if (this._mosaicSize != mosaicSize) {
+            this._mosaicSize = mosaicSize;
+            this.applyShaderSettings();
+        }
+    }
+    get mosaicSize() {
+        return this._mosaicSize;
+    }
+
+    @property({ displayName: "模糊系参数", step: 0.001, min: 0.001, max: 1, visible: function () { return this._shader == ShaderType.Blur || this._shader == ShaderType.GaussBlurs; } })
+    set bluramount(bluramount) {
+        bluramount = Math.floor(bluramount * 1000) / 1000;
+        if (this._bluramount != bluramount) {
+            this._bluramount = bluramount;
+            this.applyShaderSettings();
+        }
+    }
+    get bluramount() {
+        return this._bluramount;
+    }
+
 
     private sprite: cc.Sprite;
 
@@ -49,13 +80,13 @@ export default class BaseShaderSprite extends cc.Component {
         switch (this._shader) {
             case ShaderType.Blur:
             case ShaderType.GaussBlurs:
-                mat.setParamValue('bluramount', 0.05);
+                mat.setParamValue('bluramount', this.bluramount);
                 break;
             case ShaderType.WaveShader:
                 mat.setParamValue('iOffset', new cc.Vec2(0, 0.1));
                 break;
             case ShaderType.Mosaic:
-                mat.setParamValue('mosaicSize', 10);
+                mat.setParamValue('mosaicSize', this.mosaicSize);
                 break;
             default:
                 break;

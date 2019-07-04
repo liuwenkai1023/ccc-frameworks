@@ -7,10 +7,25 @@ const GraySpriteMaterial = renderEngine.GraySpriteMaterial;
 const STATE_CUSTOM = 101;
 
 export class SpriteHook {
+
+    static compareVersion() {
+        let curVersion = cc.ENGINE_VERSION;
+        let targetVersion = '2.0.10';
+        return this.getVersionCode(curVersion) < this.getVersionCode(targetVersion);
+    }
+
+    static getVersionCode(versionA) {
+        let versionNums = versionA.split(".");
+        let versionCode = Number(versionNums[0]) * 1000 + Number(versionNums[1]) * 100 + Number(versionNums[2]);
+        // console.log(versionCode);
+        return versionCode;
+    }
+
     static init() {
         let prototype: any = <any>cc.Sprite.prototype;
         // @ts-ignore
         cc.dynamicAtlasManager.enabled = false;
+        prototype.oldVersion = SpriteHook.compareVersion();
         // 取自定义材质
         prototype.getMaterial = function (name) {
             // console.log("prototype.getMaterial")
@@ -91,7 +106,8 @@ export class SpriteHook {
                     this._currMaterial = null;
                 }
                 // For batch rendering, do not use uniform color.
-                material.useColor = false;
+                material.useColor = this.oldVersion;
+
                 // Set texture
                 if (spriteFrame && spriteFrame.textureLoaded()) {
                     let texture = spriteFrame.getTexture();

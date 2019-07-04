@@ -28,6 +28,32 @@ export enum ShaderType {
     WaveShader
 }
 
+export enum ShaderTypeMap {
+    正常,
+    发散,
+    模糊,
+    溶解,
+    扫光,
+    流光,
+    冻结,
+    高斯模糊,
+    发光,
+    置灰,
+    冰,
+    隐藏,
+    反相,
+    马赛克,
+    轮廓,
+    叠加,
+    抑制,
+    径向模糊,
+    雷雨天,
+    石化,
+    淡化,
+    水波,
+    波浪
+}
+
 export class ShaderManager {
     // private static _instance: ShaderManager;
     constructor() {
