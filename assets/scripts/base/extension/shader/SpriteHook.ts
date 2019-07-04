@@ -61,17 +61,17 @@ export class SpriteHook {
             }
         }
 
+
         prototype._activateMaterial = function () {
-            // console.log("prototype._activateMaterial")
             let spriteFrame = this._spriteFrame;
+
             // WebGL
             if (cc.game.renderType !== cc.game.RENDER_TYPE_CANVAS) {
                 // Get material
                 let material;
-                if (this._state === (<any>cc.Sprite).State.GRAY) {
+                if (this._state === cc.Sprite['State'].GRAY) {
                     if (!this._graySpriteMaterial) {
                         this._graySpriteMaterial = new GraySpriteMaterial();
-                        this.node._renderFlag |= (<any>cc).RenderFlow.FLAG_COLOR;
                     }
                     material = this._graySpriteMaterial;
                     this._currMaterial = null;
@@ -86,11 +86,12 @@ export class SpriteHook {
                 else {
                     if (!this._spriteMaterial) {
                         this._spriteMaterial = new SpriteMaterial();
-                        this.node._renderFlag |= (<any>cc).RenderFlow.FLAG_COLOR;
                     }
                     material = this._spriteMaterial;
                     this._currMaterial = null;
                 }
+                // For batch rendering, do not use uniform color.
+                material.useColor = false;
                 // Set texture
                 if (spriteFrame && spriteFrame.textureLoaded()) {
                     let texture = spriteFrame.getTexture();
@@ -104,12 +105,18 @@ export class SpriteHook {
                     if (this._renderData) {
                         this._renderData.material = material;
                     }
+
+                    this.node._renderFlag |= cc['RenderFlow'].FLAG_COLOR;
                     this.markForUpdateRenderData(true);
                     this.markForRender(true);
                 }
                 else {
                     this.disableRender();
                 }
+            }
+            else {
+                this.markForUpdateRenderData(true);
+                this.markForRender(true);
             }
         }
     }
