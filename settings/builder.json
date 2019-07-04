@@ -7,25 +7,25 @@
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
-  "inlineSpriteFrames_native": true,
+  "inlineSpriteFrames_native": false,
   "jailbreakPlatform": false,
   "md5Cache": true,
   "mergeStartScene": false,
   "oauthLoginServer": "http://oauth.anysdk.com/api/User/LoginOauth/",
   "optimizeHotUpdate": false,
   "orientation": {
-    "landscapeLeft": true,
-    "landscapeRight": true,
-    "portrait": false,
+    "landscapeLeft": false,
+    "landscapeRight": false,
+    "portrait": true,
     "upsideDown": false
   },
-  "packageName": "org.liuwenkai.project",
+  "packageName": "org.liuwenkai.project2",
   "privateKey": "54966EB3D5156CAF5F84D362C9256E7D",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "startScene": "66ff6006-c416-45a9-9ade-7b5fdde61c79",
+  "startScene": "fd830f1b-8e80-4223-a2f0-53865788f5ce",
   "title": "project",
   "webOrientation": "auto",
   "wechatgame": {
