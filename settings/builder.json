@@ -1,17 +1,12 @@
 {
-  "appKey": "BDA1ADE0-93DC-258B-66DB-58F81692D893",
-  "appSecret": "5140cfc22f2acaefcb6040fb941fd688",
   "encryptJs": false,
   "excludeScenes": [],
   "fb-instant-games": {},
-  "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": false,
-  "jailbreakPlatform": false,
   "md5Cache": true,
   "mergeStartScene": false,
-  "oauthLoginServer": "http://oauth.anysdk.com/api/User/LoginOauth/",
   "optimizeHotUpdate": false,
   "orientation": {
     "landscapeLeft": false,
@@ -20,7 +15,6 @@
     "upsideDown": false
   },
   "packageName": "org.liuwenkai.project2",
-  "privateKey": "54966EB3D5156CAF5F84D362C9256E7D",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
@@ -36,5 +30,20 @@
     "subContext": ""
   },
   "xxteaKey": "f12bde3d-3b11-4a",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "baidugame": {
+    "appid": "testappid",
+    "orientation": "portrait",
+    "REMOTE_SERVER_ROOT": "",
+    "subContext": ""
+  },
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "pathPattern": "",
+    "scheme": "https",
+    "host": "",
+    "skipRecord": false,
+    "recordPath": ""
+  },
+  "appBundle": false
 }
