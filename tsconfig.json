@@ -3,6 +3,7 @@
     "module": "commonjs",
     "lib": [ "dom", "es6","es2016.array.include" ],
     "target": "es6",
+    "allowJs": true,
     "experimentalDecorators": true,
     "skipLibCheck": true
   },
