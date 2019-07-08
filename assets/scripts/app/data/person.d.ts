@@ -1,4 +1,4 @@
-import * as $protobuf from "protobufjs";
+import * as $protobuf from protobuf;
 /** Namespace user. */
 export namespace user {
 
