@@ -1,6 +1,7 @@
 export class DataManager {
 
-    private _configList: Map<string, Map<string, object>>;
+    // private _configList: Map<string, Map<string, object>>;
+    private _configList: { [key: string]: { [key: string]: object } } = {};
 
     constructor() { this.reset(); }
 
@@ -9,7 +10,7 @@ export class DataManager {
      * 清空配置表
      */
     public reset() {
-        this._configList = new Map();
+        this._configList = {};
     }
 
 
@@ -23,7 +24,7 @@ export class DataManager {
     public loadJsonData(configPath: string, configName: string, convertKey: boolean = false, handler: Function = null): void {
         cc.loader.loadRes(configPath, (error, contents) => {
             if (error) return;
-            let config: Map<string, object> = new Map();
+            let config = {};
             let types = <Array<Object>>contents.json["types"];
             let fields = <Array<Object>>contents.json["fields"];
             let valuesList = <Array<Object>>contents.json["values"];
@@ -47,13 +48,13 @@ export class DataManager {
                 }
                 if (convertKey == true) {
                     let key = object["ID"];
-                    config.set(key, object);
+                    config[`${key}`] = object;
                 } else {
-                    config.set(idx, object);
+                    config[`${idx}`] = object;
                 }
             }
-            this._configList[configName] = config;
-            handler && handler();
+            this._configList[`${configName}`] = config;
+            handler && handler(config);
         });
     }
 
@@ -63,7 +64,7 @@ export class DataManager {
      * @param configName 配置名
      */
     public getDataByName(configName: string): Object {
-        return this._configList.get(configName);
+        return this._configList[`${configName}`];
     }
 
 
@@ -73,9 +74,9 @@ export class DataManager {
      * @param id         参数ID
      */
     public getDataByNameAndId(configName: string, id: string) {
-        let config = this._configList.get(configName);
+        let config = this._configList[`${configName}`];
         if (config) {
-            return config.get(id);
+            return config[`${id}`];
         }
     }
 
@@ -85,7 +86,7 @@ export class DataManager {
      * @param configName 配置名
      */
     public clearDataByName(configName: string): void {
-        this._configList.delete(configName);
+        delete this._configList[`${configName}`];
     }
 
 }
