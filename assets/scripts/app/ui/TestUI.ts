@@ -39,6 +39,7 @@ export class TestUI extends ViewBase {
         console.log(message);
         console.log(encode);
         console.log(decode);
+        console.log(exprEval.Parser.evaluate('6 * x', { x: 7 })) // 42); // 7
     }
 
     sayHello(data) {
