@@ -19,7 +19,7 @@ export class TestUI extends ViewBase {
         /**
          * Event Test
          */
-        this.Event.emit("HELLO", "Hello, this is a event message.");
+        this.scheduleOnce(() => { this.Event.emit("HELLO", "Hello, this is a event message."); }, 1);
 
         /**
          * HttpUtil Test
