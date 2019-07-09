@@ -32,7 +32,7 @@ export class AppStart extends BaseComponent {
     CCButtonHook() {
         let prototype = cc.Button.prototype as any;
         let _onTouchEnded = prototype._onTouchEnded;
-        prototype._soundId = "SND_CLICK";
+        prototype._soundId = "SOUND_CLICK";
         prototype._onTouchEnded = function (event) {
             _onTouchEnded.bind(this)(event);
             // 播放通用按钮音效

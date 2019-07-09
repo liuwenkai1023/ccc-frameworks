@@ -1,6 +1,11 @@
 import { ViewBase } from "../../base/mvc/ViewBase";
 import HttpUtil from "../../base/utils/HttpUtil";
 import { user } from "../data/person";
+import { DataManager } from "../../base/extension/data/DataManager";
+import { AudioManager } from "../../base/extension/audio/AudioMananger";
+import { LocalStorageManager } from "../../base/extension/storage/StorageManager";
+import { TimerManager } from "../../base/extension/timer/TimerManager";
+import { Base64 } from "../../base/utils/Base64";
 
 export class TestUI extends ViewBase {
 
@@ -19,7 +24,7 @@ export class TestUI extends ViewBase {
         /**
          * Event Test
          */
-        this.Event.emit("HELLO", "Hello, this is a event message.");
+        this.scheduleOnce(() => { this.Event.emit("HELLO", "Hello, this is a event message."); }, 1);
 
         /**
          * HttpUtil Test
@@ -45,9 +50,66 @@ export class TestUI extends ViewBase {
         /**
          * Expression Evaluator Test
          */
-        let result = exprEval.Parser.evaluate('6 * x', { x: 7 });// 42
-        // 同 let result = ee.Parser.evaluate('6 * x', { x: 7 }); 
+        let result = exprEval.Parser.evaluate('6 * x', { x: 7 });
         console.log("result = ", result);
+
+        /**
+         * Data Manager Test
+         */
+        let dataMamager = App.SingletonFactory.getInstance(DataManager);
+        dataMamager.loadJsonData("config/Sounds", "Sounds", true, (config) => {
+            console.log(config);
+
+            /**
+             * AudioManager Test
+             */
+            let bgm = dataMamager.getDataByNameAndId("Sounds", "MUSIC_BGM");
+            App.SingletonFactory.getInstance(AudioManager).playMusic(bgm[`Name`]);
+        });
+
+        /**
+         * Storage Test
+         */
+        let localStorageManager = App.SingletonFactory.getInstance(LocalStorageManager);
+        localStorageManager.setObject("StorageTest", { x: 100, y: 100, name: "Storage Test" });
+        console.log(localStorageManager.getObject("StorageTest"));
+
+        /**
+         * Timer Test
+         */
+        let s = 0;
+        let handler = App.SingletonFactory.getInstance(TimerManager).runLoopTimer((dt: number) => {
+            console.log("Timer:", ++s, " dt =", dt);
+            s == 10 && App.SingletonFactory.getInstance(TimerManager).removeTimer(handler);
+        }, 1);
+
+        /**
+         * Gzip Test
+         */
+        let encode = pako.gzip(
+            `去ABCDEFGHIJKLMNOPQRSTUVWXYZ！
+            我ABCDEFGHIJKLMNOPQRSTUVWXYZ@
+            恶ABCDEFGHIJKLMNOPQRSTUVWXYZ#
+            人ABCDEFGHIJKLMNOPQRSTUVWXYZ￥
+            他ABCDEFGHIJKLMNOPQRSTUVWXYZ%
+            有ABCDEFGHIJKLMNOPQRSTUVWXYZ……
+            uABCDEFGHIJKLMNOPQRSTUVWXYZ&
+            iABCDEFGHIJKLMNOPQRSTUVWXYZ*
+            哦ABCDEFGHIJKLMNOPQRSTUVWXYZ（`
+        );
+        let decode2 = pako.ungzip(encode, { to: 'string' });
+        let decode3 = pako.ungzip(encode);
+        console.log(decode2);
+        console.log("压缩前大小:", decode3.length);
+        console.log("压缩后大小:", encode.length);
+
+        /**
+         * Base64 Test
+         */
+        let encodeB = Base64.encode("去微软推哦怕");
+        let decodeB2 = Base64.decode(encodeB);
+        console.log(encodeB, '=>', decodeB2);
+
     }
 
     sayHello(data) {

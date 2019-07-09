@@ -1,0 +1,10 @@
+{
+"types":
+["S","S","B"],
+"fields":
+["ID","Name","Loop"],
+"values":
+[
+["MUSIC_BGM","bgm.mp3","1"]
+,["SOUND_CLICK","common_clicked.mp3","0"]]
+}
