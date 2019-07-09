@@ -20,6 +20,11 @@ export class TestUI extends ViewBase {
     }
 
     start() {
+        console.log("TestUI:测试代码已注释");
+        // this.Test();
+    }
+
+    Test() {
 
         /**
          * Event Test
@@ -29,9 +34,9 @@ export class TestUI extends ViewBase {
         /**
          * HttpUtil Test
          */
-        // HttpUtil.HttpPost("http://localhost:7456/", null, (res) => { }, true);
-        // HttpUtil.HttpGet("http://localhost:7456/", null, (res) => { }, true);
-        // HttpUtil.HttpDownload("http://localhost:7456", "test.html", (err, path) => { });
+        HttpUtil.HttpPost("http://localhost:7456/", null, (res) => { }, true);
+        HttpUtil.HttpGet("http://localhost:7456/", null, (res) => { }, true);
+        HttpUtil.HttpDownload("http://localhost:7456", "test.html", (err, path) => { });
 
         /**
          * Protobuf Test
@@ -87,7 +92,8 @@ export class TestUI extends ViewBase {
          * Gzip Test
          */
         let encode = pako.gzip(
-            `去ABCDEFGHIJKLMNOPQRSTUVWXYZ！
+            `
+            去ABCDEFGHIJKLMNOPQRSTUVWXYZ！
             我ABCDEFGHIJKLMNOPQRSTUVWXYZ@
             恶ABCDEFGHIJKLMNOPQRSTUVWXYZ#
             人ABCDEFGHIJKLMNOPQRSTUVWXYZ￥
