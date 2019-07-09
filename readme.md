@@ -4,7 +4,7 @@
 
 - [x] UI管理 (常规UI管理方案)
 - [x] Sdk管理 (常规Sdk管理方案)
-- [ ] Config管理 (配置管理方案)
+- [x] Data管理 (配置数据管理)
 - [x] Event管理 (观察者模式)
 - [x] Audio管理 (对系统Audio引擎的简单封装)
 - [x] Timer管理 (通过Scheduler实现的Timer封装)
