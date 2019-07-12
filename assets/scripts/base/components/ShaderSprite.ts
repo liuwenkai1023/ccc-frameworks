@@ -1,4 +1,4 @@
-import { ShaderManager, ShaderType, ShaderTypeMap } from "../extension/shader/ShaderManager";
+import { ShaderManager, ShaderType } from "../extension/shader/ShaderManager";
 
 const { ccclass, property, disallowMultiple, requireComponent, executeInEditMode, menu } = cc._decorator;
 
@@ -20,7 +20,7 @@ export default class BaseShaderSprite extends cc.Component {
     @property({ visible: false })
     private _bluramount: number = 0.05;
 
-    @property({ displayName: "着色器", type: cc.Enum(ShaderTypeMap) })
+    @property({ displayName: "着色器", type: cc.Enum(ShaderType) })
     get shader() { return this._shader; }
     set shader(type) {
         this._shader = type;
@@ -56,8 +56,7 @@ export default class BaseShaderSprite extends cc.Component {
 
     private startTime = 0;
 
-
-    protected start() {
+    onLoad() {
         this.sprite = this.node.getComponent(cc.Sprite);
         this.applyShaderSettings();
     }

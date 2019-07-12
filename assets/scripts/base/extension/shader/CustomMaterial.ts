@@ -15,9 +15,12 @@ export class ShaderCustomMaterial extends Material {
 	private _texIds: any;
 	private _effect: any;
 	private _texture: any;
-	private _mainTech: any; // 不要删，会用到
-
+	public _mainTech: any; // 不要删，会用到
+	private _useColor: boolean = false;
 	public _color: { r: number; g: number; b: number; a: number; };
+	private _useTexture: boolean;
+	private _useModel: boolean;
+	private _use2DPos: boolean;
 
 	constructor(name?: string | void, params?: any | void, defines?: any | void) {
 		super();
@@ -38,7 +41,6 @@ export class ShaderCustomMaterial extends Material {
 			{ name: 'texture', type: renderer.PARAM_TEXTURE_2D },
 			{ name: 'color', type: renderer.PARAM_COLOR4 },
 			{ name: 'time', type: renderer.PARAM_FLOAT },
-			{ name: 'num', type: renderer.PARAM_FLOAT },
 		];
 
 		if (params) techParams = techParams.concat(params);
@@ -56,9 +58,14 @@ export class ShaderCustomMaterial extends Material {
 			{
 				'color': this._color,
 				'time': 0.0,
-				'num': 0.0,
 			},
-			defines
+			defines.concat([
+				{ name: 'useTexture', value: true },
+				{ name: 'useModel', value: false },
+				{ name: 'alphaTest', value: false },
+				{ name: 'use2DPos', value: true },
+				{ name: 'useColor', value: true }
+			])
 		);
 
 		this.name = name;
@@ -139,6 +146,43 @@ export class ShaderCustomMaterial extends Material {
 	set defines(define) {
 		this._defines = define;
 	}
+
+	get useColor() {
+		return this._useColor;
+	}
+
+	set useColor(value: boolean) {
+		this._useColor = value;
+		this.setDefine('useColor', value);
+	}
+
+	get useTexture() {
+		return this._useTexture;
+	}
+
+	set useTexture(value: boolean) {
+		this._useTexture = value;
+		this.setDefine('useTexture', value);
+	}
+
+	get useModel() {
+		return this._useModel;
+	}
+
+	set useModel(value: boolean) {
+		this._useModel = value;
+		this.setDefine('useModel', value);
+	}
+
+	get use2DPos() {
+		return this._use2DPos;
+	}
+
+	set use2DPos(value: boolean) {
+		this._use2DPos = value;
+		this.setDefine('use2DPos', value);
+	}
+
 }
 
 // if (Material)
