@@ -4,6 +4,8 @@ export class MyApp {
 
     private static _instance: MyApp;
 
+    public data: any = {};
+
     public SingletonFactory: typeof SingletonFactory;
 
     public static getInstance() {

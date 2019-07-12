@@ -4,6 +4,7 @@ declare class SingletonFactory {
 }
 
 declare class MyApps {
+    data: any;
     SingletonFactory: typeof SingletonFactory;
 }
 

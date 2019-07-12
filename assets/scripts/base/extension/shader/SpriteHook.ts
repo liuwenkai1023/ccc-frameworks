@@ -26,18 +26,9 @@ export class SpriteHook {
         // @ts-ignore
         cc.dynamicAtlasManager.enabled = false;
         prototype.oldVersion = SpriteHook.compareVersion();
-        // 取自定义材质
-        prototype.getMaterial = function (name) {
-            // console.log("prototype.getMaterial")
-            if (this._materials) {
-                return this._materials[name];
-            } else {
-                return undefined;
-            }
-        }
 
         // 设置自定义材质
-        prototype.setMaterial = function (name, mat) {
+        prototype.setCustomMaterial = function (name, mat) {
             // console.log("prototype.setMaterial")
             if (!this._materials) {
                 this._materials = {}
@@ -45,26 +36,11 @@ export class SpriteHook {
             this._materials[name] = mat;
         }
 
-        // 激活某个材质
-        prototype.activateMaterial = function (name) {
-            // console.log("prototype.activateMaterial", name)
-            var mat = this.getMaterial(name);
-            if (mat && mat !== this._currMaterial) {
-                if (mat) {
-                    if (this.node) {
-                        mat.color = this.node.color;
-                    }
-                    if (this.spriteFrame) {
-                        mat.texture = this.spriteFrame.getTexture();
-                    }
-                    this.node._renderFlag |= (<any>cc).RenderFlow.FLAG_COLOR;
-                    this._currMaterial = mat;
-                    this._currMaterial.name = name;
-                    this._state = STATE_CUSTOM;
-                    this._activateMaterial();
-                } else {
-                    // console.error("activateMaterial - unknwon material: ", name);
-                }
+        // 取自定义材质
+        prototype.getCustomMaterial = function (name) {
+            // console.log("prototype.setMaterial")
+            if (this._materials) {
+                return this._materials[name];
             }
         }
 
@@ -76,10 +52,27 @@ export class SpriteHook {
             }
         }
 
+        // 激活某个材质
+        prototype.activateCustomMaterial = function (name) {
+            var mat = this.getCustomMaterial(name);
+            if (mat && mat !== this._currMaterial) {
+                if (this.node) {
+                    mat.color = this.node.color;
+                }
+                if (this.spriteFrame) {
+                    mat.texture = this.spriteFrame.getTexture();
+                }
+                this.node._renderFlag |= (<any>cc).RenderFlow.FLAG_COLOR;
+                this._currMaterial = mat;
+                this._currMaterial.name = name;
+                this._state = STATE_CUSTOM;
+                this._activateMaterial();
+            }
+        }
+
 
         prototype._activateMaterial = function () {
             let spriteFrame = this._spriteFrame;
-
             // WebGL
             if (cc.game.renderType !== cc.game.RENDER_TYPE_CANVAS) {
                 // Get material
@@ -90,15 +83,13 @@ export class SpriteHook {
                     }
                     material = this._graySpriteMaterial;
                     this._currMaterial = null;
-                }
-                else if (this._state === STATE_CUSTOM) {
+                } else if (this._state === STATE_CUSTOM) {
                     if (!this._currMaterial) {
                         // console.error("_activateMaterial: _currMaterial undefined!")
                         return;
                     }
                     material = this._currMaterial;
-                }
-                else {
+                } else {
                     if (!this._spriteMaterial) {
                         this._spriteMaterial = new SpriteMaterial();
                     }
@@ -107,7 +98,6 @@ export class SpriteHook {
                 }
                 // For batch rendering, do not use uniform color.
                 material.useColor = this.oldVersion;
-
                 // Set texture
                 if (spriteFrame && spriteFrame.textureLoaded()) {
                     let texture = spriteFrame.getTexture();
