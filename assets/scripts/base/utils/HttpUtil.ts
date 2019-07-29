@@ -4,13 +4,13 @@ export default class HttpUtil {
     private static _seq: number = 1;
 
     // HTTP请求地址
-    private static _host: string = "https://www.baidu.com";
+    private static _host: string = "https://blog.liuwenkai.org";
 
 
     /**
      * GET
      */
-    public static HttpGet(url: string, params: object, handler: Function, async: boolean = false, customData: object = null, extraHeaders: object = {}) {
+    public static HttpGet(url: string, params: object, handler: Function, async: boolean = true, customData: object = null, extraHeaders: object = {}) {
         this.HttpRequest(url, "GET", params, handler, async, customData, extraHeaders);
 
     }
@@ -19,19 +19,24 @@ export default class HttpUtil {
     /**
      * POST
      */
-    public static HttpPost(url: string, params: object, handler: Function, async: boolean = false, customData: object = null, extraHeaders: object = {}) {
+    public static HttpPost(url: string, params: object, handler: Function, async: boolean = true, customData: object = null, extraHeaders: object = {}) {
         this.HttpRequest(url, "POST", params, handler, async, customData, extraHeaders);
     }
 
 
     /**
-    * 下载文件
-    */
-    public static HttpDownload(url: string, fileName: string, handler: Function, overwrite: boolean = false) {
+     * 下载文件
+     * @param url           下载地址
+     * @param nameOrPath    文件名/文件保存路径
+     * @param handler       下载完成回调 (error, result) => { }
+     * @param overwrite     是否覆盖原文件
+     */
+    public static HttpDownload(url: string, nameOrPath: string, handler: Function, overwrite: boolean = false) {
+        let fullName = nameOrPath;
         if (CC_JSB) {
-            fileName = jsb.fileUtils.getWritablePath() + fileName; // 文件保存路径
-            if (jsb.fileUtils.isFileExist(fileName) && (!overwrite)) { // 是否需要重复下载
-                handler && handler(fileName);
+            fullName = jsb.fileUtils.getWritablePath() + nameOrPath; // 文件保存路径
+            if (jsb.fileUtils.isFileExist(fullName) && (!overwrite)) { // 是否需要重复下载
+                handler && handler(fullName);
                 return;
             }
         }
@@ -46,8 +51,8 @@ export default class HttpUtil {
         }
         xhr.onload = function (e) {
             if (this.status == 200) {
-                (!CC_JSB) && self.saveFileInBrowser(this.response, fileName);
-                (CC_JSB) && self.saveFileInNative(this.response, fileName, handler, overwrite);
+                (!CC_JSB) && self.saveFileInBrowser(this.response, nameOrPath);
+                (CC_JSB) && self.saveFileInNative(this.response, nameOrPath, handler, overwrite);
                 CC_DEBUG && console.log(`[S->C] [Download.${seq}] -> ${url}%c success`, `color:#19A316;`);
             } else {
                 CC_DEBUG && console.log(`%c[S->C] [Download.${seq}] -> ${url} failed`, `color:#f00;`);
@@ -60,9 +65,14 @@ export default class HttpUtil {
 
 
     /**
-     * 下载文件 In Native
+     * 保存文件 In Native
+     * @param arrayBuffer   文件流
+     * @param relativePath  相对路径
+     * @param handler       保存结果回调 (error, result) => { }
+     * @param overwrite     是否覆盖
      */
-    public static saveFileInNative(arrayBuffer: ArrayBuffer, fullPath: string, handler: Function, overwrite: boolean) {
+    public static saveFileInNative(arrayBuffer: ArrayBuffer, relativePath: string, handler: Function, overwrite: boolean) {
+        let fullPath = jsb.fileUtils.getWritablePath() + this.checkPath(relativePath);
         overwrite && jsb.fileUtils.isFileExist(fullPath) && jsb.fileUtils.removeFile(fullPath);
         let success = jsb.fileUtils.writeDataToFile(new Uint8Array(arrayBuffer), fullPath);
         if (success) {
@@ -77,7 +87,27 @@ export default class HttpUtil {
 
 
     /**
-     * 下载文件 In Browser
+     * 检查relativePath中包含路径，并确保路径中的文件夹存在
+     * @param relativePath 相对路径
+     */
+    private static checkPath(relativePath: string) {
+        let paths = relativePath.split("/");
+        let dirPath = "";
+        for (let i = 0; i < paths.length - 1; i++) {
+            const str = paths[i];
+            dirPath += str + "/";
+            if (!jsb.fileUtils.isDirectoryExist(dirPath)) {
+                jsb.fileUtils.createDirectory(dirPath);
+            }
+        }
+        return relativePath;
+    }
+
+
+    /**
+     * 保存文件 In Browser
+     * @param blob      Blob对象
+     * @param fileName  保存文件名
      */
     public static saveFileInBrowser(blob: Blob, fileName: string) {
         if (typeof window.navigator.msSaveBlob !== 'undefined') {
@@ -114,7 +144,7 @@ export default class HttpUtil {
      * @param customData    自定义数据 
      * @param extraHeaders  临时headers
      */
-    public static HttpRequest(url: string, mothed: string, params: object, handler: Function, async: boolean = false, customData: object = null, extraHeaders: object = {}) {
+    public static HttpRequest(url: string, mothed: string, params: object, handler: Function, async: boolean = true, customData: object = null, extraHeaders: object = {}) {
         let xhr = cc.loader.getXMLHttpRequest();
         if (!/^http:\/\//.test(url) && !/^https:\/\//.test(url)) {
             url = this._host + url;
@@ -123,7 +153,7 @@ export default class HttpUtil {
             url = url + this._encode(params);
         }
         xhr.open(mothed, url, async);
-        xhr.timeout = 5000;
+        if (async) xhr.timeout = 5000;
         this._extraHeaders(xhr, extraHeaders);
         mothed == "GET" && xhr.send();
         mothed == "POST" && xhr.send(JSON.stringify(params));
@@ -174,7 +204,7 @@ export default class HttpUtil {
 
 
     /**
-     * 将参数转为字符串
+     * 将参数转为字符串GET
      * @param params
      */
     private static _encode(params: object = {}): string {
@@ -192,7 +222,8 @@ export default class HttpUtil {
 
     /**
      * 添加通用header
-     * @param xhr XMLHttpRequest
+     * @param xhr           XMLHttpRequest
+     * @param extraHeaders  自定义Headers
      */
     private static _extraHeaders(xhr: XMLHttpRequest, extraHeaders: object = {}) {
         // Default Headers
