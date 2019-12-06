@@ -43,6 +43,7 @@ export abstract class BaseWindow extends fgui.Window {
                 cc.scaleTo(0.2, 1)
             );
         }
+        this.bringToFront();
         this.onShown();
     }
 
@@ -60,7 +61,6 @@ export abstract class BaseWindow extends fgui.Window {
 
 
     protected onShown() {
-        this.bringToFront();
     }
 
 
