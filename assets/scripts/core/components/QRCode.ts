@@ -19,6 +19,7 @@ export enum EcclevelType {
     ECCLEVEL_H,
 }
 
+@ccclass
 @menu("扩展组件/QRCode")
 @requireComponent(cc.Graphics)
 @executeInEditMode
