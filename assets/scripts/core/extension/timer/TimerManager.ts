@@ -4,10 +4,10 @@
 export class TimerManager {
 
     // private static _instance: TimerManager;
-    
+
     private static __id: number = new Date().getTime();
 
-   constructor() {
+    constructor() {
         this.init();
     }
 
@@ -58,7 +58,7 @@ export class TimerManager {
      * @param handler 回调
      * @param delayTime 延迟时间
      */
-    public runDelayTimer(handler: (dt: number) => void, delayTime: number = 0.01) {
+    public runDelayTimer(handler: Function, delayTime: number = 0.01) {
         return this.scheduleOnce(handler, delayTime);
     }
 
@@ -69,7 +69,7 @@ export class TimerManager {
      * @param intervlTime 间隔时间
      * @param delay 延迟时间执行
      */
-    public runLoopTimer(handler: (dt: number) => void, intervlTime: number = 0.02, delay?: number) {
+    public runLoopTimer(handler: Function, intervlTime: number = 0.02, delay?: number) {
         return this.schedule(handler, intervlTime ? intervlTime : 0.02, cc.macro.REPEAT_FOREVER, delay ? delay : 0, false);
     }
 

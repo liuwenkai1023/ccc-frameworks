@@ -1,11 +1,11 @@
 import { ViewBase } from "../../core/mvc/ViewBase";
+import { HttpUtil } from "../../core/utils/HttpUtil";
 import { user } from "../data/proto/person";
 import { DataManager } from "../../core/extension/data/DataManager";
 import { AudioManager } from "../../core/extension/audio/AudioMananger";
 import { LocalStorageManager } from "../../core/extension/storage/StorageManager";
 import { TimerManager } from "../../core/extension/timer/TimerManager";
 import { Base64 } from "../../core/utils/Base64";
-import { HttpUtil } from "../../core/utils/HttpUtil";
 
 export class TestUI extends ViewBase {
 

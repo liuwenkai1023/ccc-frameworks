@@ -12,10 +12,9 @@ export class AppStart extends BaseComponent {
     private preLoaded: boolean;
 
     onLoad() {
-        // cc.view.enableAntiAlias(false);
         this.initData();
-        this.CCMaskHook();
-        this.CCButtonHook();
+        // this.CCMaskHook();
+        // this.CCButtonHook();
     }
 
     CCMaskHook() {
@@ -41,7 +40,7 @@ export class AppStart extends BaseComponent {
 
     initData() {
         this.fadeTime = .5;
-        this.targetTime = 2;
+        this.targetTime = 1.5;
         this.currentTime = 0;
         this.preLoaded = false;
         this.node.opacity = 0;
