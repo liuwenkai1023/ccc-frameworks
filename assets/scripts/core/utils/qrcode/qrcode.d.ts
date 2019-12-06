@@ -1,4 +1,4 @@
-declare module QRCode {
+declare module qrcode {
 
 
     /**

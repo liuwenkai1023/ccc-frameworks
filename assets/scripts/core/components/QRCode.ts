@@ -19,11 +19,10 @@ export enum EcclevelType {
     ECCLEVEL_H,
 }
 
-@ccclass
+@menu("扩展组件/QRCode")
 @requireComponent(cc.Graphics)
 @executeInEditMode
-@menu("扩展组件/QRCode")
-export default class QRCodeC extends cc.Component {
+export default class QRCode extends cc.Component {
 
     @property({ visible: false })
     _data: string = "二维码内容";
@@ -52,6 +51,10 @@ export default class QRCodeC extends cc.Component {
     @property({ type: cc.Enum(EcclevelType), visible: false })
     _ecclevel: EcclevelType = EcclevelType.DEFAULT;
 
+    @property({ visible: false })
+    _preview: boolean = false;
+
+
     graphics: cc.Graphics;
 
 
@@ -68,7 +71,13 @@ export default class QRCodeC extends cc.Component {
 
 
     @property({ displayName: "预览" })
-    preview: boolean = false;
+    set preview(preview: boolean) {
+        this._preview = preview;
+        this._preview && this.applayChanged();
+    }
+    get preview() {
+        return this._preview;
+    }
 
 
     @property({ displayName: "背景颜色" })
@@ -182,7 +191,7 @@ export default class QRCodeC extends cc.Component {
             mode: this.mode == 0 ? null : ModeData[this.mode],
             ecclevel: this.ecclevel == 0 ? null : EcclevelData[this.ecclevel],
         };
-        let dataArray = QRCode.generate(this.data, options);
+        let dataArray = qrcode.generate(this.data, options);
         this.updateGraphics(dataArray);
     }
 

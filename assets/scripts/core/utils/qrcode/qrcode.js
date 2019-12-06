@@ -1,4 +1,4 @@
-var QRCode = (function () {
+var qrcode = (function () {
     var VERSIONS = [
         null,
         [[10, 7, 17, 13], [1, 1, 1, 1], []],
@@ -538,7 +538,7 @@ var QRCode = (function () {
     };
 
 
-    var QRCode = {
+    var qrcode = {
         //we can input some value about the QR code,such as size,ecc level,padding,mode,version,mask and so on,so we can generate different QR code;
         'generate': function (data, options) {
             var MODES = {
@@ -597,7 +597,7 @@ var QRCode = (function () {
         //if there is not support canvas, use table to replace canvas
         'generateHTML': function (data, options) {
             options = options || {};
-            var matrix = QRCode['generate'](data, options);
+            var matrix = qrcode['generate'](data, options);
             var modsize = Math.max(options.modulesize || 5, 0.5);
             var margin = Math.max(options.margin || 4, 0.0);
 
@@ -620,7 +620,7 @@ var QRCode = (function () {
         //if support canvas, use canvas to generate a QR code
         'generatePNG': function (data, options) {
             options = options || {};
-            var matrix = QRCode['generate'](data, options);
+            var matrix = qrcode['generate'](data, options);
             var modsize = Math.max(options.modulesize || 5, 0.5);
             var margin = Math.max(options.margin || 4, 0.0);
             var n = matrix.length;
@@ -648,6 +648,6 @@ var QRCode = (function () {
         }
     };
 
-    return QRCode;
+    return qrcode;
 })();
-if (CC_EDITOR) window.QRCode = QRCode;
+window.qrcode = qrcode;
