@@ -1,5 +1,5 @@
-import { UIManager } from "../../base/mvc/UIManager";
-import { BaseComponent } from "../../base/BaseComponent";
+import { UIManager } from "../../core/mvc/UIManager";
+import { BaseComponent } from "../../core/BaseComponent";
 
 const { ccclass, property } = cc._decorator;
 
