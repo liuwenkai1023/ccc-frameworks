@@ -51,36 +51,38 @@ export class MyApp {
     }
 
 
-    // /**
-    //  * 加载FGUI中的图片资源
-    //  * @param itemURL 
-    //  */
-    // loadResInFGUI(itemURL: string): cc.SpriteFrame {
-    //     let contentItem = fgui.UIPackage.getItemByURL(itemURL);
-    //     if (contentItem != null) {
-    //         contentItem.load();
-    //         if (contentItem.type == fgui.PackageItemType.Image) {
-    //             if (contentItem.asset) {
-    //                 return contentItem.asset as any;
-    //             }
-    //         }
-    //     }
-    // }
+    /**
+     * 加载FGUI中的图片资源
+     * @param itemURL 
+     */
+    loadResInFGUI(itemURL: string): cc.SpriteFrame {
+        let contentItem = fgui.UIPackage.getItemByURL(itemURL);
+        if (contentItem != null) {
+            contentItem.load();
+            if (contentItem.type == fgui.PackageItemType.Image) {
+                if (contentItem.asset) {
+                    return contentItem.asset as any;
+                }
+            }
+        }
+    }
 
 
-    // /**
-    //  * 加载网络图片
-    //  * @param loader    fgui.GLoader
-    //  * @param picUrl    图片地址
-    //  * @param tag       标记
-    //  * @param overwrite 是否覆盖
-    //  */
-    // loadResInNet(loader: fgui.GLoader, picUrl: string, tag: string, overwrite: boolean = false) {
-    //     CC_JSB && HttpUtil.HttpDownload(picUrl, `${tag}.png`, (err, path) => {
-    //         loader.url = null;
-    //         cc.loader.load(path, () => { loader.url = path; });
-    //     }, overwrite);
-    // }
+    /**
+     * 加载网络图片
+     * @param loader    fgui.GLoader
+     * @param picUrl    图片url地址
+     * @param fileName  文件名
+     * @param overwrite 是否覆盖
+     */
+    loadResInNet(loader: fgui.GLoader, picUrl: string, fileName: string, overwrite: boolean = false) {
+        CC_JSB && HttpUtil.HttpDownload(picUrl, `${fileName}`, (err, path) => {
+            loader.url = null;
+            cc.loader.load(path, () => {
+                loader.url = path;
+            });
+        }, overwrite);
+    }
 
 
     // playMusic(soundId: string) {

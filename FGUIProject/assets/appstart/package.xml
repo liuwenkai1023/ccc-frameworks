@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="myo31mx2">
+  <resources>
+    <component id="pua70" name="AppStart.xml" path="/" exported="true"/>
+    <image id="hb4i1" name="default_logo.png" path="/resources/"/>
+  </resources>
+  <publish name="appstart"/>
+</packageDescription>
