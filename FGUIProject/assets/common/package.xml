@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <packageDescription id="mg2kd9oo">
   <resources>
-    <image id="pua73" name="单色图片.png" path="/resources/" exported="true"/>
+    <image id="pua73" name="单色图片.png" path="/resources/" exported="true" scale="9grid" scale9grid="3,3,4,4" qualityOption="source" duplicatePadding="true"/>
     <image id="pua74" name="描边的矩形.png" path="/resources/" exported="true" scale="9grid" scale9grid="3,3,4,4" qualityOption="source" duplicatePadding="true"/>
-    <image id="pua75" name="描边的圆角矩形.png" path="/resources/" exported="true" scale="9grid" scale9grid="12,12,6,6" qualityOption="source"/>
+    <image id="pua75" name="描边的圆角矩形.png" path="/resources/" exported="true" scale="9grid" scale9grid="12,12,6,6" qualityOption="source" duplicatePadding="true"/>
     <component id="pua71" name="白色按钮.xml" path="/components/矩形按钮/" exported="true"/>
     <component id="pua7a" name="黄色按钮.xml" path="/components/矩形按钮/" exported="true"/>
     <component id="pua7c" name="红色按钮.xml" path="/components/矩形按钮/" exported="true"/>
@@ -23,5 +23,5 @@
     <component id="pua7u" name="浅灰色圆角按钮.xml" path="/components/圆角矩形按钮/" exported="true"/>
     <component id="pua7v" name="浅绿色圆角按钮.xml" path="/components/圆角矩形按钮/" exported="true"/>
   </resources>
-  <publish name="common" path="./ui" packageCount="2"/>
+  <publish name="common" maxAtlasSize="2048" square="true"/>
 </packageDescription>

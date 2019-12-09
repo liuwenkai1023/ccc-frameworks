@@ -35,6 +35,7 @@ export abstract class BaseView extends App.BaseComponent {
             onDestroy && onDestroy();
             this.rootView.dispose();
         }
+        window['TestUI'] = this;
     }
 
 
@@ -42,6 +43,7 @@ export abstract class BaseView extends App.BaseComponent {
         this._rootView = fgui.UIPackage.createObject(`${this.pkgName}`, `${this.resName}`).asCom;
         fgui.GRoot.inst.addChild(this._rootView);
         this._rootView.makeFullScreen();
+        this.__isLoading = false;
         this.onCreate(this._rootView);
         this._closeButton = this.findGObj(`${this.closeButtonName}`);
         if (this._closeButton) {
@@ -59,7 +61,6 @@ export abstract class BaseView extends App.BaseComponent {
         this.rootView.node.runAction(cc.sequence([
             cc.moveBy(0.25, cc.v2(-width, 0)),
             cc.callFunc(() => {
-                this.lastPage.rootView.alpha = 0;
                 this.showLastPage(false);
             })
         ]));
@@ -70,18 +71,25 @@ export abstract class BaseView extends App.BaseComponent {
     protected doCloseAnimation() {
         console.info("info: page hide animation!");
         this.showLastPage(true);
-        if (this.isValid && this.lastPage.isValid) {
+        if (this.isValid && this.lastPage) {
             const width = this.rootView.node.width;
-            this.lastPage.rootView.alpha = 1;
             this.rootView.node.runAction(cc.sequence([
                 cc.moveBy(0.2, cc.v2(width, 0)),
                 cc.callFunc(() => {
-                    console.info("info: page is closed!");
-                    this.onClose();
-                    this.isReuse || this.destroy();
+                    this.closeImmediately();
                 })
             ]));
+        } else {
+            this.closeImmediately();
         }
+    }
+
+
+    protected closeImmediately() {
+        console.info("info: page is closed!");
+        this.onClose();
+        this.rootView.removeFromParent();
+        this.isReuse || this.destroy();
     }
 
 
@@ -102,8 +110,6 @@ export abstract class BaseView extends App.BaseComponent {
             // 且未添加到界面，则重新将跟视图显示到界面上
             if (!this.rootView.parent) {
                 fgui.GRoot.inst.addChild(this.rootView);
-            } else {
-                console.warn("warn: page is aready show!");
             }
         } else {
             if (!this.__isLoading) {
@@ -112,8 +118,12 @@ export abstract class BaseView extends App.BaseComponent {
             }
             return;
         }
-        // this.showLastPage(false);
-        this.doShowAnimation();
+        // 如果存在lastPage则执行进入动画
+        if (this.lastPage) {
+            this.doShowAnimation();
+            return;
+        }
+        this.onShown();
     }
 
 
@@ -125,11 +135,11 @@ export abstract class BaseView extends App.BaseComponent {
     }
 
 
-    abstract onClose();
+    abstract onCreate(view: fgui.GComponent);
 
     abstract onShown();
 
-    abstract onCreate(view: fgui.GComponent);
+    abstract onClose();
 
 
     /**

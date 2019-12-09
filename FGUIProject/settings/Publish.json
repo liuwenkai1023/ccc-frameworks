@@ -2,7 +2,8 @@
 	"atlasSetting":{
 		"forceSquare":true,
 		"paging":true,
-		"sizeOption":"pot"
+		"sizeOption":"pot",
+		"trimImage":true
 	},
 	"binaryFormat":true,
 	"codeGeneration":{
