@@ -3,7 +3,6 @@
  */
 export class Base64 {
 
-
     /**
      * 使用Base64对input进行编码
      * @param input string或者ArrayBuffer
@@ -11,7 +10,6 @@ export class Base64 {
     public static encode(input: string): string {
         return this._utf8encode(input);
     }
-
 
     /**
      * 使用Base64对input进行解码
@@ -22,7 +20,6 @@ export class Base64 {
         return this._utf8decode(input, utf8);
     }
 
-
     private static _utf8encode(input: string): string {
         try {
             return window.btoa(input);
@@ -30,7 +27,6 @@ export class Base64 {
             return window.btoa(unescape(encodeURIComponent(input)));
         }
     }
-
 
     private static _utf8decode(input: string, utf8: boolean): string {
         if (utf8) {
@@ -44,30 +40,3 @@ export class Base64 {
     }
 
 }
-    // /**
-    //  * 将ArrayBuffer转换为string
-    //  * @param input 需要被转换的ArrayBuffer
-    //  */
-    // public static ab2str(input: ArrayBuffer): string {
-    //     var binary = '';
-    //     var bytes = new Uint16Array(input);
-    //     var len = bytes.byteLength;
-    //     for (var i = 0; i < len; i++) {
-    //         binary += String.fromCharCode(bytes[i]);
-    //     }
-    //     return unescape(binary);
-    // }
-
-    // /**
-    //  * 将string转换为ArrayBuffer
-    //  * @param input 需要被转换的string
-    //  */
-    // public static str2ab(input: string): ArrayBuffer {
-    //     input = escape(input);
-    //     var buf = new ArrayBuffer(input.length * 2); // 2 bytes for each char
-    //     var bufView = new Uint16Array(buf);
-    //     for (var i = 0, strLen = input.length; i < strLen; i++) {
-    //         bufView[i] = input.charCodeAt(i);
-    //     }
-    //     return buf;
-    // }

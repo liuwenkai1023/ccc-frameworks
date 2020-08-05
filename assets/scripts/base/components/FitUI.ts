@@ -1,4 +1,4 @@
-const { ccclass, property, executeInEditMode, menu } = cc._decorator;
+const { ccclass, property, executeInEditMode, menu, requireComponent } = cc._decorator;
 
 export enum FitUIPlatform { ANDROID, IOS, OTHER }
 
@@ -8,8 +8,9 @@ const IsH = function () { return this.orientation == FitUIOrientation.HORIZONTAL
 const IsV = function () { return this.orientation == FitUIOrientation.VERTICAL };
 
 @ccclass
-@menu("扩展组件/UI适配/FitUI")
+@menu("扩展组件/FitUI")
 @executeInEditMode
+@requireComponent(cc.Widget)
 export default class FitUI extends cc.Component {
 
     // Orientation

@@ -1,5 +1,6 @@
-import { UIManager } from "../../base/mvc/UIManager";
-import { BaseComponent } from "../../base/BaseComponent";
+import { BaseComponent } from "../../base/core/BaseComponent";
+import { UIManager } from "../../base/core/mvc/UIManager";
+
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,40 +13,41 @@ export class AppStart extends BaseComponent {
     private preLoaded: boolean;
 
     onLoad() {
-        // cc.view.enableAntiAlias(false);
         this.initData();
-        this.CCMaskHook();
-        this.CCButtonHook();
+        // this.CCMaskHook();
+        // this.CCButtonHook();
     }
 
-    CCMaskHook() {
-        let prototype = cc.Mask.prototype as any;
-        let onLoad = prototype.onLoad;
-        prototype.onLoad = function () {
-            onLoad.bind(this)();
-            let canvasSize = cc.view.getCanvasSize();
-            this._clearGraphics.rect(-canvasSize.width / 2, -canvasSize.height / 2, 3000, 3000);
-            this._clearGraphics.fill();
-        }
-    }
+    // CCMaskHook() {
+    //     let prototype = cc.Mask.prototype as any;
+    //     let onLoad = prototype.onLoad;
+    //     prototype.onLoad = function () {
+    //         onLoad.bind(this)();
+    //         let canvasSize = cc.view.getCanvasSize();
+    //         this._clearGraphics.rect(-canvasSize.width / 2, -canvasSize.height / 2, 3000, 3000);
+    //         this._clearGraphics.fill();
+    //     }
+    // }
 
-    CCButtonHook() {
-        let prototype = cc.Button.prototype as any;
-        let _onTouchEnded = prototype._onTouchEnded;
-        prototype._soundId = "SOUND_CLICK";
-        prototype._onTouchEnded = function (event) {
-            _onTouchEnded.bind(this)(event);
-            // 播放通用按钮音效
-        };
-    }
+    // CCButtonHook() {
+    //     let prototype = cc.Button.prototype as any;
+    //     let _onTouchEnded = prototype._onTouchEnded;
+    //     prototype._soundId = "SOUND_CLICK";
+    //     prototype._onTouchEnded = function (event) {
+    //         _onTouchEnded.bind(this)(event);
+    //         // 播放通用按钮音效
+    //     };
+    // }
 
     initData() {
         this.fadeTime = .5;
-        this.targetTime = 2;
+        this.targetTime = 1.5;
         this.currentTime = 0;
         this.preLoaded = false;
         this.node.opacity = 0;
         this.node.runAction(cc.fadeIn(this.fadeTime));
+        // 加载本地数据
+        // 加载配置
     }
 
     start() {

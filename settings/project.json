@@ -6,8 +6,12 @@
   ],
   "design-resolution-height": 1280,
   "design-resolution-width": 720,
-  "excluded-modules": [],
-  "fit-height": false,
+  "excluded-modules": [
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
+  ],
+  "fit-height": true,
   "fit-width": true,
   "group-list": [
     "default"

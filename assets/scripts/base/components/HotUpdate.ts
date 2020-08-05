@@ -1,4 +1,4 @@
-import { BaseComponent } from "../BaseComponent";
+import { BaseComponent } from "../core/BaseComponent";
 
 const { ccclass, property, menu } = cc._decorator;
 
