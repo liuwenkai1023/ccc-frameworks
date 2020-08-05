@@ -1,23 +1,32 @@
-import { AdapterInterface } from "../AdapterInterface";
-import { SdkAdapterBase } from "../SdkAdapterBase";
+import { SdkAdapterBase, CallbackHandle } from "../SdkAdapterBase";
 
-export class AndroidAdapter extends SdkAdapterBase implements AdapterInterface {
-    
-    openUrl(url: string) {
-        // throw new Error("Method not implemented.");
-    }    
-    
-    copyToClipboard(text: string): boolean {
-        // throw new Error("Method not implemented.");
-        return false;
+export class AndroidAdapter extends SdkAdapterBase {
+
+    openURL(url: string) {
     }
 
-    showAdBanner(isShow: boolean) {
-        // throw new Error("Method not implemented.");
+    openApp(packageName: string) {
     }
 
-    showAdVideo(callback: (result: { code: number; data?: any; }) => void) {
-        // throw new Error("Method not implemented.");
+    vibrate(type: number, duration?: number) {
     }
-    
+
+    copyToClipboard(text: string) {
+    }
+
+    showInsertAd() {
+    }
+
+    showBannerAd(isShow: boolean) {
+    }
+
+    showVideoAd(videoId: string, callback: CallbackHandle) {
+    }
+
+    startRecord(callback: Function, stopCallback: Function) {
+    }
+
+    stopRecord(callback: Function) {
+    }
+
 }

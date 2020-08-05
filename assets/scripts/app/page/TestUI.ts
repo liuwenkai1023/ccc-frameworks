@@ -1,16 +1,17 @@
-import { ViewBase } from "../../core/mvc/ViewBase";
-import { HttpUtil } from "../../core/utils/HttpUtil";
+import { ViewBase } from "../../base/core/mvc/ViewBase";
+import { HttpUtil } from "../../base/utils/HttpUtil";
 import { user } from "../data/proto/person";
-import { DataManager } from "../../core/extension/data/DataManager";
-import { AudioManager } from "../../core/extension/audio/AudioMananger";
-import { LocalStorageManager } from "../../core/extension/storage/StorageManager";
-import { TimerManager } from "../../core/extension/timer/TimerManager";
-import { Base64 } from "../../core/utils/Base64";
+import { DataManager } from "../../base/core/data/DataManager";
+import { AudioManager } from "../../base/core/audio/AudioMananger";
+import { LocalStorageManager } from "../../base/core/storage/StorageManager";
+import { TimerManager } from "../../base/core/timer/TimerManager";
+import { Base64 } from "../../base/utils/Base64";
+
 
 export class TestUI extends ViewBase {
 
     static UIName = "TestUI";
-    static ResourcePath = "prefab/TestUI";
+    static ResourcePath = "prefabs/TestUI";
 
     private label: cc.Label;
 
@@ -20,8 +21,8 @@ export class TestUI extends ViewBase {
     }
 
     start() {
-        console.log("TestUI:测试代码已注释");
-        // this.Test();
+        console.log("TestUI:测试代码");
+        this.Test();
     }
 
     Test() {
@@ -119,7 +120,7 @@ export class TestUI extends ViewBase {
     }
 
     sayHello(data) {
-        this.label.string = data.data;
+        this.label.string = data;
     }
 
 }

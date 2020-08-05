@@ -16,10 +16,11 @@
 				"iOS",
 				"HTML5"
 			],
-			"package_download_url": "https://download.cocos.com/CocosServices/plugins/service-analytics/1.2.3_2.1.1.zip",
-			"package_version_desc": "<p><strong>更新日期：</strong> 2019/11/18<br />\n<strong>更新说明：</strong><br />\n1、更新统计SDK<br />\n2、修改微信小游戏和百度小游戏集成失败的问题<br />\n",
+			"package_download_url": "https://download.cocos.com/CocosServices/plugins/service-analytics/1.2.5_2.1.1.zip",
+			"package_version_desc": "<p><strong>更新日期：</strong> 2020/03/05<br />\n<strong>更新说明：</strong><br />\n1、修复小米快游戏的集成问题<br />\n2、新增趣头条、支付宝小游戏和 Cocos Play 的适配<br />\n3、添加参数自动保存，插件自动加载功能<br />\n",
 			"service_component_name": "service-analytics",
 			"package_versions": [
+				"1.2.5_2.1.1",
 				"1.2.3_2.1.1",
 				"1.2.0_2.1.0",
 				"1.1.7_2.0.3",
@@ -83,10 +84,11 @@
 				"iOS",
 				"HTML5"
 			],
-			"package_download_url": "https://download.cocos.com/CocosServices/plugins/service-agora/1.0.2_2.2.3.20_2.5.2.zip",
-			"package_version_desc": "<b>更新日期：<b>2019/06/27<br>\n<br><b>更新内容：</b><br>\n1、修复部分BUG<br>\n2、代码优化",
+			"package_download_url": "https://download.cocos.com/CocosServices/plugins/service-agora/1.1.0_2.2.3.20_2.5.2.zip",
+			"package_version_desc": "<p><strong>更新日期：</strong> 2020/03/05<br />\n<strong>更新说明：</strong><br />\n1、适配 Cocos Creator 2.3.x<br />\n",
 			"service_component_name": "service-agora",
 			"package_versions": [
+				"1.1.0_2.2.3.20_2.5.2",
 				"1.0.2_2.2.3.20_2.5.2",
 				"1.0.1_2.2.3.20_2.5.2"
 			],

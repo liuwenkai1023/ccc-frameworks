@@ -1,15 +1,16 @@
+import { SdkAdapterBase } from "./SdkAdapterBase";
 import { IOSAdapter } from "./platform/IOSAdapter";
 import { AndroidAdapter } from "./platform/AndroidAdapter";
 import { DefaultAdapter } from "./platform/DefaultAdapter";
-import { AdapterInterface } from "./AdapterInterface";
+
 
 export class SdkManager {
 
-    private _adapter: AdapterInterface;
+    private _adapter: SdkAdapterBase;
 
     // private static _instance: AdapterManager;
 
-   constructor() {
+    constructor() {
         this.init();
     }
 
@@ -36,12 +37,16 @@ export class SdkManager {
      */
     private init() {
         switch (cc.sys.platform) {
+            // TODO 小游戏平台需要添加到 Android/iOS/iPad 之前
             case cc.sys.ANDROID:
                 this._adapter = new AndroidAdapter();
                 break;
+
+            case cc.sys.IPAD:
             case cc.sys.IPHONE:
                 this._adapter = new IOSAdapter();
                 break;
+
             default:
                 this._adapter = new DefaultAdapter();
                 break;
