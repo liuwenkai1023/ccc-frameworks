@@ -1,0 +1,20 @@
+{
+	"atlasSetting":{
+		"paging":true,
+		"sizeOption":"pot"
+	},
+	"binaryFormat":true,
+	"codeGeneration":{
+		"classNamePrefix":"UI_",
+		"codePath":null,
+		"codeType":"",
+		"getMemberByName":false,
+		"ignoreNoname":false,
+		"memberNamePrefix":"m_",
+		"packageName":null
+	},
+	"compressDesc":true,
+	"fileExtension":"bin",
+	"packageCount":2,
+	"path":"../assets/resources/ui"
+}
