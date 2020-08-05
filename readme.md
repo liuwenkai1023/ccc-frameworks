@@ -32,6 +32,7 @@ assets
 │   │   │   ├── timer   #调度管理器
 │   │   ├── extensions  #扩展目录(按需添加或移除扩展即可)
 │   │   │   ├── expr-eval #表达式插件
+│   │   │   ├── fgui      #fgui扩展
 │   │   │   ├── pako      #gzip压缩插件
 │   │   │   ├── protobuf  #protobuf插件
 │   │   │   ├── shader    #shader扩展(暂时移除)
