@@ -1,6 +1,7 @@
 import { SdkAdapterBase, CallbackHandle } from "../../SdkAdapterBase";
 
-export class DefaultAdapter extends SdkAdapterBase {
+export class OppoAdapter extends SdkAdapterBase {
+
 
     openURL(url: string) {
     }
@@ -12,6 +13,10 @@ export class DefaultAdapter extends SdkAdapterBase {
     }
 
     copyToClipboard(text: string) {
+    }
+
+    showBoxAd() {
+        console.log("no support sdk:showBoxAd");
     }
 
     showInsertAd() {

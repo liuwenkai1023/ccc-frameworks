@@ -31,6 +31,11 @@ export abstract class SdkAdapterBase {
     /**
      * 展示插屏广告
      */
+    abstract showBoxAd();
+
+    /**
+     * 展示插屏广告
+     */
     abstract showInsertAd();
 
     /**
