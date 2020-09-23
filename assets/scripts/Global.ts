@@ -13,6 +13,8 @@ import { UIManager } from "./base/core/mvc/UIManager";
 import { SingletonFactory } from "./base/core/SingleFactory";
 import { LocalStorageManager } from "./base/core/storage/StorageManager";
 import { CallbackManager } from "./sdk/CallbackManager";
+import { ToutiaoAdapter } from "./sdk/platform/h5/ToutiaoAdapter";
+import { BaiduAdapter } from "./sdk/platform/h5/BaiduAdapter";
 
 
 /**
@@ -60,7 +62,14 @@ export class MyApp {
     }
 
     /**
-     * toast提示消息
+     * 支持录屏？
+     */
+    get isSupportRecord() {
+        return App.Sdk instanceof ToutiaoAdapter || App.Sdk instanceof BaiduAdapter;
+    }
+
+    /**
+     * Toast提示消息
      * @param text 
      * @param duration 
      */

@@ -76,7 +76,7 @@ export abstract class SdkAdapterBase {
      * string  -> Ljava/lang/String;
      * @param params 参数
      */
-    public callJavaStaticFunc(className: string, methodNmae: string, paramTypeSignatures: string, ...params) {
+    protected callJavaStaticFunc(className: string, methodNmae: string, paramTypeSignatures: string, ...params) {
         if (cc.sys.isNative && cc.sys.platform == cc.sys.ANDROID) {
             return jsb.reflection.callStaticMethod(className, methodNmae, paramTypeSignatures, ...params);
         }
@@ -89,7 +89,7 @@ export abstract class SdkAdapterBase {
      * @param methodNmae 方法名
      * @param params 参数
      */
-    public callOcStaticFunc(className: string, methodNmae: string, ...params) {
+    protected callOcStaticFunc(className: string, methodNmae: string, ...params) {
         if (cc.sys.isNative && (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD)) {
             return jsb.reflection.callStaticMethod(className, methodNmae, ...params);
         }

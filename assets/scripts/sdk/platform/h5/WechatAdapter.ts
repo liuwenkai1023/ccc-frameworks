@@ -2,40 +2,70 @@ import { SdkAdapterBase, CallbackHandle } from "../../SdkAdapterBase";
 
 export class WechatAdapter extends SdkAdapterBase {
 
+    protected _appSid: string = null;
     // protected _boxAdUnitId: string = "56a089855c04f471178a604937848a55";
     protected _insertAdUnitId: string = "3bf09d7f641116fd226fce1df8404cea";
     protected _bannerAdUnitId: string = "d8b062172af5b2fa90618a8c7015f6e8";
     protected _rewardedVideoAdUnitId: string = "a9595328b3f4bed02c554385a463c3d3";
 
-    private _videoId = null;
-    private _bannerAd = null;
-    private _insertAd = null;
-    private _rewardVideoAd = null;
-    private _videoCallback = null;
+    protected _systemInfo = null;
+    protected _videoId = null;
+    protected _videoCallback = null;
 
+    protected _bannerAd = null;
+    protected _insertAd = null;
+    protected _rewardVideoAd = null;
+
+    private __onLoadCb: Function = null;
     private __onCloseCb: Function = null;
     private __onErrorCb: Function = null;
-    private __onLoadCb: Function = null;
 
     get platform() {
         return window['wx'];
     }
 
+    get systemInfo() {
+        if (!this._systemInfo) {
+            this._systemInfo = this.platform.getSystemInfoSync();;
+        }
+        return this._systemInfo;
+    }
+
     async inited() {
-        await 0; // 避免阻塞在这里
+        // 避免某些特殊机型因为ES6/ES5原因阻塞在这里
+        await 0;
+
+        // 小游戏没有获取唯一设备ID的地方,主动写入本地储存
+        const systemInfo = this.systemInfo;
+        const uuid = localStorage.getItem("uuid");
+        window['uuid'] = `${(uuid && uuid.length > 0) ? uuid : new Date().getTime()}`;
+        window['device'] = `${systemInfo.brand} ${systemInfo.model}`;
+        localStorage.setItem("uuid", window['uuid']);
+        localStorage.setItem("device", window['device']);
+
+        console.log(`** MiniGame ** \n device = ${window['device']}, uuid = ${window['uuid']}`);
+
+        // 设置分享标记
         this.platform.showShareMenu({ withShareTicket: true });
+
+        // 初始化插屏
         if (!this._insertAd) {
             this._insertAd = this._initInsertAd(this._insertAdUnitId);
         }
+
+        // 初始化横幅广告
         if (!this._bannerAd) {
             this._bannerAd = this._initBannerAd(this._bannerAdUnitId);
         }
+
+        // 初始化激励视频
         if (!this._rewardVideoAd) {
             this._rewardVideoAd = this._initRewardedVideoAd(this._rewardedVideoAdUnitId, (code) => {
                 this._videoCallback && this._videoCallback({ code: code, data: { videoid: this._videoId } });
             });
         }
     }
+
 
     openURL(url: string) {
         console.log("no support sdk:openURL");
@@ -61,8 +91,6 @@ export class WechatAdapter extends SdkAdapterBase {
         if (!this._insertAd) {
             this._insertAd = this._initInsertAd(this._insertAdUnitId);
         }
-        /* 建议放在需要展示插屏广告的时机执行 */
-        // 650ms刚好合适
         setTimeout(() => {
             this._insertAd.show().catch((err) => {
                 console.error('show', err);
@@ -98,62 +126,71 @@ export class WechatAdapter extends SdkAdapterBase {
         console.log("no support sdk:stopRecord");
     }
 
+
     // --===================================分隔线======================================--
 
-    private _initRewardedVideoAd(adUnitId: string, callback?: (code: number) => void) {
+
+    /**
+     * 初始化激励视频
+     * @param adUnitId  
+     * @param callback 
+     */
+    protected _initRewardedVideoAd(adUnitId: string, callback: (code: number) => void) {
         cc.log("_initRewardedVideoAd");
-        const rewardedVideoAd = this.platform.createRewardedVideoAd({ adUnitId: adUnitId });
-        // 关闭视频回调
+        const rewardedVideoAd = this.platform.createRewardedVideoAd({ adUnitId: adUnitId, appSid: this._appSid });
+        // 关闭视频回调（在发生错误后重新走初始化，需要注销之前的回调）
+        rewardedVideoAd && rewardedVideoAd.offLoad(this.__onLoadCb);
         rewardedVideoAd && rewardedVideoAd.offClose(this.__onCloseCb);
         rewardedVideoAd && rewardedVideoAd.offError(this.__onErrorCb);
-        rewardedVideoAd && rewardedVideoAd.offLoad(this.__onLoadCb);
-        // 添加新的视频回调
-        // onClose
-        const onCloseCb = this.__onCloseCb = (res) => {
-            cc.log('videoAd onClose', res)
-            if (res && res.isEnded || res === undefined) {
-                callback && callback(0);
-            } else {
-                callback && callback(-1);
-            }
-            this._videoCallback = null;
-        };
-        // onError
-        const onErrorCb = this.__onErrorCb = (res) => {
-            cc.log('videoAd onError', res)
-            this._rewardVideoAd = null;
-            callback && callback(- 2);
-        };
-        // onLoad
+        //
         const onLoadCb = this.__onLoadCb = (res) => {
             cc.log('videoAd onLoad', res);
         }
+        // 关闭视频时验证奖励
+        const onCloseCb = this.__onCloseCb = (res) => {
+            cc.log('videoAd onClose', res)
+            if (res && res.isEnded || res === undefined) {
+                callback(0);
+            } else {
+                callback(-1);
+            }
+            this._videoCallback = null;
+        };
+        // 在发生错误时释放rewardVideoAd对象(某些情况不重新创建会一直不展示)
+        const onErrorCb = this.__onErrorCb = (res) => {
+            cc.log('videoAd onError', res)
+            callback(- 2);
+            this._rewardVideoAd = null;
+            this._videoCallback = null;
+        };
+        // 注册视频回调
         rewardedVideoAd && rewardedVideoAd.onClose(onCloseCb);
         rewardedVideoAd && rewardedVideoAd.onError(onErrorCb);
         rewardedVideoAd && rewardedVideoAd.onLoad(onLoadCb);
         return rewardedVideoAd;
     }
 
+
     /**
      * 初始化BannerAd
      * @param adUnitId 
      */
-    private _initBannerAd(adUnitId: string) {
+    protected _initBannerAd(adUnitId: string) {
         cc.log("_initBannerAd");
-        const systemInfo = this.platform.getSystemInfoSync();
+        const systemInfo = this.systemInfo;
         const bannerAd = this.platform.createBannerAd({
             adUnitId: adUnitId,
-            style: { left: 0, top: systemInfo.windowHeight - 50, width: systemInfo.windowWidth * 0.85, height: 50 }
-        })
-        // bannerAd.onLoad(() => {
-        //     cc.log("onLoad");
-        // });
+            appSid: this._appSid,
+            adIntervals: 60,
+        });
+        // 在发生错误时释放bannerAd对象(某些情况不重新创建会一直不展示)
         bannerAd.onError(async (res) => {
             cc.log('bannerAd onError', res);
             await 0;
             this._bannerAd = null;
         });
-        bannerAd.onResize(function (size) {
+        // 在横幅大小变化时更新位置
+        bannerAd.onResize((size) => {
             cc.log("onResize", size);
             const top = (systemInfo.windowHeight - size.height) + 0.05;
             const left = (systemInfo.windowWidth - size.width) / 2;
@@ -163,26 +200,16 @@ export class WechatAdapter extends SdkAdapterBase {
         return bannerAd;
     }
 
+
     /**
      * 初始化插屏
      */
-    protected _initInsertAd(_insertAdUnitId: string): any {
+    protected _initInsertAd(insertAdUnitId: string): any {
         cc.log("_initInsertAd");
-        const interstitialAd = this.platform.createInterstitialAd({
-            adUnitId: _insertAdUnitId
-        });
+        const interstitialAd = this.platform.createInterstitialAd({ adUnitId: insertAdUnitId, appSid: this._appSid, });
         interstitialAd.load().catch((err) => {
-            console.error('load', err)
-        })
-        // interstitialAd.onLoad(() => {
-        //     cc.log('onLoad event emit')
-        // })
-        // interstitialAd.onClose(() => {
-        //     cc.log('close event emit')
-        // })
-        // interstitialAd.onError((e) => {
-        //     cc.log('error', e)
-        // })
+            console.error('load', err);
+        });
         return interstitialAd;
     }
 
