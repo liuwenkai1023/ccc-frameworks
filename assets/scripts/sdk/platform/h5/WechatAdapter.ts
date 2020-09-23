@@ -66,7 +66,6 @@ export class WechatAdapter extends SdkAdapterBase {
         }
     }
 
-
     openURL(url: string) {
         console.log("no support sdk:openURL");
     }
