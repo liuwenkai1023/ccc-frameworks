@@ -44,6 +44,12 @@ export class UIManager {
                 UIMessage.canceled = false;
                 break;
             case LoadEnum.LOADED:
+                // 容错处理，某些极限情况下会出现这种情况
+                if (!UIMessage.component.node) {
+                    UIMessage.status = LoadEnum.NORMAL;
+                    this.showUI(viewBase, parentNode, callback);
+                    return;
+                }
                 this.log(UIName, "already loaded", "color:#19A316;");
                 UIMessage.component.node.active = true;
                 callback && callback(UIMessage.component);
