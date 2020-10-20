@@ -1,12 +1,12 @@
 import { ViewBase } from "../../base/core/mvc/ViewBase";
-import { HttpUtil } from "../../base/utils/HttpUtil";
-import { user } from "../data/proto/person";
-import { DataManager } from "../../base/core/data/DataManager";
-import { AudioManager } from "../../base/core/audio/AudioMananger";
-import { LocalStorageManager } from "../../base/core/storage/StorageManager";
-import { TimerManager } from "../../base/core/timer/TimerManager";
-import { Base64 } from "../../base/utils/Base64";
-import { FGUIUtil } from "../../base/extensions/fgui/FGUIUtil";
+// import { HttpUtil } from "../../base/utils/HttpUtil";
+// import { user } from "../data/proto/person";
+// import { DataManager } from "../../base/core/data/DataManager";
+// import { AudioManager } from "../../base/core/audio/AudioMananger";
+// import { LocalStorageManager } from "../../base/core/storage/StorageManager";
+// import { TimerManager } from "../../base/core/timer/TimerManager";
+// import { Base64 } from "../../base/utils/Base64";
+import { FGUIManager } from "../../base/extensions/fgui/FGUIManager";
 import { TestFGUI } from "./TestFGUI";
 
 
@@ -26,7 +26,7 @@ export class TestUI extends ViewBase {
         console.log("TestUI:测试代码");
         this.Test();
         this.initFGUI();
-        FGUIUtil.getUI(TestFGUI).show();
+        FGUIManager.getUI(TestFGUI).show();
     }
 
     initFGUI() {
