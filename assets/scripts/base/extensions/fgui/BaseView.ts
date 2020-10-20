@@ -8,11 +8,10 @@ export abstract class BaseView extends BaseWindow {
 
     protected pkgName: string = "";
     protected resName: string = "";
-
     protected closeButtonName: string = "background/closeButton";
+    protected showEnterAndLeaveAnim: boolean = false;
 
-    protected showEnterAndLeaveAnim: boolean = true;
-
+    protected modal: boolean = true;
 
     protected onInit(): void {
         this.contentPane = fgui.UIPackage.createObject(`${this.pkgName}`, `${this.resName}`).asCom;
@@ -21,11 +20,11 @@ export abstract class BaseView extends BaseWindow {
         this.modal = true;
         this.contentPane.makeFullScreen();
         this.onCreate(this.contentPane);
-        // 延迟显示
+        // 下一帧显示
         this.contentPane.alpha = 0;
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             this.contentPane.alpha = 1;
-        }, 50);
+        });
     }
 
 

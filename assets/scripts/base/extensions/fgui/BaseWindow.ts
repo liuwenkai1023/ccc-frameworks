@@ -5,6 +5,7 @@ import { EventsManager } from "../../core/event/EventManager";
  * 基础窗口类
  * 重写私有方法 _init 需要忽略报红
  */
+//@ts-ignore
 export abstract class BaseWindow extends fgui.Window {
 
     private _timerManager: TimerManager;
@@ -13,6 +14,8 @@ export abstract class BaseWindow extends fgui.Window {
     protected pkgName: string = "";
     protected resName: string = "";
     protected showEnterAndLeaveAnim: boolean = true;
+
+    protected modal: boolean = true;
 
     constructor() {
         super();
@@ -39,9 +42,12 @@ export abstract class BaseWindow extends fgui.Window {
         this.contentPane = fgui.UIPackage.createObject(`${this.pkgName}`, `${this.resName}`).asCom;
         (!this.closeButton) && (this.closeButton = this.contentPane.getChild("closeButton"));
         this.center(true);
-        this.modal = true;
         this.onCreate(this.contentPane);
-        // console.log("showEnterAndLeaveAnim", this.showEnterAndLeaveAnim);
+        // 下一帧显示
+        this.contentPane.alpha = 0;
+        this.scheduleOnce(() => {
+            this.contentPane.alpha = 1;
+        });
     }
 
 
@@ -102,7 +108,7 @@ export abstract class BaseWindow extends fgui.Window {
      * @param handler 回调
      * @param delay 延迟多少时间后开始执行
      */
-    scheduleOnce(handler: Function, delay: number = 0,) {
+    scheduleOnce(handler: Function, delay: number = 0) {
         this._timerManager.runDelayTimer(handler, delay);
     }
 
