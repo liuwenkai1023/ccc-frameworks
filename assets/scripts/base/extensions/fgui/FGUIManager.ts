@@ -1,6 +1,6 @@
 import { BaseWindow } from "./BaseWindow";
 
-export class FGUIUtil {
+export class FGUIManager {
 
     private static _uiList: Map<{ new() }, BaseWindow> = new Map<{ new() }, BaseWindow>();
 

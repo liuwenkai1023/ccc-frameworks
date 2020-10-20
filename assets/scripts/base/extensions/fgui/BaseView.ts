@@ -1,5 +1,5 @@
 import { BaseWindow } from "./BaseWindow";
-import { FGUIUtil } from "./FGUIUtil";
+import { FGUIManager } from "./FGUIManager";
 
 /**
  * 基础视图(页面)类
@@ -60,12 +60,12 @@ export abstract class BaseView extends BaseWindow {
 
 
     openPage(baseViewClass: new () => BaseView) {
-        FGUIUtil.getUI(baseViewClass).show();
+        FGUIManager.getUI(baseViewClass).show();
     }
 
 
     showDialog(baseWindowClass: new () => BaseWindow) {
-        FGUIUtil.getUI(baseWindowClass).show();
+        FGUIManager.getUI(baseWindowClass).show();
     }
 
 
