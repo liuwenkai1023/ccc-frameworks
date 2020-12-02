@@ -42,7 +42,7 @@ export class SdkManager {
      * 初始化Sdk
      */
     private init() {
-        // TODO 小游戏平台需要添加到 Android/iOS/iPad 之前
+        // TODO 注意:小游戏平台需要添加到 Android/iOS/iPad 之前
         switch (cc.sys.platform) {
 
             // 微信小游戏、头条小游戏、QQ小游戏
