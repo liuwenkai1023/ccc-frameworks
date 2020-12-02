@@ -17,7 +17,6 @@ export abstract class BaseView extends BaseWindow {
         this.contentPane = fgui.UIPackage.createObject(`${this.pkgName}`, `${this.resName}`).asCom;
         (!this.closeButton) && (this.closeButton = this.contentPane.getChild("closeButton"));
         (!this.closeButton) && (this.closeButton = this.findGObj(this.closeButtonName));
-        this.modal = true;
         this.contentPane.makeFullScreen();
         this.onCreate(this.contentPane);
         // 下一帧显示
