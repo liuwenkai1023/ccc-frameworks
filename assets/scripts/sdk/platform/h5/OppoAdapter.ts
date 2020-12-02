@@ -1,6 +1,10 @@
 import { SdkAdapterBase, CallbackHandle } from "../../SdkAdapterBase";
 
 export class OppoAdapter extends SdkAdapterBase {
+    
+    inited() {
+        // throw new Error("Method not implemented.");
+    }
 
     openURL(url: string) {
         // throw new Error("Method not implemented.");

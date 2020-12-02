@@ -4,6 +4,10 @@ import { SingletonFactory } from "../../base/core/SingleFactory";
 
 export class AndroidAdapter extends SdkAdapterBase {
 
+    inited() {
+        this.callJavaStaticFunc("org/cocos2dx/javascript/SdkHelper", "inited", "()V");
+    }
+
     openURL(url: string) {
         this.callJavaStaticFunc("org/cocos2dx/javascript/SdkHelper", "openURL", "(Ljava/lang/String;)", url);
     }

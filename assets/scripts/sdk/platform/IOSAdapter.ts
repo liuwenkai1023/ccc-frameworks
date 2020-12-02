@@ -4,6 +4,10 @@ import { CallbackManager } from "../CallbackManager";
 
 export class IOSAdapter extends SdkAdapterBase {
 
+    inited() {
+         this.callOcStaticFunc("SdkHelper", "inited");
+    }
+
     openURL(url: string) {
         this.callOcStaticFunc("SdkHelper", "openURL:", url);
     }
@@ -29,11 +33,7 @@ export class IOSAdapter extends SdkAdapterBase {
     }
 
     showBannerAd(isShow: boolean) {
-        if (isShow) {
-            this.callOcStaticFunc("SdkHelper", "showBannerAd");
-        } else {
-            this.callOcStaticFunc("SdkHelper", "hideBannerAd");
-        }
+        this.callOcStaticFunc("SdkHelper", "showBannerAd:", isShow);
     }
 
     showVideoAd(videoId: string, callback: CallbackHandle) {

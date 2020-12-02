@@ -74,6 +74,8 @@ export default class RecorderUtil {
             App.Utils.EventManager.on(cc.game.EVENT_HIDE, () => {
                 this.recording && this.recorder.resume();
             }, this);
+        } else {
+            console.error("当前平台不支持使用录屏工具类");
         }
     }
 
@@ -186,7 +188,7 @@ export default class RecorderUtil {
     }
 
 
-     showToast(title: string, duration: number = 2000) {
+    showToast(title: string, duration: number = 2000) {
         this.platform && this.platform.showToast({
             icon: 'none',
             title: title,

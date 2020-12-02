@@ -1,7 +1,27 @@
+import RecorderUtil from "./RecoderUtil";
+
+export enum ErrorCode {
+    SUCCESS = 0,
+    USER_CANCEL = -1,
+    ERROR_OCCURRED = -2,
+}
 
 export interface CallbackHandle { (result: { errCode: number, data?: any, msg?: string }): void; }
 
 export abstract class SdkAdapterBase {
+
+    /**
+     * 是否支持录屏，默认为不支持
+     */
+    protected _isSupportRecord: boolean = false;
+    get isSupportRecord() {
+        return this._isSupportRecord;
+    }
+
+    /**
+     * 一般在初始化数据配置完成时调用
+     */
+    abstract inited();
 
     /**
      * 打开网页地址
@@ -54,16 +74,28 @@ export abstract class SdkAdapterBase {
     /**
      * 开始录屏
      * @param callback 开始录屏回调
-     * @param stopCallback 结束录屏默认回调
+     * @param stopCallback 自动停止录屏回调
      */
-    abstract startRecord(callback: Function, stopCallback: Function);
+    startRecord(callback: (res) => void, stopCallback: (res) => void) {
+        this.isSupportRecord && RecorderUtil.getInstance().startRecord(callback, stopCallback);
+    }
 
     /**
      * 结束录屏
      * @param callback 结束录屏回调
      */
-    abstract stopRecord(callback: Function);
+    stopRecord(callback: (res) => void) {
+        this.isSupportRecord && RecorderUtil.getInstance().stopRecord(callback);
+    }
 
+    /**
+     * 分享录屏
+     * @param needShowToast 是否需要失败提示
+     * @param callback 分享结果回调
+     */
+    shareVideo(needShowToast: boolean, callback: (code: number) => void) {
+        this.isSupportRecord && RecorderUtil.getInstance().shareVideo(needShowToast, callback);
+    }
 
     /**
      * 调用Java静态方法(Android)

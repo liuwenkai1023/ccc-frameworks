@@ -13,12 +13,10 @@ export class BaiduAdapter extends ToutiaoAdapter {
 
     // 百度目前不支持插屏
     showInsertAd() {
-
     }
 
     // 百度目前不支持插屏
     _initInsertAd() {
-
     }
 
 }

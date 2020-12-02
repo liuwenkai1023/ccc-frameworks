@@ -10,7 +10,6 @@ export class ToutiaoAdapter extends WechatAdapter {
 
     // 西瓜视频bannerAd会有问题，所以屏蔽掉
     private _isXiGua = false;
-    private _recorderUtil = RecorderUtil.getInstance();
 
     get platform() {
         return window['tt'];
@@ -36,34 +35,6 @@ export class ToutiaoAdapter extends WechatAdapter {
             return;
         }
         super.showBannerAd(isShow);
-    }
-
-    // --===================录屏相关====================--
-
-    /**
-     * 开始录屏
-     * @param callback 
-     * @param stopCallback
-     */
-    startRecord(callback?: (res) => void, stopCallback?: (res) => void) {
-        this._recorderUtil.startRecord(callback, stopCallback);
-    }
-
-    /**
-     * 结束录屏
-     * @param callback 
-     */
-    stopRecord(callback?: (res) => void) {
-        this._recorderUtil.stopRecord(callback);
-    }
-
-    /**
-     * 分享录屏
-     * @param needShowToast 是否需要失败提示
-     * @param callback 
-     */
-    shareVideo(needShowToast: boolean, callback: (code: number) => void) {
-        this._recorderUtil.shareVideo(needShowToast, callback);
     }
 
     // --==================初始化广告===================--

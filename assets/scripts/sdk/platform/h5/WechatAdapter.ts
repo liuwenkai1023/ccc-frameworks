@@ -2,7 +2,7 @@ import { SdkAdapterBase, CallbackHandle } from "../../SdkAdapterBase";
 
 export class WechatAdapter extends SdkAdapterBase {
 
-    protected _appSid: string = null;
+    protected _appSid: string = null; // 兼容其它平台（百度）
     // protected _boxAdUnitId: string = "56a089855c04f471178a604937848a55";
     protected _insertAdUnitId: string = "3bf09d7f641116fd226fce1df8404cea";
     protected _bannerAdUnitId: string = "d8b062172af5b2fa90618a8c7015f6e8";
@@ -42,11 +42,13 @@ export class WechatAdapter extends SdkAdapterBase {
         window['device'] = `${systemInfo.brand} ${systemInfo.model}`;
         localStorage.setItem("uuid", window['uuid']);
         localStorage.setItem("device", window['device']);
-
         console.log(`** MiniGame ** \n device = ${window['device']}, uuid = ${window['uuid']}`);
 
         // 设置分享标记
-        this.platform.showShareMenu({ withShareTicket: true });
+        this.platform.showShareMenu({
+            withShareTicket: true,
+            menus: ['shareAppMessage', 'shareTimeline']
+        });
 
         // 初始化插屏
         if (!this._insertAd) {
@@ -94,7 +96,7 @@ export class WechatAdapter extends SdkAdapterBase {
             this._insertAd.show().catch((err) => {
                 console.error('show', err);
             });
-        }, 650);
+        }, 650); // 延迟650ms最容易误触
     }
 
     showBannerAd(isShow: boolean) {
@@ -117,14 +119,6 @@ export class WechatAdapter extends SdkAdapterBase {
         });
     }
 
-    startRecord(callback: Function, stopCallback: Function) {
-        console.log("no support sdk:startRecord");
-    }
-
-    stopRecord(callback: Function) {
-        console.log("no support sdk:stopRecord");
-    }
-
 
     // --===================================分隔线======================================--
 
@@ -138,10 +132,10 @@ export class WechatAdapter extends SdkAdapterBase {
         cc.log("_initRewardedVideoAd");
         const rewardedVideoAd = this.platform.createRewardedVideoAd({ adUnitId: adUnitId, appSid: this._appSid });
         // 关闭视频回调（在发生错误后重新走初始化，需要注销之前的回调）
-        rewardedVideoAd && rewardedVideoAd.offLoad(this.__onLoadCb);
-        rewardedVideoAd && rewardedVideoAd.offClose(this.__onCloseCb);
-        rewardedVideoAd && rewardedVideoAd.offError(this.__onErrorCb);
-        //
+        rewardedVideoAd && this.__onLoadCb && rewardedVideoAd.offLoad(this.__onLoadCb);
+        rewardedVideoAd && this.__onLoadCb && rewardedVideoAd.offClose(this.__onCloseCb);
+        rewardedVideoAd && this.__onLoadCb && rewardedVideoAd.offError(this.__onErrorCb);
+        // 加载回调
         const onLoadCb = this.__onLoadCb = (res) => {
             cc.log('videoAd onLoad', res);
         }
@@ -188,7 +182,7 @@ export class WechatAdapter extends SdkAdapterBase {
             await 0;
             this._bannerAd = null;
         });
-        // 在横幅大小变化时更新位置
+        // 在横幅大小变化时更新位置(BOTTOM_CENTER)
         bannerAd.onResize((size) => {
             cc.log("onResize", size);
             const top = (systemInfo.windowHeight - size.height) + 0.05;
