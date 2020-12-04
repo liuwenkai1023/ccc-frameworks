@@ -1,16 +1,17 @@
 export class AudioManager {
 
     private _musicVolume: number = 1.0;
-
     private _effectVolume: number = 1.0;
+
+    private _soundsPath: string = "resources/sounds/";
 
     // private static _instance: AudioManager;
 
-   constructor() {
+    constructor() {
         this.init();
     }
 
-    
+
     // /**
     //  * 获取音频管理器
     //  */
@@ -47,7 +48,7 @@ export class AudioManager {
      * @param url 音频相对地址
      */
     private getAudioUrl(url) {
-        return cc.url.raw("resources/sounds/" + url);
+        return cc.url.raw(this._soundsPath + url);
     }
 
 

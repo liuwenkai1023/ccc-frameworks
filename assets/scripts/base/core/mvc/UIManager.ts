@@ -44,7 +44,7 @@ export class UIManager {
                 UIMessage.canceled = false;
                 break;
             case LoadEnum.LOADED:
-                // 容错处理，某些极限情况下会出现这种情况
+                // 容错处理，某些极限情况下可能会出现这种情况
                 if (!UIMessage.component.node) {
                     UIMessage.status = LoadEnum.NORMAL;
                     this.showUI(viewBase, parentNode, callback);
